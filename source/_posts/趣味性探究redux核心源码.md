@@ -90,7 +90,7 @@ redux的核心功能主要包括下面几个
 ``` js
 // reducer1.js
 
-import { ADD_TABLEWARE, ADD_TEA } from '@store/actions/action1';
+import { ADD_TABLEWARE, ADD_TEA, MINUS_NAPKIN } from '@store/actions/action1';
 
 const initialState = {
   tablewareCount: 1,
@@ -141,30 +141,9 @@ export function addTeaAction(count) {
   };
 }
 
-export deleteNapkin = {
+export const deleteNapkin = {
   type: MINUS_NAPKIN,
   napkinCount: count,
-}
-```
-
-这是 asyncAction1，在这里的 action 都包含有异步操作，通常是请求接口数据，包括去后厨取菜品
-
-
-``` js
-// asyncAction1.js
-
-import dish from '@api/dish';
-import { addTeaAction } from '@store/actions/action1';
-import { placeDishsAction } from '@store/actions/action2';
-
-export const getDishs = () => (dispatch, getState) => {
-  dish.getDishAPI()
-    .then((res) => {
-      const { dishs } = res.data;
-      const teaCount = 2;
-      dispatch(placeDishsAction(dishs));
-      dispatch(addTeaAction(teaCount));
-    })
 }
 ```
 
@@ -173,7 +152,7 @@ export const getDishs = () => (dispatch, getState) => {
 ``` js
 // reducer2.js
 
-import { MINUS_NAPKIN } from '@store/actions/action2';
+import { PLACE_DISHS } from '@store/actions/action2';
 
 const initialState = {
   dishs: [],
@@ -203,6 +182,27 @@ export function placeDishsAction(dishs) {
   };
 }
 
+```
+
+这是 asyncAction1，在这里的 action 都包含有异步操作，通常是请求接口数据，包括去后厨取菜品
+
+
+``` js
+// asyncAction1.js
+
+import dish from '@api/dish';
+import { addTeaAction } from '@store/actions/action1';
+import { placeDishsAction } from '@store/actions/action2';
+
+export const getDishs = () => (dispatch, getState) => {
+  dish.getDishAPI()
+    .then((res) => {
+      const { dishs } = res.data;
+      const teaCount = 2;
+      dispatch(placeDishsAction(dishs));
+      dispatch(addTeaAction(teaCount));
+    })
+}
 ```
 
 这里是生成控制中心 store 的地方，也就是顾客
