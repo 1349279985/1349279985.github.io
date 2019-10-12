@@ -25,11 +25,11 @@ keywords:
 ## redux的核心功能
 
 redux的核心功能主要包括下面几个
-+ state: 存储着所有的数据变量
 + store: 可以简单描述成一个控制中心，可以获取 state，也可以改变 state，但是改变 state 需通过间接的方式
-+ reducer: 将 state 和其中变量的最新数据做一次合并
++ reducer: 将 state 和其中变量的最新数据做一次合并返回 state
 + action: 管理着改变 state 某些数据的行为，操作是同步的
 + asyncAction: 管理着改变 state 某些数据的行为，操作是异步的，比如请求接口
++ listener: 观察者模式下，由 store 控制着 listener，当有变更消息来时就触发 listener 执行更新
 
 项目也常用到中间件比如 __thunk__
 + thunk: 可以嵌套触发 action
@@ -38,38 +38,39 @@ redux的核心功能主要包括下面几个
 
 如果看不大懂上面的概念，没关系，或许看过下面的场景后会有一些认识的转变
 
-我试图将上面的 功能做一下场景的转变，场景是到店里吃饭，是生活中经常发生在你我身上的事情。如下我对功能做了标记，其中容器并非redux的功能，而是类似为一个页面
+我试图将上面的功能做一下场景的转变，场景是到店里吃饭，是生活中经常发生在你我身上的事情。如下我对功能做了标记
 
-+ 容器: 餐桌
-+ state: 餐桌上的所有菜品
 + store: 顾客
-+ reducer: 顾客更新桌上的菜品区和碗碟区
-+ action: 拿纸巾、加餐具、舔茶水、摆菜品
-+ asyncAction: 取菜品
 + thunk: 服务员
++ action: 拿纸巾、加餐具、舔茶水、摆菜品
++ asyncAction: 去后厨取菜品
++ reducer: 餐桌（包括菜品区和碗碟区）
++ listener: 算总价
 
-> 顾客是整个就餐过程的核心人物，他可以吩咐服务员做各种事情，包括拿纸巾、上餐具、加茶水等简单的事情，这样，我们定义两种事情，一种是不需要等很久（大概一分钟）就能完成的事情比如上面提到的拿纸巾、上餐具、加茶水等叫简单事情。另一种是包含了需要等很久才能完成的事情比如到取菜品（需要后厨制作很久）等，叫复杂事情。
+> 顾客是整个就餐过程的核心人物，他可以吩咐服务员做各种事情，包括拿纸巾、上餐具、加茶水、上菜品等事情，我们假设，服务员每次拿完东西回来放在餐桌上后，顾客看到了会自发去算一遍桌上菜品（包括碗碟区）的总价。现在就开始点餐流程
 
-> 好了，两位顾客到了餐桌后开始点菜了，他们点了A、B、C三道菜品，服务员吩咐厨房开始制作并准备10分钟后去取菜品，餐桌上目前只有一份纸巾和一套餐具。
+> 两位顾客来到了名叫沫沫的餐厅找了一个桌位坐了下来，顾客看到餐桌上有一份纸巾和一套餐具，瞬间自发地在心里算了一笔帐。然后开始了点菜，他们点了清蒸鱼片、酸菜鱼和剁椒鱼头三道菜，于是服务员吩咐厨房开始制作，需要至少5分钟后才能做出菜品。
 
-> 坐下来一小会儿，顾客发现少了一份餐具，于是叫服务员拿份餐具，服务员取来餐具交给了顾客，顾客放在餐桌自己的碗碟区。
-> 又过了一会儿，顾客有点渴了，叫来服务员端两杯茶水，服务员取了两杯茶水交给顾客，顾客放在了餐桌自己的碗碟区。
+> 坐下来一小会儿，顾客A发现少了一份餐具，于是叫服务员拿份餐具，服务员取来餐具很有礼貌地放在了餐桌的碗碟区。这激发了顾客在心里算起了价格。
 
-> 10分钟过去了，服务员将三道菜品端上来了，放在旁边的菜品柜上，顾客将三道菜品摆放到了餐桌的菜品区。
+> 又过了一会儿，顾客B有点渴了，叫来服务员端两杯茶水，服务员取了两杯茶这次依然很有礼貌地放在了餐桌的碗碟区，这再次激发了顾客心里算起了价格，这就有点搞笑了，茶水是免费的，哈哈，不过这总归是条件反射嘛。
 
-> 没过过久，菜吃得差不多了，顾客吩咐服务员加一道菜D，顺便添加些茶水，于是服务员吩咐厨房做菜2分钟后来取，并且给顾客杯子加一些茶水，顾客将茶水放在了餐桌碗碟区。
+> 5分钟过去了，他们的三道菜品端上来了，服务员很自然地放在了餐桌的菜品区，这下顾客要好好算了，很得意地，顾客算好了。
 
-> 2分钟过后，服务员将菜品D端上来了给到顾客，顾客摆放到了餐桌菜品区。
+> 没过过久，菜吃得差不多了，顾客A还没吃饱，于是吩咐服务员再点最后一道菜烤鱼，顺便再添加些茶水，这道菜后厨需要至少2分钟才能做出来，服务员吩咐了厨房并端来了茶水壶，给顾客加了两杯茶水。
 
-> 就餐的过程中两位顾客相聊甚换，吃得差不多了准备起身结账时，发现餐桌上有一份纸巾，顾客并不需要这个纸巾，于是叫服务员拿掉了这个纸巾。
+> 2分钟过后，烤鱼来了，服务员摆放到了餐桌菜品区，顾客这次算了最后的总价，算完后两人开始吃起来了。
 
-> 最后顾客完成了结账。
+> 就餐的过程中两位顾客相聊甚换，吃得差不多了准备起身结账时，发现餐桌上有一份纸巾，顾客并不需要这个纸巾，于是叫服务员拿掉了这个纸巾，并再次算起了总价，这次真的是最后的总价了。
 
+> 最后顾客到前台完成了结账，满心欢喜地回家了。
 
-看到这儿，如果能看到，其实 __redux__ 底部的设计已经明白差不多了，是不是很简单，其实也并没有那么难。
-好了，为了将这个故事反应到 __redux__ 的设计上，我准备将关键信息和 __redux__ 的关键功能对应上。
+看到这儿，如果能看懂，其实对 __redux__ 的底部设计了解得差不多了。
+为了将这个故事反应到 __redux__ 的设计上，我准备将关键信息和 __redux__ 的关键功能对应上如下。
 
-如此，我们已经知道 __redux__ 面对一个 __action__ 的内部处理流程了，之所以需要这么规范化复杂化的流程设计，想必就是各司其职，防止越位，最后防止 __state__ 被恶意篡改。
+<div style="width:60%;margin:auto">{% asset_img 2.png %}</div>
+
+我们大概已经知道 __redux__ 面对一个 __action__ 的内部处理流程了，之所以需要这么规范化复杂化的流程设计，想必就是各司其职，防止越位，最后防止 __state__ 被恶意篡改。
 
 ## 开启源码解读
 
@@ -93,7 +94,7 @@ import { ADD_TABLEWARE, ADD_TEA } from '@store/actions/action1';
 const initialState = {
   tablewareCount: 1,
   teaCount: 0,
-  dishs: [],
+  napkinCount: 1,
 }
 
 export default (state = initialState, action = {}) {
@@ -105,9 +106,9 @@ export default (state = initialState, action = {}) {
       return state.merge({
         teaCount: action.teaCount,
       });
-    case PLACE_DISHS:
+    case MINUS_NAPKIN:
       return state.merge({
-        dishs: action.dishs,
+        napkinCount: action.napkinCount,
       });
     default:
       return state;
@@ -115,7 +116,7 @@ export default (state = initialState, action = {}) {
 
 ```
 
-这是 action1，对应着 reducer1，标识着改变 state 某些数据的操作行为，包括加餐具、舔茶水、摆菜品，当然也可以对数据做一些处理后转为最终态
+这是 action1，对应着 reducer1，标识着改变 state 某些数据的操作行为，包括加餐具、舔茶水、退纸巾，当然也可以对数据做一些处理后转为最终态
 
 
 ``` js
@@ -123,7 +124,7 @@ export default (state = initialState, action = {}) {
 
 export const ADD_TABLEWARE = 'ADD_TABLEWARE';
 export const ADD_TEA = 'ADD_TEA';
-export const PLACE_DISHS = 'PLACE_DISHS';
+export const MINUS_NAPKIN = 'MINUS_NAPKIN';
 
 export function addTablewareAction(count) {
   return {
@@ -139,11 +140,9 @@ export function addTeaAction(count) {
   };
 }
 
-export function placeDishsAction(dishs) {
-  return {
-    type: PLACE_DISHS,
-    dishs,
-  };
+export deleteNapkin = {
+  type: MINUS_NAPKIN,
+  napkinCount: count,
 }
 ```
 
@@ -154,7 +153,8 @@ export function placeDishsAction(dishs) {
 // asyncAction1.js
 
 import dish from '@api/dish';
-import { placeDishsAction, addTeaAction } from '@store/actions/action1';
+import { addTeaAction } from '@store/actions/action1';
+import { placeDishsAction } from '@store/actions/action2';
 
 export const getDishs = () => (dispatch, getState) => {
   dish.getDishAPI()
@@ -167,7 +167,7 @@ export const getDishs = () => (dispatch, getState) => {
 }
 ```
 
-这是reducer2，存储针对纸巾的操作和纸巾初始数据
+这是reducer2，存储着菜品的初始数据
 
 ``` js
 // reducer2.js
@@ -175,29 +175,31 @@ export const getDishs = () => (dispatch, getState) => {
 import { MINUS_NAPKIN } from '@store/actions/action2';
 
 const initialState = {
-  napkinCount: 1,
+  dishs: [],
 }
 
 export default (state = initialState, action = {}) {
-    case MINUS_NAPKIN:
+    case PLACE_DISHS:
       return state.merge({
-        napkinCount: action.napkinCount,
+        dishs: action.dishs,
       });
     default:
       return state;
 }
 ```
 
-这是 action2，对应着 reducer2，包含对纸巾的删除操作
+这是 action2，对应着 reducer2，包含针对菜品的操作
 
 ``` js
 // action2.js
 
-export const MINUS_NAPKIN = 'MINUS_NAPKIN';
+export const PLACE_DISHS = 'PLACE_DISHS';
 
-export deleteNapkin = {
-  type: MINUS_NAPKIN,
-  napkinCount: count,
+export function placeDishsAction(dishs) {
+  return {
+    type: PLACE_DISHS,
+    dishs,
+  };
 }
 
 ```
@@ -296,23 +298,21 @@ export default function createStore(reducer, preloadedState, enhancer) {
 结合 store.js 中的 createStore 来看，不考虑插件情况 composeEnhancers 即为 compose
 
 ``` js
-const store = createStore(rootReducer, compose(
-  applyMiddleware(thunk),
-));
+const store = createStore(rootReducer, compose(applyMiddleware(thunk)));
 ```
 
-不考虑插件 composeEnhancers 即为 compose，其中
+其中
 1. rootReducer 对应 reducer
 2. compose(applyMiddleware(thunk)) 对应 preloadedState
 3. enhancer 是 undefined
 
-最后执行的是
+__createStore__ 最后返回的是
 
 ``` js
 enhancer(createStore)(reducer, preloadedState)
 ```
 
-即执行下方，其中 preloadedState 为 undefined，并且 createStore 被作为参数传入
+即执行下方，其中 __preloadedState__ 为 __undefined__，并且 __createStore__ 被作为参数传入
 
 ``` js
 (compose(applyMiddleware(thunk))(createStore))(reducer, preloadedState)
@@ -320,7 +320,7 @@ enhancer(createStore)(reducer, preloadedState)
 
 ### compose
 
-看起来是相当复杂的，我们一步步来看，首先是看下 compose 它的作用
+看起来是相当复杂的，我们一步步来看，首先是看下 __compose__ 它的作用
 
 ``` js
 // 来源 redux 中的 compose.js
@@ -336,7 +336,7 @@ export default function compose(...funcs) {
   return funcs.reduce((a, b) => (...args) => a(b(...args)))
 }
 ```
-代码很简洁，可以看出主要用于多个函数的合并操作，按照 funcs 的顺序从右向左做合并，其中 b 接受到参数 args 后运行的结果作为 a 的参数，a 的运行参数作为 a 左边函数的参数，这样将 funcs 遍历一遍，用一个栗子来看看
+代码很简洁，可以看出主要用于多个函数的合并操作，按照 __funcs__ 的顺序从右向左做合并，其中 __b__ 接受到参数 __args__ 后运行的结果作为 __a__ 的参数，__a__ 的运行参数作为 __a__ 左边函数的参数，这样将 __funcs__ 遍历一遍，用一个栗子来看看
 
 ``` js
 function add (a) {  
@@ -361,7 +361,7 @@ applyMiddleware(thunk)(createStore)(reducer, preloadedState)
 
 ### applyMiddleware
 
-接着，我们看下 applyMiddleware 的原理，其中 middlewares 对应 thunk，当然也可以传多个中间件，这里我们只使用了一个， createStore对应的就是 createStore，而 args 对应着 reducer 和 preloadedState，终于对上号了
+接着，我们看下 __applyMiddleware__ 的原理，其中 __middlewares__ 对应 __thunk__，当然也可以传多个中间件，这里我们只使用了一个，__args__ 对应着 __reducer__ 和 __preloadedState__，终于对上号了
 
 ``` js
 export default function applyMiddleware(...middlewares) {
@@ -390,7 +390,7 @@ export default function applyMiddleware(...middlewares) {
 }
 ```
 
-最后的运行结果即是我们最初通过 createStore 初始化后的 store 对象，可以看到，其中的 dispatch 被重写了，是被 middleware 即我们传入的 thunk 重写了，因为 middlewares 长度为1，因此chain就只有一个元素 compose 传入的即是
+最后的运行结果即是我们最初通过 __createStore__ 初始化后的 __store__ 对象，可以看到，其中的 __dispatch__ 被重写了，是被 __middleware__ 即我们传入的 __thunk__ 重写了，因为 __middlewares__ 长度为1，因此 __chain__ 就只有一个元素， __compose__ 函数传入的 __chain__ 即是
 
 ``` js
 middleware(middlewareAPI)
@@ -400,7 +400,7 @@ thunk(middlewareAPI)
 
 ### thunk
 
-做了thunk(middlewareAPI)(store.dispatch)的执行后，得到了新的dispatch，是时候来看看thunk了
+做了 __thunk(middlewareAPI)(store.dispatch)__ 的执行后，得到了新的 __dispatch__，是时候来看看 __thunk__ 了
 
 ```js
 function createThunkMiddleware(extraArgument) {
@@ -419,7 +419,7 @@ thunk.withExtraArgument = createThunkMiddleware;
 export default thunk;
 ```
 
-也是非常简洁，我们改写下，其中参数中的 dispatch 和 getState 分别对应 middlewareAPI 中的 dispatch 和 getState，next 是 store.dispatch，action 即是业务逻辑中通过 dispatch(action) 提交的 action，这里返回的是函数，当业务逻辑中通过 dispatch(action) 时，action 可以是对象，也可以是函数；如果是函数，默认会把 dispatch, getState, extraArgument 传入，即可以在一个 action 中嵌套 action，如案例中的 getDishs 即是这样的一个 action，而 deleteNapkin 是一个对象 action，其他的如 placeDishsAction是没有嵌套 action 的 action，当然它也是一个函数
+也是非常简洁，我们改写下，其中参数中的 __dispatch__ 和 __getState__ 分别对应 __middlewareAPI__ 中的  dispatch 和 getState，__next__ 是 store.dispatch，action 即是业务逻辑中通过 __dispatch(action)__ 提交的 __action__，这里返回的是函数，当业务逻辑中通过 dispatch(action) 时，__action__ 可以是对象，也可以是函数；如果是函数，默认会把 dispatch, getState, __extraArgument__ 传入，即可以在一个 action 中嵌套 action，如案例中的 __getDishs__ 即是这样的一个 action，而 __deleteNapkin__ 是一个对象 action，其他的如 __placeDishsAction__ 是没有嵌套 action 的 action，当然它也是一个函数
 
 ``` js
 export default function({ dispatch, getState }) {
@@ -470,7 +470,7 @@ export default function combineReducers(reducers) {
 
 ```
 
-在 combineReducers 中，其中 reducers 就是 reducer1 和 reducer2，通过合并后存储哈希表 finalReducers 管理如下，key 为 reducer 名，func 是对应 reducer 的处理逻辑，当通过 dispatch(action) 时，会执行 combination 逻辑，遍历并执行所有的 reducer 获取最新的 state，并和之前的 state 对比以确认返回的 state
+在 __combineReducers__ 中，其中 reducers 就是 reducer1 和 reducer2，通过合并后存储哈希表 __finalReducers__ 管理如下，__key__ 为 reducer 名，__func__ 是对应 reducer 的处理逻辑，当通过 dispatch(action) 时，会执行 __combination__ 逻辑，遍历并执行所有的 reducer 获取最新的 state，并和之前的 state 对比以确认返回的 state
 
 ```js
 const finalReducers = {
@@ -479,7 +479,7 @@ const finalReducers = {
 }
 ```
 
-不过需要注意的一点是，在 createStore 的最后会执行 dispatch({ type: ActionTypes.INIT })，这一步是初始化 state 操作，因为一开始传递的 preloadedState 是 undefined，即c reateStore 中的 currentState 是 undefined，当通过 getState 获取 state 时是空的，因此需要做一次初始化操作，初始化时执行 combination 逻辑，依然是遍历每个 reducer，每个 reducer 的第一个参数 state 默认是初始化的参数 initialState，最后在 nextState 存储的将是如下结构，即通过 getState 获取的也将是这个结构
+不过需要注意的一点是，在 createStore 的最后会执行 __dispatch({ type: ActionTypes.INIT })__，这一步是初始化 state 操作，因为一开始传递的 preloadedState 是 undefined，即 createStore 中的 __currentState__ 是 undefined，当通过 getState 获取 state 时是空的，因此需要做一次初始化操作，初始化时执行 combination 逻辑，依然是遍历每个 reducer，每个 reducer 的第一个参数 state 默认是初始化的参数 __initialState__，最后在 __nextState__ 存储的将是如下结构，即通过 getState 获取的也将是这个结构
 
 ```js
 const nextState = {
