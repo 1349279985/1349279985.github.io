@@ -17,7 +17,7 @@ __知乎日报APP__ 是前端入门各类框架的热门选择，当然还包括
 
 ## 介绍
 
-* 项目基于 __[vue-cli](https://github.com/vuejs/vue-cli)__ 脚手架构建，__[webpack](https://webpack.js.org/guides/get-started/)__ 打包项目。
+* 项目基于 __[vue-cli3](https://github.com/vuejs/vue-cli)__ 脚手架构建
 
 * 知乎日报的数据来源于 __[izzyleung](https://github.com/izzyleung/ZhihuDailyPurify/wiki/知乎日报-API-分析)__，在开发环境通过代理形式访问数据源
 
@@ -27,30 +27,30 @@ __知乎日报APP__ 是前端入门各类框架的热门选择，当然还包括
 
 ## 构建
 
-__[这里](https://github.com/1349279985/zhihudaily-vue2)__ 是项目的 github 地址，欢迎 __Star__
+__[这里](https://github.com/1349279985/zhihudaily)__ 是项目的 github 地址，欢迎 __Star__
 
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
+## 安装项目依赖包
 ```
+yarn install or npm install
+```
+
+### 本地环境运行并热更新
+```
+yarn serve or npm run serve
+```
+
+### 生产环境打包压缩
+```
+yarn build or npm run build
+```
+
+### eslint 修复文件
+```
+yarn lint or npm run eslint
+```
+
+### 自定义配置
+See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## 项目目录
 
