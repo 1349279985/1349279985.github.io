@@ -10,7 +10,7 @@ categories: 前端
 
 __知乎日报APP__ 是前端入门各类框架的热门选择，当然还包括某瓣某音乐等。本次项目是基于 __Vue__、__Vue-router__ 及 __Vuex__ 做的知乎日报移动版，对于刚接触 __MVVM__ 类框架或者Vue的新手很适合用来学习，包括组件式复用、API 封装、路由配置及 __动态加载__ 以及组件数据存储的设计等，很值得一试。
 
-<div style="width:50%;margin:auto">{% asset_img 0.png %}</div>
+<div style="max-width:70%;margin:auto">{% asset_img 0.png %}</div>
 
 <!-- more -->
 
