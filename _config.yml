@@ -1,0 +1,111 @@
+# Hexo Configuration
+## Docs: https://hexo.io/docs/configuration.html
+## Source: https://github.com/hexojs/hexo/
+
+# Site
+title: MoMo's Blog
+subtitle: Life is Beautiful
+description: 记录Jason和MoMo的工作和生活
+keywords: vue,javascript,前端,react,性能优化,webpack,生活,微信小程序,Vuex,MoMo,momo,blog,餐饮
+author: MoMo
+language: zh-Hans
+timezone:
+
+# URL
+## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
+url: https://1349279985.github.io
+root: /
+permalink: :title/
+permalink_defaults:
+
+# Directory
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render: README.md
+
+# Writing
+new_post_name: :title.md # File name of new posts
+default_layout: post
+titlecase: false # Transform title into titlecase
+external_link: true # Open external links in new tab
+filename_case: 0
+render_drafts: false
+post_asset_folder: true
+relative_link: false
+future: true
+highlight:
+  enable: true
+  line_number: true
+  auto_detect: true
+  tab_replace:
+  
+# Home page setting
+# path: Root path for your blogs index page. (default = '')
+# per_page: Posts displayed per page. (0 = disable pagination)
+# order_by: Posts order. (Order by date descending by default)
+index_generator:
+  path: ''
+  per_page: 10
+  order_by: -date
+  
+# Category & Tag
+default_category: uncategorized
+category_map:
+tag_map:
+
+# Date / Time format
+## Hexo uses Moment.js to parse and display date
+## You can customize the date format as defined in
+## http://momentjs.com/docs/#/displaying/format/
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+
+# Pagination
+## Set per_page to 0 to disable pagination
+per_page: 10
+pagination_dir: page
+
+# Extensions
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+theme: next
+
+# Deployment
+## Docs: https://hexo.io/docs/deployment.html
+deploy:
+  type: git
+  repo: https://github.com/1349279985/1349279985.github.io
+  branch: master
+
+sitemap:
+  path: sitemap.xml
+baidusitemap:
+  path: baidusitemap.xml
+
+# Google Webmaster tools verification setting
+# See: https://www.google.com/webmasters/
+google_site_verification: TJIhzYMIPFaz9Sm7X-m89u5LjpBTUSHWfScXHB520hY # 此处改为google提供给你的HTML标签content后的内容
+
+algolia:
+  applicationID: QTLXGA4GZK
+  apiKey: 671ec8c1f374f6940bbed7898c1202e3
+  indexName: prod_BLOG
+  chunkSize: 5000
+
+
+live2d:
+  enable: true #是否开启看板
+  pluginModelPath: assets/
+  model:
+    use: live2d-widget-model-tororo #模板目录，在node_modules里，想切换动画直接改最后的单词与文件夹名称最后的单词一致即可
+  display:
+    position: right #在右边显示
+    width: 150 #看板的宽
+    height: 345 #看板的搞
+  mobile:
+    show: false  #是否在手机进行显示，建议关闭
