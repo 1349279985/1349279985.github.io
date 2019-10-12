@@ -23,6 +23,8 @@ keywords:
 <!-- more -->
 
 ## redux的核心功能
+
+redux的核心功能主要包括下面几个
 + state: 存储着所有的数据变量
 + store: 可以简单描述成一个控制中心，可以获取 state，也可以改变 state，但是改变 state 需通过间接的方式
 + reducer: 将 state 和其中变量的最新数据做一次合并
@@ -84,7 +86,6 @@ keywords:
 这是 reducer1，存储着餐具、茶水、菜品的初始化数据，以及更改这些数据的操作
 
 ``` js
-
 // reducer1.js
 
 import { ADD_TABLEWARE, ADD_TEA } from '@store/actions/action1';
@@ -118,7 +119,6 @@ export default (state = initialState, action = {}) {
 
 
 ``` js
-
 // action1.js
 
 export const ADD_TABLEWARE = 'ADD_TABLEWARE';
@@ -145,14 +145,12 @@ export function placeDishsAction(dishs) {
     dishs,
   };
 }
-
 ```
 
 这是 asyncAction1，在这里的 action 都包含有异步操作，通常是请求接口数据，包括取菜品
 
 
 ``` js
-
 // asyncAction1.js
 
 import dish from '@api/dish';
@@ -167,13 +165,11 @@ export const getDishs = () => (dispatch, getState) => {
       dispatch(addTeaAction(teaCount));
     })
 }
-
 ```
 
 这是reducer2，存储针对纸巾的操作和纸巾初始数据
 
 ``` js
-
 // reducer2.js
 
 import { MINUS_NAPKIN } from '@store/actions/action2';
@@ -190,14 +186,12 @@ export default (state = initialState, action = {}) {
     default:
       return state;
 }
-
 ```
 
 这是 action2，对应着 reducer2，包含对纸巾的删除操作
 
-``` bash
-
-#action2.js
+``` js
+// action2.js
 
 export const MINUS_NAPKIN = 'MINUS_NAPKIN';
 
@@ -211,7 +205,6 @@ export deleteNapkin = {
 这里是生成控制中心 store 的地方，也就是顾客
 
 ``` js
-
 // store.js
 
 import { createStore, compose, applyMiddleware, combineReducers} from 'redux';
@@ -230,7 +223,6 @@ const store = createStore(rootReducer, composeEnhancers(
 ));
 
 export default store;
-
 ```
 
 至此，我们完成了一个 redux 的基本结构，包括两个 reducer 及对应的 action，同时还有一个 asyncAction 以模拟包含异步的操作（取菜品对应请求接口这种类似的操作），最后在 store.js 中做两个 reducer 的合并，同时引入中间件 thunk 做 store 初始化。之后就是页面引入这个 store 就可以做相关的业务逻辑了，这块的会涉及到 react-redux 相关，到时会单独来讲解，在这里咱们只关注 redux 的内部实现。
@@ -249,7 +241,6 @@ export default store;
 首先看 createStore，这是 store 初始化的地方，我们剔除源码中的异常等逻辑，只提取核心逻辑来看。
 
 ``` js
-
 // 来源 redux 中的 createStore.js，做了部分修改，剔除了replaceReducer和[$$observable]
 
 export default function createStore(reducer, preloadedState, enhancer) {
@@ -300,7 +291,6 @@ export default function createStore(reducer, preloadedState, enhancer) {
     getState,
   }
 }
-
 ```
 
 结合 store.js 中的 createStore 来看，不考虑插件情况 composeEnhancers 即为 compose
@@ -333,7 +323,6 @@ enhancer(createStore)(reducer, preloadedState)
 看起来是相当复杂的，我们一步步来看，首先是看下 compose 它的作用
 
 ``` js
-
 // 来源 redux 中的 compose.js
 export default function compose(...funcs) {
   if (funcs.length === 0) {
@@ -346,7 +335,6 @@ export default function compose(...funcs) {
 
   return funcs.reduce((a, b) => (...args) => a(b(...args)))
 }
-
 ```
 代码很简洁，可以看出主要用于多个函数的合并操作，按照 funcs 的顺序从右向左做合并，其中 b 接受到参数 args 后运行的结果作为 a 的参数，a 的运行参数作为 a 左边函数的参数，这样将 funcs 遍历一遍，用一个栗子来看看
 
@@ -366,11 +354,9 @@ add6(10) // 16 相当于 compose(add(1), add(2), add(3))(10)
 回过头来再来看看之前的案例
 
 ``` js
-
 (compose(applyMiddleware(thunk))(createStore))(reducer, preloadedState)
-就相当于
+// 就相当于
 applyMiddleware(thunk)(createStore)(reducer, preloadedState)
-
 ```
 
 ### applyMiddleware
@@ -378,7 +364,6 @@ applyMiddleware(thunk)(createStore)(reducer, preloadedState)
 接着，我们看下 applyMiddleware 的原理，其中 middlewares 对应 thunk，当然也可以传多个中间件，这里我们只使用了一个， createStore对应的就是 createStore，而 args 对应着 reducer 和 preloadedState，终于对上号了
 
 ``` js
-
 export default function applyMiddleware(...middlewares) {
   return createStore => (...args) => {
     const store = createStore(...args)
@@ -403,14 +388,13 @@ export default function applyMiddleware(...middlewares) {
     }
   }
 }
-
 ```
 
 最后的运行结果即是我们最初通过 createStore 初始化后的 store 对象，可以看到，其中的 dispatch 被重写了，是被 middleware 即我们传入的 thunk 重写了，因为 middlewares 长度为1，因此chain就只有一个元素 compose 传入的即是
 
 ``` js
 middleware(middlewareAPI)
-也就是
+// 也就是
 thunk(middlewareAPI)
 ```
 
@@ -419,7 +403,6 @@ thunk(middlewareAPI)
 做了thunk(middlewareAPI)(store.dispatch)的执行后，得到了新的dispatch，是时候来看看thunk了
 
 ```js
-
 function createThunkMiddleware(extraArgument) {
   return ({ dispatch, getState }) => (next) => (action) => {
     if (typeof action === 'function') {
@@ -434,13 +417,11 @@ const thunk = createThunkMiddleware();
 thunk.withExtraArgument = createThunkMiddleware;
 
 export default thunk;
-
 ```
 
 也是非常简洁，我们改写下，其中参数中的 dispatch 和 getState 分别对应 middlewareAPI 中的 dispatch 和 getState，next 是 store.dispatch，action 即是业务逻辑中通过 dispatch(action) 提交的 action，这里返回的是函数，当业务逻辑中通过 dispatch(action) 时，action 可以是对象，也可以是函数；如果是函数，默认会把 dispatch, getState, extraArgument 传入，即可以在一个 action 中嵌套 action，如案例中的 getDishs 即是这样的一个 action，而 deleteNapkin 是一个对象 action，其他的如 placeDishsAction是没有嵌套 action 的 action，当然它也是一个函数
 
 ``` js
-
 export default function({ dispatch, getState }) {
   
   return (next) => (action) => {
@@ -458,7 +439,6 @@ export default function({ dispatch, getState }) {
 最后，我们来看下遗漏的点就是把多个 reducer 合并进行统一管理
 
 ```js
-
 // redux 中的 combineReducers.js
 
 export default function combineReducers(reducers) {
@@ -493,18 +473,15 @@ export default function combineReducers(reducers) {
 在 combineReducers 中，其中 reducers 就是 reducer1 和 reducer2，通过合并后存储哈希表 finalReducers 管理如下，key 为 reducer 名，func 是对应 reducer 的处理逻辑，当通过 dispatch(action) 时，会执行 combination 逻辑，遍历并执行所有的 reducer 获取最新的 state，并和之前的 state 对比以确认返回的 state
 
 ```js
-
 const finalReducers = {
   reducer1: func1
   reducer2: func2
 }
-
 ```
 
 不过需要注意的一点是，在 createStore 的最后会执行 dispatch({ type: ActionTypes.INIT })，这一步是初始化 state 操作，因为一开始传递的 preloadedState 是 undefined，即c reateStore 中的 currentState 是 undefined，当通过 getState 获取 state 时是空的，因此需要做一次初始化操作，初始化时执行 combination 逻辑，依然是遍历每个 reducer，每个 reducer 的第一个参数 state 默认是初始化的参数 initialState，最后在 nextState 存储的将是如下结构，即通过 getState 获取的也将是这个结构
 
 ```js
-
 const nextState = {
   reducer1: {
     tablewareCount: 1,
@@ -515,9 +492,10 @@ const nextState = {
     napkinCount: 1,
   }
 }
-
 ```
 
 ## 总结
 
 看到这里，对 redux 的内部实现是不是有了一些认识，如果还是有些模糊，不妨结合源码和示例在脑海里多运行几遍，希望能对你有所帮助！
+
+------
