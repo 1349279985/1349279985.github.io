@@ -1,5 +1,5 @@
 ---
-title: react面试问题及答案
+title: React面试问题及答案
 date: 2019-10-13 17:50:49
 tags:
 - react
@@ -8,7 +8,7 @@ tags:
 categories: 前端
 ---
 
-为了熟悉或者回顾 __react__ 及其周边的相关知识，想必这份来自 __[Github](https://github.com/sudheerj/reactjs-interview-questions/blob/master/README.md)__ 的 __react__ 自问自答面试清单会很适合你，有空我会将这份清单做下翻译，以减轻阅读难度
+为了熟悉或者回顾 __React__ 及其周边的相关知识，想必这份来自 __[Github](https://github.com/sudheerj/reactjs-interview-questions/blob/master/README.md)__ 的 __React__ 自问自答面试清单会很适合你，有空我会将这份清单做下翻译，以减轻阅读难度
 
 <div style="width:60%;margin:auto">{% asset_img 0.png %}</div>
 
