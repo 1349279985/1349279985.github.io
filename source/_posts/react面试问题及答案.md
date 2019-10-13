@@ -1,6 +1,6 @@
 ---
 title: React面试问题及答案
-date: 2019-4-06 16:50:49
+date: 2019-04-06 16:50:49
 tags:
 - react
 - redux
