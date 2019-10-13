@@ -1,18 +1,18 @@
 ---
-title: 趣味性探究redux核心源码
+title: 趣味性探究Redux核心源码
 date: 2019-03-16 15:51:05
 tags: 
-- redux
-- react
+- Redux
+- React
 - 中间件
 - 数据存储
 - 源码解析
 categories: 前端
 keywords:
-- redux
+- Redux
 - 数据存储
 - 源码
-- react
+- React
 - 中间件
 - thunk
 ---

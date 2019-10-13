@@ -1,9 +1,9 @@
 ---
-title: react面试问题及答案
+title: React面试问题及答案
 date: 2019-04-06 16:50:49
 tags:
-- react
-- redux
+- React
+- Redux
 - 面试
 categories: 前端
 ---
