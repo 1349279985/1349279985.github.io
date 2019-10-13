@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="TJIhzYMIPFaz9Sm7X-m89u5LjpBTUSHWfScXHB520hY">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=5.1.4">
+
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="移动端,滑动穿透,滚动穿透">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在移动端的开发中，经常会遇到这样的场景，在弹出的浮层中进行指尖滑动时，浮层的底部也会跟着滑动，这真是个有趣的事情，不过有些产品还是会要求你改掉这个所谓的 BUG，对此，我搜索了些资料，更多的是其他应用的解决方案诸如 外卖、饿了么 等，整理了几种解决方案">
+<meta name="keywords" content="移动端,滑动穿透,滚动穿透">
+<meta property="og:type" content="article">
+<meta property="og:title" content="移动端滑动穿透方案探索">
+<meta property="og:url" content="https://1349279985.github.io/移动端滑动穿透方案探索/index.html">
+<meta property="og:site_name" content="MoMo&#39;s Blog">
+<meta property="og:description" content="在移动端的开发中，经常会遇到这样的场景，在弹出的浮层中进行指尖滑动时，浮层的底部也会跟着滑动，这真是个有趣的事情，不过有些产品还是会要求你改掉这个所谓的 BUG，对此，我搜索了些资料，更多的是其他应用的解决方案诸如 外卖、饿了么 等，整理了几种解决方案">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://1349279985.github.io/移动端滑动穿透方案探索/0.png">
+<meta property="og:image" content="https://1349279985.github.io/移动端滑动穿透方案探索/1.gif">
+<meta property="og:updated_time" content="2019-10-12T17:21:32.097Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="移动端滑动穿透方案探索">
+<meta name="twitter:description" content="在移动端的开发中，经常会遇到这样的场景，在弹出的浮层中进行指尖滑动时，浮层的底部也会跟着滑动，这真是个有趣的事情，不过有些产品还是会要求你改掉这个所谓的 BUG，对此，我搜索了些资料，更多的是其他应用的解决方案诸如 外卖、饿了么 等，整理了几种解决方案">
+<meta name="twitter:image" content="https://1349279985.github.io/移动端滑动穿透方案探索/0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QTLXGA4GZK',
+      apiKey: '671ec8c1f374f6940bbed7898c1202e3',
+      indexName: 'prod_BLOG',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://1349279985.github.io/移动端滑动穿透方案探索/">
+
+
+
+
+
+  <title>移动端滑动穿透方案探索 | MoMo's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MoMo's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Life is Beautiful</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://1349279985.github.io/移动端滑动穿透方案探索/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MoMo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MoMo's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">移动端滑动穿透方案探索</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-15T14:30:46+08:00">
+                2019-01-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/移动端滑动穿透方案探索/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/移动端滑动穿透方案探索/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/移动端滑动穿透方案探索/" class="leancloud_visitors" data-flag-title="移动端滑动穿透方案探索">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在移动端的开发中，经常会遇到这样的场景，在弹出的浮层中进行指尖滑动时，浮层的底部也会跟着滑动，这真是个有趣的事情，不过有些产品还是会要求你改掉这个所谓的 <strong>BUG</strong>，对此，我搜索了些资料，更多的是其他应用的解决方案诸如 <strong>外卖</strong>、<strong>饿了么</strong> 等，整理了几种解决方案</p>
+<div style="width:60%;margin:auto"><img src="/移动端滑动穿透方案探索/0.png"></div>
+
+<a id="more"></a>
+
+<h2 id="背景引入"><a href="#背景引入" class="headerlink" title="背景引入"></a>背景引入</h2><p>浮层这个弹出式功能在当今的移动端设备中数见不鲜，给用户以一种突然显现式的视觉冲击，营造一种震撼效果和惊喜瞬间；站在开发者的角度，这种操作通过代码的形式有效利用了移动端屏幕的多维空间，营造一种自上而下式的层次分离感和上帝视角。既然是分离，上下层需要独立性，如果出现上层滑动带动下层一起滑起来了，那体验就是飞一般的感觉，噩梦一般。下面是菜单页H5点餐的体验，是不是有点僵硬，弹出购物车浮层，滑动浮层时，下面的菜单飘了；弹出 <strong>spu</strong> 浮层滑动时，下面的菜单页飘了。</p>
+<div style="width:50%;margin:auto"><img src="/移动端滑动穿透方案探索/1.gif"></div>
+
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>出现以上因滑动穿透导致底层也随之滚动的尴尬场景，究其原因就是所谓的冒泡事件在从中作怪。滑动引发 <strong>scroll</strong> 的冒泡事件从弹框层由内而外层层递进，一直延伸到 <strong>HTMl</strong> 层，最终导致 <strong>HTML</strong> 也触发了 <strong>scroll</strong> 事件，跟着一起滚动了起来。</p>
+<h2 id="方案探索"><a href="#方案探索" class="headerlink" title="方案探索"></a>方案探索</h2><p>解决这个问题其实可以划分两个方向来解决，一个是阻止浮层滑动事件的穿透；一个是阻止底层的滚动事件。</p>
+<h3 id="浮层阻止滑动穿透"><a href="#浮层阻止滑动穿透" class="headerlink" title="浮层阻止滑动穿透"></a>浮层阻止滑动穿透</h3><p>在浮层上阻止滑动事件，可防止这个事件冒泡穿透到更高的层级元素，最简单的方案是给弹框体绑定 <strong>touchmove</strong> 事件，并在事件执行函数中阻止滑动默认事件，而且这样并不会影响弹出层的事件点击。</p>
+<h4 id="阻止浮层-touchmove-事件"><a href="#阻止浮层-touchmove-事件" class="headerlink" title="阻止浮层 touchmove 事件"></a>阻止浮层 touchmove 事件</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 以react为例</span></span><br><span class="line"><span class="comment">// 页面结构</span></span><br><span class="line"><span class="comment">// &lt;html&gt;</span></span><br><span class="line"><span class="comment">//   &lt;body&gt;</span></span><br><span class="line"><span class="comment">//     &lt;div id='app'&gt;</span></span><br><span class="line"><span class="comment">//       &lt;AppContent /&gt;</span></span><br><span class="line"><span class="comment">//     &lt;/div&gt;</span></span><br><span class="line"><span class="comment">//   &lt;/body&gt;</span></span><br><span class="line"><span class="comment">// &lt;/html&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// appContent组件</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppContent</span> <span class="keyword">extends</span> <span class="title">BaseComponent</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 事件处理函数</span></span><br><span class="line">  forbidTouchMove(e) &#123;</span><br><span class="line">    <span class="comment">// 阻止默认事件</span></span><br><span class="line">    e.preventDefault();</span><br><span class="line">  &#125;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        <span class="comment">// 内容区</span></span><br><span class="line">        &lt;div className=<span class="string">'menu-layout'</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">        <span class="comment">// 浮层区</span></span><br><span class="line">        &lt;div className=<span class="string">'alert-container'</span> onTouchMove=&#123;() =&gt; <span class="keyword">this</span>.forbidTouchMove()&#125;&gt;</span><br><span class="line">          &lt;div className=<span class="string">'alert-mask'</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">          &lt;div className=<span class="string">'alert-content'</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">      &lt;/</span>div&gt;</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 IOS 和 Android 设备上都能生效，但是当浮层区内有可滚动的元素，这种做法会导致可滚动的元素没办法滚动，因此需要对此方案进行优化。</p>
+<h4 id="阻止浮层-touchmove-事件优化"><a href="#阻止浮层-touchmove-事件优化" class="headerlink" title="阻止浮层 touchmove 事件优化"></a>阻止浮层 touchmove 事件优化</h4><p>兼容滚动型浮层就不像简洁的阻止默认事件一行代码这么简单，那点餐的菜单购物车弹框模型来说，以封装通用组件为目标，依然是绑定浮层的 <strong>touch</strong> 事件，但是为了确定可滚动区的滚动方向以及局部变量在一次 <strong>touch</strong> 事件后充分释放，则需要绑定 <strong>touchStart</strong>、<strong>touchMove</strong> 和 <strong>touchEnd</strong> 全家桶；同时对于可滚动区需要加边缘检测，即滚动区滑到顶部再向上滑动或者滑到底部再向下滑也会触发滑动穿透现象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 以下滚动区均为垂直滚动区，水平滚动区和无滚动区的处理方式一样</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> (<span class="params">container, selectorScrollable</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 数据缓存区</span></span><br><span class="line">    <span class="keyword">const</span> data = &#123;</span><br><span class="line">        initPosY: <span class="number">0</span>,</span><br><span class="line">        maxscroll: <span class="number">0</span>,</span><br><span class="line">        isAtTop: <span class="literal">false</span>,</span><br><span class="line">        isAtBottom: <span class="literal">false</span></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 事件处理</span></span><br><span class="line">    $(container).on(&#123;</span><br><span class="line">        touchstart (e) &#123;</span><br><span class="line">            <span class="keyword">const</span> events = e.touches[<span class="number">0</span>] || e;</span><br><span class="line">            <span class="keyword">const</span> elTarget = $(e.target);</span><br><span class="line">            <span class="keyword">let</span> elScroll = [];</span><br><span class="line">            <span class="comment">// 不传selectorScrollable表示，浮层区内无滚动区</span></span><br><span class="line">            <span class="keyword">if</span> (!selectorScrollable) &#123; <span class="comment">// 浮层区内无滚动区，不可elScroll = []; 防止浮层区点击事件被阻止</span></span><br><span class="line">                elScroll[<span class="number">0</span>] = container;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (elTarget.is(selectorScrollable)) &#123; <span class="comment">// 事件触发元素是否有滚动区</span></span><br><span class="line">                elScroll = elTarget;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((elScroll = elTarget.parents(selectorScrollable)).length == <span class="number">0</span>) &#123; <span class="comment">//事件触发元素父级检测是否有滚动区</span></span><br><span class="line">                elScroll = [];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 浮层区无滚动区或者触发元素父级无滚动区</span></span><br><span class="line">            <span class="keyword">if</span> (elScroll.length === <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 滚动区元素</span></span><br><span class="line">            data.elScroll = elScroll;</span><br><span class="line">            <span class="comment">// 初始垂直位置</span></span><br><span class="line">            data.initPosY = events.pageY;</span><br><span class="line">            <span class="comment">// 滚动区可滚动的距离大小</span></span><br><span class="line">            data.maxscroll = elScroll[<span class="number">0</span>].scrollHeight - elScroll[<span class="number">0</span>].clientHeight;</span><br><span class="line">        &#125;,</span><br><span class="line">        touchmove (e) &#123;</span><br><span class="line">            <span class="keyword">let</span> canScrollThrough = <span class="literal">false</span>;</span><br><span class="line">            <span class="comment">// 如果可滚动的距离为零，则阻止默认行为并返回</span></span><br><span class="line">            <span class="keyword">if</span> (data.maxscroll &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 禁止滚动</span></span><br><span class="line">                e.preventDefault();</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 获取滚动区元素</span></span><br><span class="line">            <span class="keyword">const</span> elScroll = data.elScroll;</span><br><span class="line">            <span class="comment">// 滚动区高度可变时，重新获取maxscroll</span></span><br><span class="line">            data.maxscroll = elScroll[<span class="number">0</span>].scrollHeight - elScroll[<span class="number">0</span>].clientHeight;</span><br><span class="line">            <span class="comment">// 当前的滚动高度</span></span><br><span class="line">            <span class="keyword">const</span> scrollTop = elScroll[<span class="number">0</span>].scrollTop;</span><br><span class="line">            <span class="comment">// 判断滑动方向</span></span><br><span class="line">            <span class="keyword">const</span> events = e.touches[<span class="number">0</span>] || e;</span><br><span class="line">            <span class="comment">// 滑动方向，小于0是向上滑，大于0是向下滑</span></span><br><span class="line">            <span class="keyword">const</span> distanceY = events.pageY - data.initPosY;</span><br><span class="line">            <span class="comment">// 上下边缘检测，判断是否阻止默认事件</span></span><br><span class="line">            <span class="keyword">if</span> (distanceY &gt; <span class="number">0</span> &amp;&amp; scrollTop == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 滑到顶</span></span><br><span class="line">                canScrollThrough = <span class="literal">false</span>;</span><br><span class="line">                data.isAtTop = <span class="literal">true</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (distanceY &lt; <span class="number">0</span> &amp;&amp; (scrollTop + <span class="number">1</span> &gt;= data.maxscroll)) &#123;</span><br><span class="line">                <span class="comment">// 滑到底</span></span><br><span class="line">                canScrollThrough = <span class="literal">false</span>;</span><br><span class="line">                data.isAtBottom = <span class="literal">true</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 滚动条处于顶部和底部之间</span></span><br><span class="line">                <span class="keyword">if</span> (!data.isAtTop &amp;&amp; !data.isAtBottom) &#123;</span><br><span class="line">                    canScrollThrough = <span class="literal">true</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    canScrollThrough = <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 阻止默认事件</span></span><br><span class="line">            <span class="keyword">if</span> (!canScrollThrough) &#123;</span><br><span class="line">                e.preventDefault();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        touchend () &#123;</span><br><span class="line">            <span class="comment">// 一次滑动后，初始化数据</span></span><br><span class="line">            data.isAtTop = <span class="literal">false</span>;</span><br><span class="line">            data.isAtBottom = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>理论上，这样封装后，可完美兼容各机型，但是有点遗憾，在部分 <strong>Android</strong> 上还是会出现，对于滚动型浮层，当滚动区滚动到顶部或者底部撞击时会有轻微地滑动穿透。目前还没有找到问题根源，后续 <strong>Android</strong> 可能会对其进行优化。</p>
+<h3 id="底层阻止滚动"><a href="#底层阻止滚动" class="headerlink" title="底层阻止滚动"></a>底层阻止滚动</h3><p>除了从根源处阻止滑动默认事件以避免事件穿透，从另一角度，即事件已经穿透，但是避免底层滚动同样可给人营造一种底层冰冻状态，避免底层滚动的方法不拘泥于一种，下面是其中几种行之有效的方案。</p>
+<h4 id="底层固定定位法"><a href="#底层固定定位法" class="headerlink" title="底层固定定位法"></a>底层固定定位法</h4><p>采用底层固定定位方案，当浮层弹出时，即设置浮层父级元素，推荐 <strong>body</strong> 元素固定定位并记录底层滚动位置以及 body 原 <strong>css</strong> 状态，当浮层消失时，将 <strong>body</strong> 恢复原状态及滚动位置，同时设置锁功能，保证浮层从隐藏 - 消失 - 隐藏的时间周期内，固定大法只被触发一次。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 页面滚动模块</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> pageScrollModule = &#123;</span><br><span class="line">    initBodyPosition: <span class="string">''</span>, <span class="comment">// 初始body的postion</span></span><br><span class="line">    initTopValue: <span class="string">''</span>, <span class="comment">// 初始body的top</span></span><br><span class="line">    initScrollTop: <span class="string">''</span>, <span class="comment">// 初始页面的滚动位置</span></span><br><span class="line">    key: <span class="literal">false</span>, <span class="comment">// 控制锁，防止setForbidScroll到setInitScroll的执行周期内，这两个函数被重复调用，true为已锁住</span></span><br><span class="line">    bodyDom: <span class="built_in">document</span>.getElementsByTagName(<span class="string">'body'</span>)[<span class="number">0</span>], <span class="comment">// body元素缓存</span></span><br><span class="line">    <span class="comment">// 允许body滚动</span></span><br><span class="line">    bodyScrollAllowed() &#123;</span><br><span class="line">        <span class="comment">// 判断模块是否已锁住</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.key) &#123;</span><br><span class="line">            <span class="keyword">this</span>.bodyDom.style.position = <span class="keyword">this</span>.initBodyPosition; <span class="comment">// 恢复body的position</span></span><br><span class="line">            <span class="keyword">this</span>.bodyDom.style.top = <span class="keyword">this</span>.initTopValue; <span class="comment">//恢复body的top值</span></span><br><span class="line">        	  <span class="keyword">this</span>.setScrollTop(<span class="keyword">this</span>.initScrollTop); <span class="comment">// 恢复页面的滚动位置</span></span><br><span class="line">            <span class="keyword">this</span>.key = <span class="literal">false</span>; <span class="comment">// 释放锁</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 禁止body滚动</span></span><br><span class="line">    bodyScrollFobidded() &#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">this</span>.key) &#123;</span><br><span class="line">            <span class="keyword">this</span>.initBodyPosition = <span class="keyword">this</span>.bodyDom.style.position; <span class="comment">// 缓存body的position</span></span><br><span class="line">            <span class="keyword">this</span>.initTopValue = <span class="keyword">this</span>.bodyDom.style.top; <span class="comment">// 缓存body的top值</span></span><br><span class="line">            <span class="keyword">const</span> scrollTop = <span class="keyword">this</span>.getScrollTop(); <span class="comment">//  获取页面滚动位置</span></span><br><span class="line">            <span class="keyword">this</span>.setBodyFIxed(scrollTop); <span class="comment">// body固定定位</span></span><br><span class="line">            <span class="keyword">this</span>.initScrollTop = scrollTop; <span class="comment">// 缓存页面滚动位置</span></span><br><span class="line">            <span class="keyword">this</span>.key = <span class="literal">true</span>; <span class="comment">// 锁住模块</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    setScrollTop(topValue) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">document</span>.documentElement.scrollTop) &#123;</span><br><span class="line">        <span class="built_in">document</span>.documentElement.scrollTop = topValue;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">window</span>.pageYOffset) &#123;</span><br><span class="line">        <span class="built_in">window</span>.pageYOffset = topValue;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">document</span>.body.scrollTop = topValue;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    getScrollTop() &#123;</span><br><span class="line">    	<span class="keyword">return</span> <span class="built_in">document</span>.documentElement.scrollTop || <span class="built_in">window</span>.pageYOffset || <span class="built_in">document</span>.body.scrollTop;</span><br><span class="line">    &#125;,</span><br><span class="line">    setBodyFIxed(topValue) &#123;</span><br><span class="line">      <span class="keyword">this</span>.bodyDom.style.position = <span class="string">'fixed'</span>;</span><br><span class="line">      <span class="keyword">this</span>.bodyDom.style.top = -topValue + <span class="string">'px'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>采用这个方法目前适用于大部分场景且 IOS 和 Android 都适用，虽然如此但会使整个 body 脱离文档流，未来的发展不可预测。</p>
+<h4 id="布局结构分离法"><a href="#布局结构分离法" class="headerlink" title="布局结构分离法"></a>布局结构分离法</h4><p>布局分离法即是在 <strong>HTML</strong> 结构做一定的设计，保证浮层尽可能贴近页面根元素，同时将页面所有内容置于根元素的子元素中如下。相关应用如美团酒旅，究其原理，则是如浮层区 <strong>alert-container</strong> 发生滑动穿透，它的父节点 <strong>.body</strong> 及 <strong>#app</strong> 等会触发滚动事件，但是如果设置 html、body、<strong>#app</strong> 及 <strong>.body</strong> 元素为视窗高度，而不是 document 高度，则这四个元素即使触发了滚动事件，但是因为高度的限制，它们并不会滚动，而由于所有文档流内容置于 <strong>.menu-layout</strong> 中，设置其 <strong>overflow</strong> 可滑动，即可保障页面内容在浮层消失时也是可以滑动的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 以react为例</span></span><br><span class="line"><span class="comment">// 页面结构</span></span><br><span class="line"><span class="comment">// &lt;html&gt;</span></span><br><span class="line"><span class="comment">//   &lt;body&gt;</span></span><br><span class="line"><span class="comment">//     // 页面根元素</span></span><br><span class="line"><span class="comment">//     &lt;div id='app'&gt;</span></span><br><span class="line"><span class="comment">//       &lt;AppContent /&gt;</span></span><br><span class="line"><span class="comment">//     &lt;/div&gt;</span></span><br><span class="line"><span class="comment">//   &lt;/body&gt;</span></span><br><span class="line"><span class="comment">// &lt;/html&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// appContent组件</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppContent</span> <span class="keyword">extends</span> <span class="title">BaseComponent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div className=<span class="string">'body'</span>&gt;</span><br><span class="line">        <span class="comment">// 内容区,所有内容置于其中，除了各浮层区</span></span><br><span class="line">        &lt;div className=<span class="string">'menu-layout'</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">        <span class="comment">// 浮层区1</span></span><br><span class="line">        &lt;div className=<span class="string">'alert-container'</span>&gt;</span><br><span class="line">          &lt;div className=<span class="string">'alert-mask'</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">          &lt;div className=<span class="string">'alert-content'</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">        /</span><span class="regexp">/ 浮层区2</span></span><br><span class="line"><span class="regexp">        &lt;div className='alert-container'&gt;</span></span><br><span class="line"><span class="regexp">          &lt;div className='alert-mask'&gt;&lt;/</span>div&gt;</span><br><span class="line">          &lt;div className=<span class="string">'alert-content'</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">      &lt;/</span>div&gt;</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>设置相关CSS样式如下</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="selector-tag">html</span>,<span class="selector-tag">body</span>,<span class="selector-tag">app</span>,<span class="selector-tag">body</span>,<span class="selector-tag">menu-layout</span>&#123;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">app</span>,<span class="selector-tag">html</span>,<span class="selector-tag">body</span>&#123;</span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">menu-layout</span> &#123;</span><br><span class="line">  <span class="attribute">overflow</span>: auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种是代码量较少的较优方案，但是如果页面文档流中有锚点类功能，则需要在设置 <strong>.menu-layout</strong> 的滚动高度而非 html 抑或是 body 等，因为这几个元素的高度设置了 100%，将无法滚动，这也就是为啥需要一个 <strong>.menu-layout</strong> 元素来盛装所有文档流内容的原因。</p>
+<h4 id="固定高度滚动法"><a href="#固定高度滚动法" class="headerlink" title="固定高度滚动法"></a>固定高度滚动法</h4><p>固定高度滚动大法是布局结构分离法的一个特例，但相关应用很多如美团外卖 H5 及其小程序，咱们的美团点评智慧餐厅小程序等，类似页面结构设计如下。这种方案是将整个页面文档 <strong>AppContent</strong> 设置为视窗高度，同时设置文档流中的可滚动区 <strong>MenuContent</strong> 为固定高度并设置超出时可滚动，关键一点是浮层不可是文档流中滚动区的子元素，即保证浮层和文档流的滚动区是分离状态，不相互依赖</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 以react为例</span></span><br><span class="line"><span class="comment">// 页面结构</span></span><br><span class="line"><span class="comment">// &lt;html&gt;</span></span><br><span class="line"><span class="comment">//   &lt;body&gt;</span></span><br><span class="line"><span class="comment">//     // 页面根元素</span></span><br><span class="line"><span class="comment">//     &lt;div id='app'&gt;</span></span><br><span class="line"><span class="comment">//       &lt;AppContent /&gt;</span></span><br><span class="line"><span class="comment">//     &lt;/div&gt;</span></span><br><span class="line"><span class="comment">//   &lt;/body&gt;</span></span><br><span class="line"><span class="comment">// &lt;/html&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// appContent组件</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppContent</span> <span class="keyword">extends</span> <span class="title">BaseComponent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div className=<span class="string">'body'</span>&gt;</span><br><span class="line">        <span class="comment">// 内容区,所有内容置于其中，除了各浮层区</span></span><br><span class="line">        &lt;div className=<span class="string">'menu-layout'</span>&gt;</span><br><span class="line">          &lt;Header /&gt;</span><br><span class="line">          &lt;Other /&gt;</span><br><span class="line">          &lt;MenuContent /&gt; <span class="comment">// 可滚动区</span></span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">        /</span><span class="regexp">/ 浮层区1</span></span><br><span class="line"><span class="regexp">        &lt;div className='alert-container'&gt;</span></span><br><span class="line"><span class="regexp">          &lt;div className='alert-mask'&gt;&lt;/</span>div&gt;</span><br><span class="line">          &lt;div className=<span class="string">'alert-content'</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">        /</span><span class="regexp">/ 浮层区2</span></span><br><span class="line"><span class="regexp">        &lt;div className='alert-container'&gt;</span></span><br><span class="line"><span class="regexp">          &lt;div className='alert-mask'&gt;&lt;/</span>div&gt;</span><br><span class="line">          &lt;div className=<span class="string">'alert-content'</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">      &lt;/</span>div&gt;</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="方案对比"><a href="#方案对比" class="headerlink" title="方案对比"></a>方案对比</h2><p>以上给出了各个方向的可行方案，而针对不同的应用场景，需选择合适的优化方案。</p>
+<table>
+<thead>
+<tr>
+<th align="left">方案项</th>
+<th align="left">代码量</th>
+<th align="left">性能</th>
+<th align="left">应用场景</th>
+<th align="left">缺点</th>
+<th align="left">优点</th>
+<th align="left">兼容性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">阻止浮层 touchmove 事件优化</td>
+<td align="left">最多（JS）</td>
+<td align="left">最差</td>
+<td align="left">都可以</td>
+<td align="left">touch事件绑定较多，现阶段兼容性较差</td>
+<td align="left">暂无</td>
+<td align="left">IOS</td>
+</tr>
+<tr>
+<td align="left">阻止浮层 touchmove 事件</td>
+<td align="left">最少（JS）</td>
+<td align="left">较好</td>
+<td align="left">浮层没有可滚动区</td>
+<td align="left">不适用可滚动型浮层</td>
+<td align="left">代码较少，性能较好</td>
+<td align="left">IOS、Android</td>
+</tr>
+<tr>
+<td align="left">布局结构分离法</td>
+<td align="left">较少（CSS）</td>
+<td align="left">较好</td>
+<td align="left">都可以</td>
+<td align="left">需设计符合分离规则的布局结构</td>
+<td align="left">代码量较少，性能较好</td>
+<td align="left">IOS、Android</td>
+</tr>
+<tr>
+<td align="left">固定高度滚动法</td>
+<td align="left">最少（CSS）</td>
+<td align="left">最好</td>
+<td align="left">页面文档高度等于视窗高度</td>
+<td align="left">要求页面文档高度等于视窗高度，场景单一</td>
+<td align="left">代码量最少，性能最好</td>
+<td align="left">IOS、Android</td>
+</tr>
+<tr>
+<td align="left">底层固定定位法</td>
+<td align="left">中等（JS、CSS）</td>
+<td align="left">中等</td>
+<td align="left">都可以</td>
+<td align="left">浮层出现时，底层脱离文档流，会造成不可预测的定位关系</td>
+<td align="left">目前适用于任何布局的场景</td>
+<td align="left">IOS、Android</td>
+</tr>
+</tbody></table>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>你的鼓励我会用来换杯奶茶～😁</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="MoMo 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    MoMo
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://1349279985.github.io/移动端滑动穿透方案探索/" title="移动端滑动穿透方案探索">https://1349279985.github.io/移动端滑动穿透方案探索/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/性能优化/" rel="tag"># 性能优化</a>
+          
+            <a href="/tags/调研/" rel="tag"># 调研</a>
+          
+        </div>
+      
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/记一次扫码点餐打包优化/" rel="next" title="记一次扫码点餐打包优化">
+                <i class="fa fa-chevron-left"></i> 记一次扫码点餐打包优化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/趣味性探究Redux核心源码/" rel="prev" title="趣味性探究Redux核心源码">
+                趣味性探究Redux核心源码 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="MoMo">
+            
+              <p class="site-author-name" itemprop="name">MoMo</p>
+              <p class="site-description motion-element" itemprop="description">记录Jason和MoMo的工作和生活</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/1349279985" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:momo1349279985@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景引入"><span class="nav-number">1.</span> <span class="nav-text">背景引入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题分析"><span class="nav-number">2.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方案探索"><span class="nav-number">3.</span> <span class="nav-text">方案探索</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#浮层阻止滑动穿透"><span class="nav-number">3.1.</span> <span class="nav-text">浮层阻止滑动穿透</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻止浮层-touchmove-事件"><span class="nav-number">3.1.1.</span> <span class="nav-text">阻止浮层 touchmove 事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#阻止浮层-touchmove-事件优化"><span class="nav-number">3.1.2.</span> <span class="nav-text">阻止浮层 touchmove 事件优化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#底层阻止滚动"><span class="nav-number">3.2.</span> <span class="nav-text">底层阻止滚动</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#底层固定定位法"><span class="nav-number">3.2.1.</span> <span class="nav-text">底层固定定位法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#布局结构分离法"><span class="nav-number">3.2.2.</span> <span class="nav-text">布局结构分离法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#固定高度滚动法"><span class="nav-number">3.2.3.</span> <span class="nav-text">固定高度滚动法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方案对比"><span class="nav-number">4.</span> <span class="nav-text">方案对比</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MoMo</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">31.2k</span>
+  
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  <style type="text/css">
+    div.info{
+        display: none;
+    }
+  </style>
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'eSAyObWzrkUP2DSIvGsFxLsF-gzGzoHsz',
+        appKey: 'GtKQGcrxyp8pJVpmeSaK50xN',
+        placeholder: '请在此输入你的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("eSAyObWzrkUP2DSIvGsFxLsF-gzGzoHsz", "GtKQGcrxyp8pJVpmeSaK50xN");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":345},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

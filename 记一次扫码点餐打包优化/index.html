@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="TJIhzYMIPFaz9Sm7X-m89u5LjpBTUSHWfScXHB520hY">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=5.1.4">
+
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Webpack,性能优化,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="点餐 H5 项目是基于到店正餐和线上预点餐两大点餐场景的复杂大型应用，打通多条支付线路包括先付、后付及秒付；兼容 美团点评APP 双平台。引入 webpack4 对整个项目以怎样的方式打包和项目本身的这些业务没多大关系，重要的是在知晓项目的整体结构以及文件内资源引用关系的前提下，通过这个工具能对整体应用的性能提升有所帮助。这次的性能提升实践主要聚焦在 打包速度 和 打包体积 两个点。">
+<meta name="keywords" content="Webpack,性能优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次扫码点餐打包优化">
+<meta property="og:url" content="https://1349279985.github.io/记一次扫码点餐打包优化/index.html">
+<meta property="og:site_name" content="MoMo&#39;s Blog">
+<meta property="og:description" content="点餐 H5 项目是基于到店正餐和线上预点餐两大点餐场景的复杂大型应用，打通多条支付线路包括先付、后付及秒付；兼容 美团点评APP 双平台。引入 webpack4 对整个项目以怎样的方式打包和项目本身的这些业务没多大关系，重要的是在知晓项目的整体结构以及文件内资源引用关系的前提下，通过这个工具能对整体应用的性能提升有所帮助。这次的性能提升实践主要聚焦在 打包速度 和 打包体积 两个点。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://1349279985.github.io/记一次扫码点餐打包优化/0.png">
+<meta property="og:image" content="https://1349279985.github.io/记一次扫码点餐打包优化/1.png">
+<meta property="og:image" content="https://1349279985.github.io/记一次扫码点餐打包优化/2.png">
+<meta property="og:image" content="https://1349279985.github.io/记一次扫码点餐打包优化/3.png">
+<meta property="og:image" content="https://1349279985.github.io/记一次扫码点餐打包优化/4.png">
+<meta property="og:image" content="https://1349279985.github.io/记一次扫码点餐打包优化/5.png">
+<meta property="og:image" content="https://1349279985.github.io/记一次扫码点餐打包优化/6.png">
+<meta property="og:image" content="https://1349279985.github.io/记一次扫码点餐打包优化/7.png">
+<meta property="og:image" content="https://1349279985.github.io/记一次扫码点餐打包优化/8.png">
+<meta property="og:image" content="https://1349279985.github.io/记一次扫码点餐打包优化/9.png">
+<meta property="og:image" content="https://1349279985.github.io/记一次扫码点餐打包优化/10.png">
+<meta property="og:image" content="https://1349279985.github.io/记一次扫码点餐打包优化/11.png">
+<meta property="og:image" content="https://1349279985.github.io/记一次扫码点餐打包优化/12.png">
+<meta property="og:image" content="https://1349279985.github.io/记一次扫码点餐打包优化/13.png">
+<meta property="og:image" content="https://1349279985.github.io/记一次扫码点餐打包优化/14.png">
+<meta property="og:updated_time" content="2019-10-13T13:21:49.795Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记一次扫码点餐打包优化">
+<meta name="twitter:description" content="点餐 H5 项目是基于到店正餐和线上预点餐两大点餐场景的复杂大型应用，打通多条支付线路包括先付、后付及秒付；兼容 美团点评APP 双平台。引入 webpack4 对整个项目以怎样的方式打包和项目本身的这些业务没多大关系，重要的是在知晓项目的整体结构以及文件内资源引用关系的前提下，通过这个工具能对整体应用的性能提升有所帮助。这次的性能提升实践主要聚焦在 打包速度 和 打包体积 两个点。">
+<meta name="twitter:image" content="https://1349279985.github.io/记一次扫码点餐打包优化/0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QTLXGA4GZK',
+      apiKey: '671ec8c1f374f6940bbed7898c1202e3',
+      indexName: 'prod_BLOG',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://1349279985.github.io/记一次扫码点餐打包优化/">
+
+
+
+
+
+  <title>记一次扫码点餐打包优化 | MoMo's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MoMo's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Life is Beautiful</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://1349279985.github.io/记一次扫码点餐打包优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MoMo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MoMo's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">记一次扫码点餐打包优化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-01T16:01:25+08:00">
+                2018-12-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/记一次扫码点餐打包优化/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/记一次扫码点餐打包优化/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/记一次扫码点餐打包优化/" class="leancloud_visitors" data-flag-title="记一次扫码点餐打包优化">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>点餐 <strong>H5</strong> 项目是基于到店正餐和线上预点餐两大点餐场景的复杂大型应用，打通多条支付线路包括先付、后付及秒付；兼容 <strong>美团点评APP</strong> 双平台。引入 <strong>webpack4</strong> 对整个项目以怎样的方式打包和项目本身的这些业务没多大关系，重要的是在知晓项目的整体结构以及文件内资源引用关系的前提下，通过这个工具能对整体应用的性能提升有所帮助。这次的性能提升实践主要聚焦在 <strong>打包速度</strong> 和 <strong>打包体积</strong> 两个点。</p>
+<img src="/记一次扫码点餐打包优化/0.png">
+
+<a id="more"></a>
+
+<p>先看下项目之前 <strong>webpack</strong> 对整体的打包流程。</p>
+<img src="/记一次扫码点餐打包优化/1.png">
+
+<p>可以看到，点餐 <strong>H5</strong> 项目采用的是多入口加载页面的方式，通过各类加载器从入口文件中层层处理，抽离出 <strong>HTML</strong> 模版所需资源，其中用到了两个重要的插件 <strong>CommonChunkPlugin</strong> 和 <strong>ExtractTextPlugin</strong>，它们的作用分别是抽取多入口 <strong>chunk</strong> 间的公共资源及从 <strong>js</strong> 文件中抽离 <strong>css</strong> 资源，由于项目应用于点评和美团 APP 双平台，为了实现资源复用及样式的分平台展示，将美团侧 <strong>css</strong> 文件加到入口中进行打包，并在HTML模版中根据平台不同引入不同的 <strong>css</strong> 资源。</p>
+<h2 id="webpack4-优化要点"><a href="#webpack4-优化要点" class="headerlink" title="webpack4 优化要点"></a>webpack4 优化要点</h2><p>对整体项目的打包流程有了大致了解后，下面就是将 webpack4 的变更点和项目打包流程相结合，针对性地做一些升级工作。这次 webpack4 最重要的变更点是移除了 CommonChunkPlugin 插件，改用 <strong>SplitChunksPlugin</strong> 进行更加灵活的配置。它的作用和插件 CommonChunkPlugin 功能类似，为了抽取公共模块，而 SplitChunksPlugin 可以做更精细的抽取控制。</p>
+<p>同时，目前版本的 ExtractTextPlugin 插件对 webpack4 支持性不佳，采用具有相同功能的 <strong>MiniCssExtractPlugin</strong>。</p>
+<p>为了加快构建速度，项目的 beta 环境引入了 <strong>happypack4.0</strong>，由于该版本不兼容 webpack4，此次升级到支持的版本 <strong>happypack5.0</strong>。</p>
+<p>由于开发环境和生产环境的配置有很多重复的地方，引入 <strong>webpack-merge</strong> 插件抽出相同配置。<br>并且针对生产环境，优化 <strong>sourcemap</strong> 设置，降低压缩包体积。</p>
+<p>以下是此次引入的主要升级点。</p>
+<table>
+<thead>
+<tr>
+<th align="left">优化点</th>
+<th align="right">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">引入SplitChunksPlugin</td>
+<td align="right">替换 CommonChunkPlugin，抽取公共模块</td>
+</tr>
+<tr>
+<td align="left">引入MiniCssExtractPlugin</td>
+<td align="right">替换 ExtractTextPlugin，抽离 css 资源</td>
+</tr>
+<tr>
+<td align="left">升级happypack5.0</td>
+<td align="right">弃用 happypack4.0，兼容 webpack4</td>
+</tr>
+<tr>
+<td align="left">生产环境优化sourcemap设置</td>
+<td align="right">降低整体 JS 包体积</td>
+</tr>
+<tr>
+<td align="left">引入webpack-merge</td>
+<td align="right">抽出开发环境和生产环境相同配置</td>
+</tr>
+</tbody></table>
+<h2 id="优化关键点介绍"><a href="#优化关键点介绍" class="headerlink" title="优化关键点介绍"></a>优化关键点介绍</h2><h3 id="sourcemap"><a href="#sourcemap" class="headerlink" title="sourcemap"></a>sourcemap</h3><p>sourcemap 通过 webpack 的 <strong>devtool</strong> 字段设置，它的作用是为了解决开发代码与打包压缩后代码不一致时帮助我们 debug 到原始开发代码的技术。</p>
+<p>在开发环境中，我们会经常用到调试，生成了 sourcemap，会让我们很方便定位到我们的原始开发代码；而在生产环境中，通常由于私密安全性考虑，并不想以任何方式暴露核心开发代码，这种情况则可以不生成 sourcemap，当然视公司或者团队而定。</p>
+<h3 id="happypack"><a href="#happypack" class="headerlink" title="happypack"></a>happypack</h3><p>happypack 为加速 webpack 的任务执行而生，webpack本是单一进程执行编译打包流程，happypack 可充分利用服务器的多核 CPU 运算，开启多个子进程并行处理多个 webpack 任务，从而提升执行速度。</p>
+<p>对于开发环境来说，提升打包速度是提升开发效率的一个重要因素，对此，happypack 应用广泛。</p>
+<p>对于生产环境，由于生产环境更关心打包体积，打包体积是影响线上良好体验的关键，对于发布服务器占用率较高情况下，不引入 happypack，能保障更好的打包稳定性。</p>
+<h3 id="SplitChunksPlugin"><a href="#SplitChunksPlugin" class="headerlink" title="SplitChunksPlugin"></a>SplitChunksPlugin</h3><p>SplitChunksPlugin 是替换 CommonChunkPlugin 的 webpack4 新特性。也是 webpack 更新到4x版本的重点内容，相对于 CommonChunkPlugin来说，SplitChunksPlugin 对于提取代码的公共部分有更精细的控制。</p>
+<p><img src="2.png" alt></p>
+<h2 id="升级前后配置"><a href="#升级前后配置" class="headerlink" title="升级前后配置"></a>升级前后配置</h2><p>本次 webpack4 引入项目是在保持整体项目打包方案不变的情况下，有针对性地做升级服务，包括上面介绍的插件更新和相应的替换方案。由于项目的开发环境和生产环境的特质不同，前者注重打包速度，后者关注打包体积，因此需要有针对性地做分别配置。</p>
+<p>项目的自动化构建及配置文件结构和之前保持一致。</p>
+<ul>
+<li>webpack.config.js，存放环境变量和配置文件调用的映射。和原有保持不变</li>
+<li>env.js，获取环境变量。和原有保持不变。</li>
+<li>happypack.js，用于开发环境，通过开启多进程并发处理 webpack 任务，提升打包速度。升级插件到5.0及替换CSS抽离方案。</li>
+<li>webpack.base.config.js，存放开发环境和生产环境的重复配置。替换 CSS 抽离方案。</li>
+<li>webpack.beta.config.js，针对 beta 环境的配置。引入 webpack-merge。</li>
+<li>webpack.dll.config.js，用于开发环境，提取第三方常用模块。增加mode属性。</li>
+<li>webpack.product.config.js，针对生产环境的配置。引入 webpack-merge 和 SplitChunksPlugin。</li>
+<li>gulpfile.js，打包流程的自动化构建。和原有保持不变。</li>
+</ul>
+<h3 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h3><p>开发环境重视打包速度的提升，从而提升开发效率。采用简单粗暴的方式将常用资源通过 <strong>dll</strong> 配置文件提取，并引入 happypack 开启多进程加快构建速度。开发环境的变更涉及到 webpack.base.config.js、happypack.js 和 webpack.dll.config.js</p>
+<h4 id="webpack-base-config-js"><a href="#webpack-base-config-js" class="headerlink" title="webpack.base.config.js"></a>webpack.base.config.js</h4><p>webpack.base.config.js 的变更是将 ExtractTextPlugin 替换为 MiniCssExtractPlugin，加入 exclude 属性，减少搜索范围，并去掉 style-loader，因为 CSS 文件从 JS 中抽取出来了，并不需以 <strong>style</strong> 形式将 CSS 嵌入 HTML。</p>
+<p><img src="3.png" alt></p>
+<h4 id="happypack-js"><a href="#happypack-js" class="headerlink" title="happypack.js"></a>happypack.js</h4><p>happypack 从之前的 4.0 升级到 5.0 以兼容 webpack4，并加入 MiniCssExtractPlugin.loader 如下。</p>
+<p><img src="4.png" alt></p>
+<h4 id="webpack-dll-config-js"><a href="#webpack-dll-config-js" class="headerlink" title="webpack.dll.config.js"></a>webpack.dll.config.js</h4><p>webpack4 增加了 <strong>mode</strong> 属性，默认会以生产环境运行，在 webpack.dll.config.js 中增加 mode 属性，设置为开发环境。</p>
+<p><img src="5.png" alt></p>
+<h3 id="生产环境"><a href="#生产环境" class="headerlink" title="生产环境"></a>生产环境</h3><p>生产环境重视打包后的体积，因此去掉了 happypack 以保障打包稳定性，并且去掉 dll 配置项，转而通过 SplitChunksPlugin 更充分地提取公共资源。生产环境配置的变更涉及到 webpack.base.config.js 和 webpack.product.config.js。webpack.base.config.js 的变更在开发环境中已提及，这里只介绍webpack.product.config.js 的前后变化。</p>
+<h4 id="webpack-product-config-js"><a href="#webpack-product-config-js" class="headerlink" title="webpack.product.config.js"></a>webpack.product.config.js</h4><p>可看到，生产环境的配置方式较大，但变化的功能点的都是为了提取多入口间的公共资源。升级前采取的是人为指定的方式，设置哪些是公共模块，而升级后，采用的是通过 <strong>test</strong> 属性设定公共模块存放的范围、chunks 设定待提取公共模块的对象即多入口文件及 minchunks 指定模块引用次数，让 webpack 更全面检索。相比之下能更完全、更准确地抽取各入口文件之间的公共模块。</p>
+<p><img src="6.png" alt></p>
+<h2 id="升级前后效果"><a href="#升级前后效果" class="headerlink" title="升级前后效果"></a>升级前后效果</h2><p>项目整体性能的提升有很多因素可以考察，针对这次 webpack4 的引入和打包性能提升，主要考察打包速度、生产环境的包体积以及两个环境中页面 JS 资源加载速度。</p>
+<h3 id="打包速度"><a href="#打包速度" class="headerlink" title="打包速度"></a>打包速度</h3><p>打包速度对于开发环境来讲很重要，会直接影响开发的效率，相比而言，开发环境对打包的包体积大小并不十分关注。</p>
+<h4 id="开发环境-1"><a href="#开发环境-1" class="headerlink" title="开发环境"></a>开发环境</h4><p>以下分别是 webpack4 引入前后在开发环境下的打包时间对比，引入 webpack4 后，在不添加 happypack5. 时，打包时间基本和引入前加了 happypack 持平，添加 happypack5.0 后，打包速度大幅度提升，打包时间减少 <strong>59.4%</strong> 左右。</p>
+<p><img src="7.png" alt></p>
+<h4 id="生产环境-1"><a href="#生产环境-1" class="headerlink" title="生产环境"></a>生产环境</h4><p>以下分别是 webpack4 引入前后在生产环境下的打包时间对比，引入 webpack4 后，devtool 配置相同时，打包速度有小幅度提升，devtool 为 <strong>eval</strong> 时的打包速度有较大幅度提升，打包时间减少 <strong>30.6%</strong> 左右。</p>
+<p><img src="8.png" alt></p>
+<h2 id="打包体积"><a href="#打包体积" class="headerlink" title="打包体积"></a>打包体积</h2><p>打包体积的大小对于生产环境很重要，这次 webpack4 的引入主要考察打包后 JS 的体积变化，因为 CI 发布平台会对打包后的每个 JS 文件进行压缩，因此考察 JS 文件体积变化只限定打包后未压缩的情况。</p>
+<h3 id="commons-公共包"><a href="#commons-公共包" class="headerlink" title="commons 公共包"></a>commons 公共包</h3><p>整体 JS 体积包的大小的重要影响因素就是多入口之间提取的公共 chunk 的大小即 <strong>commons.js</strong> 的大小，下面是升级前后 commons.js 包的大小，引入 webpack4 加入 SplitChunksPlugin 后，较之前大小提升了 <strong>20%</strong> 左右。通过 webpack-bundle-analyzer 分析它们各自内部包含的资源可看得更清楚。</p>
+<p><img src="9.png" alt></p>
+<p>升级前的 commons.js 内部包含的资源。</p>
+<p><img src="10.png" alt></p>
+<p>升级后的 commons.js 内部包含的资源。</p>
+<p><img src="11.png" alt></p>
+<h3 id="入口JS文件"><a href="#入口JS文件" class="headerlink" title="入口JS文件"></a>入口JS文件</h3><p>抽取的 commons.js 体积越大，对总体JS包的体积下降越有利。通过 webpack-bundle-analyzer 来对比。升级前，总的入口 JS 文件体积为 26.41MB，升级后入口JS总体积为 16.91MB，总的入口 JS 体积减少了 <strong>35.9%</strong> 左右，可看出，各文件大小都有较大幅度减少，一方面得益于 webpack4 本身打包的优化，另一方面更得益于抽取了更多的公共 chunk 即 commons.js。</p>
+<p><img src="12.png" alt></p>
+<p>加之升级前各 JS 文件生成了独立的 sourcemap 文件，而升级后去除了 sourcemap 文件，使得总体的 JS 文件体积有更大的减少。当然，考察有效的 JS 资源即入口 JS 体积的变化对于整体项目的性能优化更具有意义。</p>
+<h2 id="页面JS资源加载速度"><a href="#页面JS资源加载速度" class="headerlink" title="页面JS资源加载速度"></a>页面JS资源加载速度</h2><p>页面静态资源（包括 HTML、CSS、JS、图片等）的加载速度是用户最直观的感受，它速度的快慢会影响到用户的 APP 体验，下面是项目升级前后项目首页 JS 资源加载对比。</p>
+<p><img src="13.png" alt></p>
+<p>升级前的加载效果，可看到页面的两个核心业务 JS 文件 subscribe.min.[hash].js 和 commons.min.[hash].js，大小分别为 87.9KB 和 79.4KB，加载时间分别是 137ms 和 117ms，页面总体的资源加载时长为 367ms。</p>
+<p><img src="14.png" alt></p>
+<p>升级后，可看到页面对应的两个 JS 文件 subscribe.min.[hash].js 和 commons.min.[hash].js，大小分别为47KB 和 118KB，加载时间分别是 37ms 和 76ms，页面总体的资源加载时长为 305ms。可看出，页面中的业务代码，相比升级前有更多的公共代码被提取到 commons 中，使得页面并行加载静态资源时，加载时间有相应的减少，总体加载时间减少了 16% 左右。</p>
+<p>总上可以看出，一方面，项目打包升级后，多入口的 JS 业务代码中相比有更多公共部分被提取了出来，使得页面加载并行请求 JS 源时，页面加载资源的速度有相应的提升；另一方面，提取的公共代码部分 commons 第一次加载后会缓存在 APP 中，当从首页跳转到其他页面时，不再需要重新请求公共资源，从内存读取即可，这时可减少更多的加载时间。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这次 webpack4 打包升级效果还是很显著的，特别是包体积的减小以及打包速度的提升，后期对于资源加载速度的提升还是可以再进行更加深入的研究</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>你的鼓励我会用来换杯奶茶～😁</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="MoMo 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    MoMo
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://1349279985.github.io/记一次扫码点餐打包优化/" title="记一次扫码点餐打包优化">https://1349279985.github.io/记一次扫码点餐打包优化/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Webpack/" rel="tag"># Webpack</a>
+          
+            <a href="/tags/性能优化/" rel="tag"># 性能优化</a>
+          
+        </div>
+      
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/原生微信小程序引入计算属性/" rel="next" title="原生微信小程序引入计算属性">
+                <i class="fa fa-chevron-left"></i> 原生微信小程序引入计算属性
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/移动端滑动穿透方案探索/" rel="prev" title="移动端滑动穿透方案探索">
+                移动端滑动穿透方案探索 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="MoMo">
+            
+              <p class="site-author-name" itemprop="name">MoMo</p>
+              <p class="site-description motion-element" itemprop="description">记录Jason和MoMo的工作和生活</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/1349279985" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:momo1349279985@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack4-优化要点"><span class="nav-number">1.</span> <span class="nav-text">webpack4 优化要点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化关键点介绍"><span class="nav-number">2.</span> <span class="nav-text">优化关键点介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sourcemap"><span class="nav-number">2.1.</span> <span class="nav-text">sourcemap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#happypack"><span class="nav-number">2.2.</span> <span class="nav-text">happypack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SplitChunksPlugin"><span class="nav-number">2.3.</span> <span class="nav-text">SplitChunksPlugin</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#升级前后配置"><span class="nav-number">3.</span> <span class="nav-text">升级前后配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开发环境"><span class="nav-number">3.1.</span> <span class="nav-text">开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#webpack-base-config-js"><span class="nav-number">3.1.1.</span> <span class="nav-text">webpack.base.config.js</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#happypack-js"><span class="nav-number">3.1.2.</span> <span class="nav-text">happypack.js</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#webpack-dll-config-js"><span class="nav-number">3.1.3.</span> <span class="nav-text">webpack.dll.config.js</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生产环境"><span class="nav-number">3.2.</span> <span class="nav-text">生产环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#webpack-product-config-js"><span class="nav-number">3.2.1.</span> <span class="nav-text">webpack.product.config.js</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#升级前后效果"><span class="nav-number">4.</span> <span class="nav-text">升级前后效果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#打包速度"><span class="nav-number">4.1.</span> <span class="nav-text">打包速度</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#开发环境-1"><span class="nav-number">4.1.1.</span> <span class="nav-text">开发环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生产环境-1"><span class="nav-number">4.1.2.</span> <span class="nav-text">生产环境</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打包体积"><span class="nav-number">5.</span> <span class="nav-text">打包体积</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#commons-公共包"><span class="nav-number">5.1.</span> <span class="nav-text">commons 公共包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#入口JS文件"><span class="nav-number">5.2.</span> <span class="nav-text">入口JS文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#页面JS资源加载速度"><span class="nav-number">6.</span> <span class="nav-text">页面JS资源加载速度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MoMo</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">31.2k</span>
+  
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  <style type="text/css">
+    div.info{
+        display: none;
+    }
+  </style>
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'eSAyObWzrkUP2DSIvGsFxLsF-gzGzoHsz',
+        appKey: 'GtKQGcrxyp8pJVpmeSaK50xN',
+        placeholder: '请在此输入你的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("eSAyObWzrkUP2DSIvGsFxLsF-gzGzoHsz", "GtKQGcrxyp8pJVpmeSaK50xN");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":345},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

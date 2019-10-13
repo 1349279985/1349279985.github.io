@@ -1,0 +1,9 @@
+# hexo robots.txt
+User-agent: *
+Allow: /
+Allow: /archives/
+Allow: /categories/
+Allow: /tags/
+Disallow: /fonts/
+Disallow: /fancybox/
+Sitemap: http://www.ehcoo.com/sitemap.xml
