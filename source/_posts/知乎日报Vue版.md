@@ -5,7 +5,7 @@ tags:
 - Vue
 - Vuex
 - 动态路由
-- webpack
+- Webpack
 categories: 前端
 ---
 
