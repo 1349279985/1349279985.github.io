@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="TJIhzYMIPFaz9Sm7X-m89u5LjpBTUSHWfScXHB520hY">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=5.1.4">
+
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="React,性能优化,memo,浅比较">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="React memo 是 React16 新引入的特性，旨在优化函数组件的渲染性能，原生的效果还不错，但我觉得还是可以优化。于是最近我将它引入到点餐项目的菜单页并做了渲染判别的优化，从而能适配不同的场景条件。">
+<meta name="keywords" content="React,性能优化,memo,浅比较">
+<meta property="og:type" content="article">
+<meta property="og:title" content="优化React.memo渲染判别机制及实战">
+<meta property="og:url" content="https://1349279985.github.io/优化React-memo渲染判别机制及实战/index.html">
+<meta property="og:site_name" content="MoMo&#39;s Blog">
+<meta property="og:description" content="React memo 是 React16 新引入的特性，旨在优化函数组件的渲染性能，原生的效果还不错，但我觉得还是可以优化。于是最近我将它引入到点餐项目的菜单页并做了渲染判别的优化，从而能适配不同的场景条件。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://1349279985.github.io/优化React-memo渲染判别机制及实战/0.png">
+<meta property="og:image" content="https://1349279985.github.io/优化React-memo渲染判别机制及实战/1.gif">
+<meta property="og:image" content="https://1349279985.github.io/优化React-memo渲染判别机制及实战/1.png">
+<meta property="og:image" content="https://1349279985.github.io/优化React-memo渲染判别机制及实战/2.png">
+<meta property="og:image" content="https://1349279985.github.io/优化React-memo渲染判别机制及实战/3.png">
+<meta property="og:image" content="https://1349279985.github.io/优化React-memo渲染判别机制及实战/4.png">
+<meta property="og:updated_time" content="2019-10-17T13:02:14.535Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="优化React.memo渲染判别机制及实战">
+<meta name="twitter:description" content="React memo 是 React16 新引入的特性，旨在优化函数组件的渲染性能，原生的效果还不错，但我觉得还是可以优化。于是最近我将它引入到点餐项目的菜单页并做了渲染判别的优化，从而能适配不同的场景条件。">
+<meta name="twitter:image" content="https://1349279985.github.io/优化React-memo渲染判别机制及实战/0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QTLXGA4GZK',
+      apiKey: '671ec8c1f374f6940bbed7898c1202e3',
+      indexName: 'prod_BLOG',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://1349279985.github.io/优化React-memo渲染判别机制及实战/">
+
+
+
+
+
+  <title>优化React.memo渲染判别机制及实战 | MoMo's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MoMo's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Life is Beautiful</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://1349279985.github.io/优化React-memo渲染判别机制及实战/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MoMo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MoMo's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">优化React.memo渲染判别机制及实战</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-17T17:37:32+08:00">
+                2019-10-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/优化React-memo渲染判别机制及实战/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/优化React-memo渲染判别机制及实战/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/优化React-memo渲染判别机制及实战/" class="leancloud_visitors" data-flag-title="优化React.memo渲染判别机制及实战">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>React memo 是 React16 新引入的特性，旨在优化函数组件的渲染性能，原生的效果还不错，但我觉得还是可以优化。于是最近我将它引入到点餐项目的菜单页并做了渲染判别的优化，从而能适配不同的场景条件。</p>
+<div style="width:60%;margin:auto"><img src="/优化React-memo渲染判别机制及实战/0.png"></div>
+
+<a id="more"></a>
+
+<h2 id="memo的简单介绍"><a href="#memo的简单介绍" class="headerlink" title="memo的简单介绍"></a>memo的简单介绍</h2><p>React 中提供了类组件(Class Component)和函数组件(Functional Component)两种组件的写法。在类组件中 ，可以通过重写 shouldComponentUpdate 或者使用 PureComponent 来优化组件性能，避免不必要的重复渲染。而针对函数组件，在 React16 之前还没有提供这样的优化手段，React16 之后，可以通过 React.memo 来优化函数组件，避免组件重复渲染，它判别是否渲染的机制在于 props 中的变量是否有变化，和 PureComponent 的机制有些相似，它也是浅比较的，为了深层比较，可以做一次优化。</p>
+<h2 id="菜单页菜品渲染问题"><a href="#菜单页菜品渲染问题" class="headerlink" title="菜单页菜品渲染问题"></a>菜单页菜品渲染问题</h2><p>菜单页的菜品列表通过遍历 DishItem 渲染出来。我尝试记录多处复用的 DishItem 性能表现。<br>在 DishItem 中的 NumerCount 函数组件中输出 console 来记录该组件被渲染的次数，如下是一个示例</p>
+<video src="./1.mp4" controls="controls" style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">
+The video tag is not supported by your browser.
+</video>
+
+<p>可以看到，菜品列表中有一处的 NumerCount，所有的 NumerCount 有 38 个都触发了重新渲染，并且渲染了两次，一次是加菜到本地，一次是获取pike消息后，总共渲染了 38*2 次；即使只有一个 NumberCount 变化了，其他的 NumerCount 并没有数据的变化也触发了渲染。如果菜品多达数百，这将带来很大的性能开销。</p>
+<p>我们再来看看性能的表现，我尝试修改 Performance 参数以贴近移动端的 CPU 处理。</p>
+<p><img src="1.gif" alt><br>记录加菜时组件的渲染性能，有两次渲染，一次是加菜到本地触发的渲染，一次是一起点场景下收到服务端 websocket 推动消息后触发的渲染。看看第一次渲染中大概花费 686ms，频繁触发更新的 DishItem 占据了其中的 81%，而 DishItem 包含多次复用的 NumerCount、SelectDish 等组件。对这类组件的优化是很有必要的。</p>
+<p><img src="1.png" alt></p>
+<h2 id="优化策略"><a href="#优化策略" class="headerlink" title="优化策略"></a>优化策略</h2><p>针对上述问题的优化方案在文首有提及，就是 React16 中 memo 了，它针对的是函数组件的渲染优化。上述的问题是项目中的冰山一角，项目中用到的函数组件都可采用这个策略进行优化，因为这看起来会影响用户体验，尤其是在弱网环境或者是菜品数量庞大的场景下会比较明显。</p>
+<h3 id="React-的浅比较"><a href="#React-的浅比较" class="headerlink" title="React 的浅比较"></a>React 的浅比较</h3><p>我们来对影响较大的函数组件做个优化，尤其是被多次复用的组件，比如 NumberCount。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> NumberCount = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123;</span><br><span class="line">    dish,</span><br><span class="line">    count,</span><br><span class="line">    addToCart,</span><br><span class="line">    minusDish,</span><br><span class="line">    updateOriginBallAction,</span><br><span class="line">    addPoint,</span><br><span class="line">    minusPoint,</span><br><span class="line">  &#125; = props;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">  	&lt;div className=<span class="string">"number-count"</span>&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">export default NumberCount;</span></span><br></pre></td></tr></table></figure>
+
+<p>通过React memo封装后</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> NumberCount = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123;</span><br><span class="line">    dish,</span><br><span class="line">    count,</span><br><span class="line">    addToCart,</span><br><span class="line">    minusDish,</span><br><span class="line">    updateOriginBallAction,</span><br><span class="line">    addPoint,</span><br><span class="line">    minusPoint,</span><br><span class="line">  &#125; = props;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">  	&lt;div className=<span class="string">"number-count"</span>&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">export default React.memo(NumberCount);</span></span><br></pre></td></tr></table></figure>
+
+<p>是不是很简单。但是有一个问题，React.memo 的内部算法使用的是<a href="https://github.com/facebook/react/blob/master/packages/shared/shallowEqual.js" target="_blank" rel="noopener">浅比较</a>，是什么样的呢<br>看看 React 的 shallowEqual 源码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">is</span>(<span class="params">x: any, y: any</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="comment">// 全等的方式</span></span><br><span class="line">    (x === y &amp;&amp; (x !== <span class="number">0</span> || <span class="number">1</span> / x === <span class="number">1</span> / y)) || (x !== x &amp;&amp; y !== y) <span class="comment">// eslint-disable-line no-self-compare</span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>基本上采用全等的方式来对比变量的变化</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">shallowEqual</span>(<span class="params">objA, objB</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (is(objA, objB)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> objA !== <span class="string">'object'</span> || objA === <span class="literal">null</span> || <span class="keyword">typeof</span> objB !== <span class="string">'object'</span> || objB === <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> keysA = <span class="built_in">Object</span>.keys(objA);</span><br><span class="line">  <span class="keyword">var</span> keysB = <span class="built_in">Object</span>.keys(objB);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (keysA.length !== keysB.length) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; keysA.length; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!hasOwnProperty.call(objB, keysA[i]) || !is(objA[keysA[i]], objB[keysA[i]])) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>采用全等的方式会有啥问题，来看看</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> map1 = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: <span class="number">1</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> map2 = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: <span class="number">1</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> map3 = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: &#123; <span class="attr">d</span>: [] &#125; &#125;;</span><br><span class="line"><span class="keyword">const</span> map4 = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: &#123; <span class="attr">d</span>: [] &#125; &#125;;</span><br><span class="line"><span class="keyword">const</span> map5 = Immutable.Map(&#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: <span class="number">1</span> &#125;);</span><br><span class="line"><span class="keyword">const</span> map6 = Immutable.Map(&#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: <span class="number">1</span> &#125;);</span><br><span class="line">map1 === map2 <span class="comment">// false</span></span><br><span class="line">map3 === map4 <span class="comment">// false</span></span><br><span class="line">map5 === map6 <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<p>因为引用地址不一样，所以两个对象不一样，这样会导致什么问题。<br>如果组件传入的 props 的变量前后的值并没有变化，通过memo的浅比较后判断它们是不同的，会导致组件触发重新渲染，而这样的重新渲染是不必要的操作。</p>
+<h3 id="优化memo-浅比较机制"><a href="#优化memo-浅比较机制" class="headerlink" title="优化memo 浅比较机制"></a>优化memo 浅比较机制</h3><p>可以通过深层比较，再判断值是否一样，即使用 Immutabe 中的 is 来做高效率的深层判断。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> map1 = Immutable.Map(&#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: <span class="number">1</span> &#125;);</span><br><span class="line"><span class="keyword">const</span> map2 = Immutable.Map(&#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: <span class="number">1</span> &#125;);</span><br><span class="line"><span class="keyword">const</span> map3 = Immutable.Map(&#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: &#123; <span class="attr">d</span>: [] &#125; &#125;);</span><br><span class="line"><span class="keyword">const</span> map4 = Immutable.Map(&#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: &#123; <span class="attr">d</span>: [] &#125; &#125;);</span><br><span class="line"><span class="keyword">const</span> map5 = Immutable.fromJS(&#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: &#123; <span class="attr">d</span>: [] &#125; &#125;);</span><br><span class="line"><span class="keyword">const</span> map6 = Immutable.fromJS(&#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: &#123; <span class="attr">d</span>: [] &#125; &#125;);</span><br><span class="line">Immutable.is(map1, map2) <span class="comment">// true</span></span><br><span class="line">Immutable.is(map3, map4) <span class="comment">// false</span></span><br><span class="line">Immutable.is(map5, map6) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>基于此，我们来重写 React memo 的防重复渲染机制，并和组件解耦合。遍历变化前后的 props，对于非 Immutable 的变量做一层转化，然后深层判断值是否有变化。当然建议传入的 props 的变量使用 Immutable 类型，以减少转化的开销。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MemoBaseComponent.jsx</span></span><br><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; is &#125; <span class="keyword">from</span> <span class="string">'immutable'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> depEqual = <span class="function">(<span class="params">prevProps, nextProps</span>) =&gt;</span> &#123;</span><br><span class="line">  prevProps = prevProps || &#123;&#125;;</span><br><span class="line">  nextProps = nextProps || &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Object</span>.keys(prevProps).length !== <span class="built_in">Object</span>.keys(nextProps).length) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> nextProps) &#123;</span><br><span class="line">    <span class="keyword">let</span> prevProp = prevProps[key];</span><br><span class="line">    <span class="keyword">let</span> nextProp = nextProps[key];</span><br><span class="line">    <span class="comment">// 判断是否是 Immutable 类型的变量，不是则做一层转换</span></span><br><span class="line">    <span class="comment">// 当然建议传入 props 的变量都是 Immutable 类型的，以省去转化开销这一步</span></span><br><span class="line">    <span class="keyword">if</span> (!prevProp.size || !nextProp.size ) &#123;</span><br><span class="line">    	prevProp = Immutable.fromJS(prevProp);</span><br><span class="line">    	nextProp = Immutable.fromJS(nextProp);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!is(prevProp, nextProp)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> MemoBaseComponent = <span class="function"><span class="params">funcComponent</span> =&gt;</span> React.memo(funcComponent, depEqual);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> MemoBaseComponent;</span><br></pre></td></tr></table></figure>
+
+<p>在函数组件 NumberCount 中我们这样使用它即可完成 memo 的优化机制。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ReactMemo <span class="keyword">from</span> <span class="string">'@components/common/MemoBaseComponent'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> NumberCount = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123;</span><br><span class="line">    dish,</span><br><span class="line">    count,</span><br><span class="line">    addToCart,</span><br><span class="line">    minusDish,</span><br><span class="line">    updateOriginBallAction,</span><br><span class="line">    addPoint,</span><br><span class="line">    minusPoint,</span><br><span class="line">  &#125; = props;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">  	&lt;div className=<span class="string">"number-count"</span>&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">export default ReactMemo(NumberCount);</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="优化效果"><a href="#优化效果" class="headerlink" title="优化效果"></a>优化效果</h2><h3 id="菜品加减菜渲染"><a href="#菜品加减菜渲染" class="headerlink" title="菜品加减菜渲染"></a>菜品加减菜渲染</h3><p>为了对比效果，我们同样在 NumberCount 组件中输出 console 来记录加菜时该组件的渲染次数，可以看到，这回所有的 38 个 NumberCount，当只变更其中一个 NumberCount 变化时，只触发这个 NumberCount 变更，其他没有变化的 NumberCount 并没有触发重新渲染。</p>
+<video src="./2.mp4" controls="controls" style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">
+The video tag is not supported by your browser.
+</video>
+
+<p>为了看到最终 DishItem 组件的渲染效果，我们来记录优化后加菜时，组件的渲染性能。同样，为了模拟移动端效果，我们将 CPU 性能调低。可以看到，第一次触发的整体渲染中大概花费 328ms，其中DishItem占据了其中的 28%，花费大概 94ms，第二次和第一次耗费的渲染时间差不多，总体来说，对比优化前，渲染性能提升了 50% 左右。</p>
+<p><img src="2.png" alt></p>
+<h3 id="页面加载渲染"><a href="#页面加载渲染" class="headerlink" title="页面加载渲染"></a>页面加载渲染</h3><p>针对上面的优化，可以想到，如果购物车有菜的情况下，页面的加载渲染是会受影响的。因为页面初始化时会渲染一次，这时页面是静态的，购物车的数据还在本地缓存中；第二次是从本地缓存取出数据后渲染到页面。我们关注页面加载时，整体组件的渲染情况，不考虑前期的数据请求等。同样模拟移动端的情况降低 CPU 处理能力。</p>
+<h4 id="优化前"><a href="#优化前" class="headerlink" title="优化前"></a>优化前</h4><p>在核心渲染区，我选取了开始渲染和页面菜单显示出来那一刻之前的时间段。第二次渲染大概花费 935ms 的时间</p>
+<p><img src="3.png" alt></p>
+<h4 id="优化后"><a href="#优化后" class="headerlink" title="优化后"></a>优化后</h4><p>同样在核心渲染区，我选取了开始渲染和页面菜单显示出来那一刻之前的时间段。第二次渲染大概花费 437ms 的时间，这是因为 DishItem 列表触发渲染时，没有数据变更的 DishItem 并不会触发重新渲染。</p>
+<p><img src="4.png" alt></p>
+<h2 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h2><p>对于引入 memo 菜单页的优化就介绍到这儿了，引入 memo 的场景主要针对函数组件，特别是多次复用的函数组件以及业务复杂的函数组件，建议一定使用上 memo，小小的优化堆积起来可能会带来很好的效果。以上的测试数据均是在模拟环境下进行的，显示的时间并不代表真实的环境，看到相对时间的变化才是重要的。</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>你的鼓励我会用来换杯奶茶～😁</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="MoMo 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    MoMo
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://1349279985.github.io/优化React-memo渲染判别机制及实战/" title="优化React.memo渲染判别机制及实战">https://1349279985.github.io/优化React-memo渲染判别机制及实战/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/React/" rel="tag"># React</a>
+          
+            <a href="/tags/性能优化/" rel="tag"># 性能优化</a>
+          
+        </div>
+      
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/React面试问题及答案/" rel="next" title="React面试问题及答案">
+                <i class="fa fa-chevron-left"></i> React面试问题及答案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="MoMo">
+            
+              <p class="site-author-name" itemprop="name">MoMo</p>
+              <p class="site-description motion-element" itemprop="description">记录Jason和MoMo的工作和生活</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/1349279985" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:momo1349279985@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#memo的简单介绍"><span class="nav-number">1.</span> <span class="nav-text">memo的简单介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#菜单页菜品渲染问题"><span class="nav-number">2.</span> <span class="nav-text">菜单页菜品渲染问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化策略"><span class="nav-number">3.</span> <span class="nav-text">优化策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#React-的浅比较"><span class="nav-number">3.1.</span> <span class="nav-text">React 的浅比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化memo-浅比较机制"><span class="nav-number">3.2.</span> <span class="nav-text">优化memo 浅比较机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化效果"><span class="nav-number">4.</span> <span class="nav-text">优化效果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#菜品加减菜渲染"><span class="nav-number">4.1.</span> <span class="nav-text">菜品加减菜渲染</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#页面加载渲染"><span class="nav-number">4.2.</span> <span class="nav-text">页面加载渲染</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优化前"><span class="nav-number">4.2.1.</span> <span class="nav-text">优化前</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化后"><span class="nav-number">4.2.2.</span> <span class="nav-text">优化后</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结一下"><span class="nav-number">5.</span> <span class="nav-text">总结一下</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MoMo</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">33.4k</span>
+  
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  <style type="text/css">
+    div.info{
+        display: none;
+    }
+  </style>
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'eSAyObWzrkUP2DSIvGsFxLsF-gzGzoHsz',
+        appKey: 'GtKQGcrxyp8pJVpmeSaK50xN',
+        placeholder: '请在此输入你的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("eSAyObWzrkUP2DSIvGsFxLsF-gzGzoHsz", "GtKQGcrxyp8pJVpmeSaK50xN");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":345},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
