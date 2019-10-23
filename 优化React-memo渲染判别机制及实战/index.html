@@ -119,7 +119,7 @@
 <meta property="og:image" content="https://1349279985.github.io/优化React-memo渲染判别机制及实战/2.png">
 <meta property="og:image" content="https://1349279985.github.io/优化React-memo渲染判别机制及实战/3.png">
 <meta property="og:image" content="https://1349279985.github.io/优化React-memo渲染判别机制及实战/4.png">
-<meta property="og:updated_time" content="2019-10-17T13:06:24.532Z">
+<meta property="og:updated_time" content="2019-10-18T08:02:08.507Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="优化React.memo渲染判别机制及实战">
 <meta name="twitter:description" content="React memo 是 React16 新引入的特性，旨在优化函数组件的渲染性能，原生的效果还不错，但我觉得还是可以优化。于是最近我将它引入到点餐项目的菜单页并做了渲染判别的优化，从而能适配不同的场景条件。">
@@ -431,9 +431,11 @@
 
 <h2 id="memo的简单介绍"><a href="#memo的简单介绍" class="headerlink" title="memo的简单介绍"></a>memo的简单介绍</h2><p>React 中提供了类组件(Class Component)和函数组件(Functional Component)两种组件的写法。在类组件中 ，可以通过重写 shouldComponentUpdate 或者使用 PureComponent 来优化组件性能，避免不必要的重复渲染。而针对函数组件，在 React16 之前还没有提供这样的优化手段，React16 之后，可以通过 React.memo 来优化函数组件，避免组件重复渲染，它判别是否渲染的机制在于 props 中的变量是否有变化，和 PureComponent 的机制有些相似，它也是浅比较的，为了深层比较，可以做一次优化。</p>
 <h2 id="菜单页菜品渲染问题"><a href="#菜单页菜品渲染问题" class="headerlink" title="菜单页菜品渲染问题"></a>菜单页菜品渲染问题</h2><p>菜单页的菜品列表通过遍历 DishItem 渲染出来。我尝试记录多处复用的 DishItem 性能表现。<br>在 DishItem 中的 NumerCount 函数组件中输出 console 来记录该组件被渲染的次数，如下是一个示例</p>
+
 <video src="./1.mp4" controls="controls" style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">
 The video tag is not supported by your browser.
 </video>
+
 
 <p>可以看到，菜品列表中有一处的 NumerCount，所有的 NumerCount 有 38 个都触发了重新渲染，并且渲染了两次，一次是加菜到本地，一次是获取pike消息后，总共渲染了 38*2 次；即使只有一个 NumberCount 变化了，其他的 NumerCount 并没有数据的变化也触发了渲染。如果菜品多达数百，这将带来很大的性能开销。</p>
 <p>我们再来看看性能的表现，我尝试修改 Performance 参数以贴近移动端的 CPU 处理。</p>
@@ -466,9 +468,11 @@ The video tag is not supported by your browser.
 <figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ReactMemo <span class="keyword">from</span> <span class="string">'@components/common/MemoBaseComponent'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> NumberCount = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123;</span><br><span class="line">    dish,</span><br><span class="line">    count,</span><br><span class="line">    addToCart,</span><br><span class="line">    minusDish,</span><br><span class="line">    updateOriginBallAction,</span><br><span class="line">    addPoint,</span><br><span class="line">    minusPoint,</span><br><span class="line">  &#125; = props;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">  	&lt;div className=<span class="string">"number-count"</span>&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">export default ReactMemo(NumberCount);</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="优化效果"><a href="#优化效果" class="headerlink" title="优化效果"></a>优化效果</h2><h3 id="菜品加减菜渲染"><a href="#菜品加减菜渲染" class="headerlink" title="菜品加减菜渲染"></a>菜品加减菜渲染</h3><p>为了对比效果，我们同样在 NumberCount 组件中输出 console 来记录加菜时该组件的渲染次数，可以看到，这回所有的 38 个 NumberCount，当只变更其中一个 NumberCount 变化时，只触发这个 NumberCount 变更，其他没有变化的 NumberCount 并没有触发重新渲染。</p>
+
 <video src="./2.mp4" controls="controls" style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">
 The video tag is not supported by your browser.
 </video>
+
 
 <p>为了看到最终 DishItem 组件的渲染效果，我们来记录优化后加菜时，组件的渲染性能。同样，为了模拟移动端效果，我们将 CPU 性能调低。可以看到，第一次触发的整体渲染中大概花费 328ms，其中DishItem占据了其中的 28%，花费大概 94ms，第二次和第一次耗费的渲染时间差不多，总体来说，对比优化前，渲染性能提升了 50% 左右。</p>
 <p><img src="2.png" alt></p>
@@ -550,8 +554,8 @@ The video tag is not supported by your browser.
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/React面试问题及答案/" rel="next" title="React面试问题及答案">
-                <i class="fa fa-chevron-left"></i> React面试问题及答案
+              <a href="/React查漏补缺/" rel="next" title="React查漏补缺清单">
+                <i class="fa fa-chevron-left"></i> React查漏补缺清单
               </a>
             
           </div>
@@ -745,7 +749,7 @@ The video tag is not supported by your browser.
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">33.4k</span>
+    <span title="Site words total count">34.7k</span>
   
 </div>
 
@@ -1062,5 +1066,5 @@ The video tag is not supported by your browser.
 
   
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":345},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":345,"hOffset":80,"vOffset":0},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 </html>

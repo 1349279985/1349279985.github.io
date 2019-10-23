@@ -430,6 +430,7 @@ td {
 th {
   padding-bottom: 10px;
   font-weight: 700;
+  min-width: 30px;
 }
 td {
   border-bottom-width: 1px;
@@ -1941,7 +1942,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #16ffd6;
+  background: #e3a1ff;
 }
 .links-of-blogroll {
   font-size: 13px;
