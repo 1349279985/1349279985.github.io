@@ -27,9 +27,11 @@ React 中提供了类组件(Class Component)和函数组件(Functional Component
 菜单页的菜品列表通过遍历 DishItem 渲染出来。我尝试记录多处复用的 DishItem 性能表现。
 在 DishItem 中的 NumerCount 函数组件中输出 console 来记录该组件被渲染的次数，如下是一个示例
 
+{% raw %}
 <video src="./1.mp4" controls="controls" style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">
 The video tag is not supported by your browser.
 </video>
+{% endraw %}
 
 可以看到，菜品列表中有一处的 NumerCount，所有的 NumerCount 有 38 个都触发了重新渲染，并且渲染了两次，一次是加菜到本地，一次是获取pike消息后，总共渲染了 38*2 次；即使只有一个 NumberCount 变化了，其他的 NumerCount 并没有数据的变化也触发了渲染。如果菜品多达数百，这将带来很大的性能开销。
 
@@ -209,9 +211,11 @@ export default ReactMemo(NumberCount);
 ### 菜品加减菜渲染
 为了对比效果，我们同样在 NumberCount 组件中输出 console 来记录加菜时该组件的渲染次数，可以看到，这回所有的 38 个 NumberCount，当只变更其中一个 NumberCount 变化时，只触发这个 NumberCount 变更，其他没有变化的 NumberCount 并没有触发重新渲染。
 
+{% raw %}
 <video src="./2.mp4" controls="controls" style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">
 The video tag is not supported by your browser.
 </video>
+{% endraw %}
 
 为了看到最终 DishItem 组件的渲染效果，我们来记录优化后加菜时，组件的渲染性能。同样，为了模拟移动端效果，我们将 CPU 性能调低。可以看到，第一次触发的整体渲染中大概花费 328ms，其中DishItem占据了其中的 28%，花费大概 94ms，第二次和第一次耗费的渲染时间差不多，总体来说，对比优化前，渲染性能提升了 50% 左右。
 

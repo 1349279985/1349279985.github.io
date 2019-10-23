@@ -107,5 +107,7 @@ live2d:
     position: right #在右边显示
     width: 150 #看板的宽
     height: 345 #看板的搞
+    hOffset: 80
+    vOffset: 0
   mobile:
     show: false  #是否在手机进行显示，建议关闭
