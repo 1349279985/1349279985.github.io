@@ -716,7 +716,7 @@ categories: 前端
 
 24. ### 简单介绍下虚拟DOM?
 
-  *虚拟DOM* (VDOM)是*真实DOM*的一种表达方式，并且会和真实的DOM同步更新。虚拟DOM的运行机制是发生在 render 函数被调用和页面视觉发生更新之间，这个过程叫做 *reconciliation* 即调和阶段。
+  *虚拟DOM* (VDOM)是真实DOM的一种表达方式，并且会和真实的DOM同步更新。虚拟DOM的运行机制是发生在 render 函数被调用和页面视觉发生更新之间，这个过程叫做 *reconciliation* 即调和阶段。
 
   **[⬆ 回顶部](#React清单)**
 
