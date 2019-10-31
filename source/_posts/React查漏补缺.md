@@ -236,437 +236,429 @@ categories: 前端
 
 1. ### 简单介绍下React?
 
-  React is an **open-source frontend JavaScript library** which is used for building user interfaces especially for single page applications. It is used for handling view layer for web and mobile apps. React was created by Jordan Walke, a software engineer working for Facebook. React was first deployed on Facebook's News Feed in 2011 and on Instagram in 2012.
+  React 是前端的一个开源库，用来构建交互式应用并在**SPA**中应用广泛。**在 web 和移动端的分层结构中，它充当展示层的角色**。React 由在 Facebook 工作的 Jordan Walke 所创建。2011年，Facebook的 News Feed 使用了它，过了一年后，它在 Instagram 也得到了应用。
   
   **[⬆ 回顶部](#React清单)**
 
 2. ### React的主要特性有哪些?
 
-  The major features of React are:
+  React 的主要特性包括:
 
-  * It uses **VirtualDOM** instead RealDOM considering that RealDOM manipulations are expensive.
-  * Supports **server-side rendering**.
-  * Follows *Unidirectional** data flow or data binding.
-  * Uses **reusable/composable** UI components to develop the view.
+  * 使用**虚拟DOM**来代替真实的DOM操作，以提升性能
+  * 支持**服务端渲染**.
+  * 遵循**单向数据流**.
+  * 使用**高复用** UI 组件来构建页面
   
   **[⬆ 回顶部](#React清单)**
 
 3. ### 讲讲什么是JSX?
 
-    *JSX* is a XML-like syntax extension to ECMAScript (the acronym stands for *JavaScript XML*). Basically it just provides syntactic sugar for the `React.createElement()` function, giving us expressiveness of JavaScript along with HTML like template syntax.
+  **JSX** 是一种类似于 XML 的 JS 语法扩展。React 提供有`React.createElement()`这样的语法糖来转化 JSX 语法。它的具体格式是由 JS 和 HTML 构成，看起来像模版语言。
 
-    In the example below text inside `<h1>` tag return as JavaScript function to the render function.
+  下面 `<h1>` 标签 通过 render 返回后，最终会由 `React.createElement()` 转化为虚拟DOM
 
-    ```jsx
-    class App extends React.Component {
-      render() {
-        return(
-          <div>
-            <h1>{'Welcome to React world!'}</h1>
-          </div>
-        )
-      }
+  ```jsx
+  class App extends React.Component {
+    render() {
+      return(
+        <div>
+          <h1>{'Welcome to React world!'}</h1>
+        </div>
+      )
     }
-    ```
+  }
+  ```
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 4. ### React中的元素和组件有啥区别?
 
-    An *Element* is a plain object describing what you want to appear on the screen in terms of the DOM nodes or other components. *Elements* can contain other *Elements* in their props. Creating a React element is cheap. Once an element is created, it is never mutated.
+  React 中的元素是一个普通对象，它描述着屏幕上要展示的内容。而元素对象可以嵌套元素，嵌套的元素在props字段中。创建元素的方式很简单。下面是一个典型的 React 元素
 
-    The object representation of React Element would be as follows:
+  ```javascript
+  const element = React.createElement(
+    'div',
+    {id: 'login-btn'},
+    'Login'
+  )
+  ```
 
-    ```javascript
-    const element = React.createElement(
-      'div',
-      {id: 'login-btn'},
-      'Login'
-    )
-    ```
+  上面的 `React.createElement()` 函数返回的对象长这样:
 
-    The above `React.createElement()` function returns an object:
-
-    ```
-    {
-      type: 'div',
-      props: {
-        children: 'Login',
-        id: 'login-btn'
-      }
+  ```javascript
+  {
+    type: 'div',
+    props: {
+      children: 'Login',
+      id: 'login-btn'
     }
+  }
+  ```
+
+  最终会通过 `ReactDOM.render()` 渲染到真实的DOM中:
+
+  ```html
+  <div id='login-btn'>Login</div>
     ```
 
-    And finally it renders to the DOM using `ReactDOM.render()`:
+  而组件的创建方式就很多了。可以是Class或者函数形式。通常它会有props作为变量输入，然后返回 JSX 语法树
 
-    ```html
-    <div id='login-btn'>Login</div>
-    ```
+  ```javascript
+  const Button = ({ onLogin }) =>
+    <div id={'login-btn'} onClick={onLogin} />
+  ```
 
-    Whereas a **component** can be declared in several different ways. It can be a class with a `render()` method. Alternatively, in simple cases, it can be defined as a function. In either case, it takes props as an input, and returns an JSX tree as the output:
+  然后 JSX 树会被 `React.createElement()` 函数转移成对象树:
 
-    ```javascript
-    const Button = ({ onLogin }) =>
-      <div id={'login-btn'} onClick={onLogin} />
-    ```
+  ```javascript
+  const Button = ({ onLogin }) => React.createElement(
+    'div',
+    { id: 'login-btn', onClick: onLogin },
+    'Login'
+  )
+  ```
 
-    Then JSX gets transpiled to `React.createElement()` function tree:
-
-    ```javascript
-    const Button = ({ onLogin }) => React.createElement(
-      'div',
-      { id: 'login-btn', onClick: onLogin },
-      'Login'
-    )
-    ```
-
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 5. ### 在React中咋创建组件?
 
-    There are two possible ways to create a component.
+  有两种方式创建组件.
 
-    1. **Function Components:** This is the simplest way to create a component. Those are pure JavaScript functions that accept props object as first parameter and return React elements:
+  1. **函数组件:** 创建组件最简单的方式. 通常是纯函数，接收 props 作为函数的第一个参数，然后返回 React 元素
 
-    ```jsx  
-    function Greeting({ message }) {
-      return <h1>{`Hello, ${message}`}</h1> 
+  ```jsx  
+  function Greeting({ message }) {
+    return <h1>{`Hello, ${message}`}</h1> 
+  }
+  ```
+
+  2. **类组件:** 你也可以通过ES6形式定义组件。上面的组件可转为类组件的写法如下:
+
+  ```jsx  
+  class Greeting extends React.Component {
+    render() {
+      return <h1>{`Hello, ${this.props.message}`}</h1>
     }
-    ```
+  }
+  ```
 
-    2. **Class Components:** You can also use ES6 class to define a component. The above function component can be written as:
-
-    ```jsx  
-    class Greeting extends React.Component {
-      render() {
-        return <h1>{`Hello, ${this.props.message}`}</h1>
-      }
-    }
-    ```
-
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 6. ### 类组件和函数组件咋做选择?
 
-  If the component needs *state or lifecycle methods* then use class component otherwise use function component.
+  如果函数组件内需要state或者生命周期方法则选择类组件，否则选择函数组件。而 React16 后有了 HOOKS 的支持，更推荐函数组件的写法
 
   **[⬆ 回顶部](#React清单)**
 
 7. ### PureComponent是用来干啥的?
 
-  *`React.PureComponent`* is exactly the same as *`React.Component`* except that it handles the `shouldComponentUpdate()` method for you. When props or state changes, *PureComponent* will do a shallow comparison on both props and state. *Component* on the other hand won't compare current props and state to next out of the box. Thus, the component will re-render by default whenever `shouldComponentUpdate` is called.
+  *`React.PureComponent`* 和 *`React.Component`* 很像，除此之外，它对 `shouldComponentUpdate()` 方法做了优化。当props或者state改变时，*PureComponent* 会针对 props 和 state 做一层浅比较。而普通的*组件* 则不会做这层比较，默认 props 或 state 的变化会触发重新渲染。
 
   **[⬆ 回顶部](#React清单)**
 
 8. ### 讲讲React中的state?
 
-    *State* of a component is an object that holds some information that may change over the lifetime of the component. We should always try to make our state as simple as possible and minimize the number of stateful components. Let's create an user component with message state,
+  组件中 *State* 是对象类型，包含着组件生命周期所需要的一些信息。我们应该尽量只在 state 中保存简单的数据，不应该将所有状态都保存在组件内，使得组件保持纯净。下面是一个存有 message 的state
 
-    ```jsx  
-    class User extends React.Component {
-      constructor(props) {
-        super(props)
+  ```jsx  
+  class User extends React.Component {
+    constructor(props) {
+      super(props)
 
-        this.state = {
-          message: 'Welcome to React world'
-        }
-      }
-
-      render() {
-        return (
-          <div>
-            <h1>{this.state.message}</h1>
-          </div>
-        )
+      this.state = {
+        message: 'Welcome to React world'
       }
     }
-    ```
-  ![](state.jpg)
 
-  **[⬆ 回顶部](#React清单)**
+    render() {
+      return (
+        <div>
+          <h1>{this.state.message}</h1>
+        </div>
+      )
+    }
+  }
+  ```
+![](state.jpg)
+
+**[⬆ 回顶部](#React清单)**
 
 9. ### 讲讲React中的props?
 
-    *Props* are inputs to components. They are single values or objects containing a set of values that are passed to components on creation using a naming convention similar to HTML-tag attributes. They are data passed down from a parent component to a child component.
+  *Props* 是组件的输入数据。它可能是一个字符串或者数字，或者是包含着很多数据的对象，它的写法就像 HTML 的标签属性一样。通常父组件给子组件传递数据时需要用到。
 
-    The primary purpose of props in React is to provide following component functionality:
+  它的功能如下
 
-    1. Pass custom data to your component.
-    2. Trigger state changes.
-    3. Use via `this.props.reactProp` inside component's `render()` method.
+  1. 传递自定义的数据到子组件
+  2. 传递函数，间接触发 父组件 state 的变化，使得子组件保持独立性
+  3. 在子组件中可通过类似于 `this.props.reactProp` 这样的方式调用 props 上的变量
 
-    For example, let us create an element with `reactProp` property:
+  比如创建一个有 `reactProp` 变量的 props:
 
-    ```jsx  
-    <Element reactProp={'1'} />
-    ```
+  ```jsx  
+  <Element reactProp={'1'} />
+  ```
 
-    This `reactProp` (or whatever you came up with) name then becomes a property attached to React's native props object which originally already exists on all components created using React library.
+  `reactProp` 就成为了 Element 组件上 props 的一个属性。
 
-    ```
-    props.reactProp
-    ```
+  ```
+  props.reactProp
+  ```
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 10. ### state与props有啥区别?
 
-    Both *props* and *state* are plain JavaScript objects. While both of them hold information that influences the output of render, they are different in their functionality with respect to component. Props get passed to the component similar to function parameters whereas state is managed within the component similar to variables declared within a function.
+  *props* 和 *state* 都是普通的 JS 对象，都包含着渲染相关的数据。它们的不同在于，组件的 props 就像函数的形参，组件的 state 就像函数内部的变量
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 11. ### 通过setState更新state要注意啥?
 
-    If you try to update state directly then it won't re-render the component.
+  如果你尝试直接修改 state 上的变量，并不会触发重新渲染
 
-    ```javascript
-    //Wrong
-    this.state.message = 'Hello world'
-    ```
+  ```javascript
+  //Wrong
+  this.state.message = 'Hello world'
+  ```
+  应该使用 `setState()` 方法更新 state
 
-    Instead use `setState()` method. It schedules an update to a component's state object. When state changes, the component responds by re-rendering.
+  ```javascript
+  //Correct
+  this.setState({ message: 'Hello World' })
+  ```
 
-    ```javascript
-    //Correct
-    this.setState({ message: 'Hello World' })
-    ```
+  **提示:** 只能在 *constructor* 函数中直接设置 state，这是 state 初始化的地方。
 
-    **Note:** The only place you can directly assign to the state object is in *constructor*.
-
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 12. ### setState中的回调是用来干啥的?
 
-    The callback function is invoked when setState finished and the component gets rendered. Since `setState()` is **asynchronous** the callback function is used for any post action.
+  当setState操作结束后且组件渲染更新后触发setState的回调函数，即在componentDidUpdate后触发。因为 `setState()` 是一步操作，因此可用于做一些后期操作。
 
-    **Note:** It is recommended to use lifecycle method rather than this callback function.
+  **提示:** 不推荐使用该回调函数，可以在生命周期方法中做更新之后的操作
 
-      ```javascript
-      setState({ name: 'John' }, () => console.log('The name has updated and component re-rendered'))
-      ```
+  ```javascript
+  setState({ name: 'John' }, () => console.log('The name has updated and component re-rendered'))
+  ```
 
 13. ### HTML和React的事件处理有啥区别?
 
-    1. In HTML, the event name should be in *lowercase*:
+  1. 在 HTML 中，事件名应该小写：
 
-    ```html
-    <button onclick='activateLasers()'>
-    ```
+  ```html
+  <button onclick='activateLasers()'>
+  ```
 
-    Whereas in React it follows *camelCase* convention:
+  而在 React 中，遵循的是驼峰原则：
 
-    ```jsx  
-    <button onClick={activateLasers}>
-    ```
+  ```jsx  
+  <button onClick={activateLasers}>
+  ```
 
-    2. In HTML, you can return `false` to prevent default behavior:
+  2. 在 HTML 中，可以通过 return `false` 阻止默认行为：
 
-    ```html
-    <a href='#' onclick='console.log("The link was clicked."); return false;' />
-    ```
+  ```html
+  <a href='#' onclick='console.log("The link was clicked."); return false;' />
+  ```
 
-    Whereas in React you must call `preventDefault()` explicitly:
+  而在 React 中，必须调用 `preventDefault()` 阻止：
 
-    ```javascript
-    function handleClick(event) {
-      event.preventDefault()
-      console.log('The link was clicked.')
-    }
-    ```
+  ```javascript
+  function handleClick(event) {
+    event.preventDefault()
+    console.log('The link was clicked.')
+  }
+  ```
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 14. ### 在JSX中咋绑定事件回调或者组件方法?
 
-    There are 3 possible ways to achieve this:
+  有三种方法
 
-    1.	**Binding in Constructor:** In JavaScript classes, the methods are not bound by default. The same thing applies for React event handlers defined as class methods. Normally we bind them in constructor.
+  1.	在类组件的构造方法中绑定。 通常的做法是在构造函数中绑定，因为这样只需要绑定一次
 
-      ```javascript
-      class Component extends React.Componenet {
-        constructor(props) {
-          super(props)
-          this.handleClick = this.handleClick.bind(this)
-        }
-
-        handleClick() {
-          // ...
-        }
+    ```javascript
+    class Component extends React.Componenet {
+      constructor(props) {
+        super(props)
+        this.handleClick = this.handleClick.bind(this)
       }
-      ```
 
-    2. **Public class fields syntax:** If you don't like to use bind approach then *public class fields syntax* can be used to correctly bind callbacks.
-
-      ```jsx  
-      handleClick = () => {
-        console.log('this is:', this)
+      handleClick() {
+        // ...
       }
-      ```
+    }
+    ```
 
-      ```jsx  
-      <button onClick={this.handleClick}>
-        {'Click me'}
-      </button>
-      ```
+  2. 类方法中使用箭头函数。箭头函数中的 this 指向的就是组件实例了
 
-    3. **Arrow functions in callbacks:** You can use *arrow functions* directly in the callbacks.
+    ```jsx
+    handleClick = () => {
+      console.log('this is:', this)
+    }
+    ```
 
-      ```jsx  
-      <button onClick={(event) => this.handleClick(event)}>
-        {'Click me'}
-      </button>
-      ```
+    ```jsx  
+    <button onClick={this.handleClick}>
+      {'Click me'}
+    </button>
+    ```
 
-    **Note:** If the callback is passed as prop to child components, those components might do an extra re-rendering. In those cases, it is preferred to go with `.bind()` or *public class fields syntax* approach considering performance.
+  3. 在事件回调中使用箭头函数绑定
 
-    **[⬆ 回顶部](#React清单)**
+    ```jsx  
+    <button onClick={(event) => this.handleClick(event)}>
+      {'Click me'}
+    </button>
+    ```
+
+  **[⬆ 回顶部](#React清单)**
 
 15. ### 咋给事件回调传参?
 
-    You can use an *arrow function* to wrap around an *event handler* and pass parameters:
+  可以在事件处理外包裹箭头函数，并将参数传入
 
-    ```jsx  
-    <button onClick={() => this.handleClick(id)} />
-    ```
+  ```jsx  
+  <button onClick={() => this.handleClick(id)} />
+  ```
 
-    This is an equivalent to calling `.bind`:
+  这和 `.bind` 是等价的
 
-    ```jsx  
-    <button onClick={this.handleClick.bind(this, id)} />
-    ```
+  ```jsx  
+  <button onClick={this.handleClick.bind(this, id)} />
+  ```
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 16. ### React中的合成事件是啥?
 
-    `SyntheticEvent` is a cross-browser wrapper around the browser's native event. It's API is same as the browser's native event, including `stopPropagation()` and `preventDefault()`, except the events work identically across all browsers.
+    `SyntheticEvent` 是一个跨浏览器原生事件包装器。 具有与浏览器原生事件相同的接口，包括 `stopPropagation()` 和 `preventDefault()` 等, 这些事件兼容所有的浏览器。
 
     **[⬆ 回顶部](#React清单)**
 
 17. ### React中的行列式条件表达式是啥?
 
-    You can use either *if statements* or *ternary expressions* which are available from JS to conditionally render expressions. Apart from these approaches, you can also embed any expressions in JSX by wrapping them in curly braces and then followed by JS logical operator `&&`.
+  JS 的写法可以通过 if 语句或者是三元表达式返回需要渲染的内容，JSX中则可用大括号包裹内容并加上逻辑操作 `&&`，当然也可以使用三元表达式，而不能使用 if 语句。
 
-    ```jsx  
-    <h1>Hello!</h1>
-    {
-      messages.length > 0 &&
-      <h2>
-        You have {messages.length} unread messages.
-      </h2>
-    }
-    ```
+  ```jsx  
+  <h1>Hello!</h1>
+  {
+    messages.length > 0 &&
+    <h2>
+      You have {messages.length} unread messages.
+    </h2>
+  }
+  ```
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
-    <!-- TODO: fix this section -->
 
 18. ### 在数组中key的作用是啥?
 
-    A `key` is a special string attribute you **should** include when creating arrays of elements. *Keys* help React identify which items have changed, are added, or are removed.
+  `key` 一般用在列表渲染中给每个 item 加上唯一的标识，这样可以帮助 React 识别哪些 item 是需要更新的，或者是新加的，或者应该删除的
 
-    Most often we use IDs from our data as *keys*:
+  ```jsx  
+  const todoItems = todos.map((todo) =>
+    <li key={todo.id}>
+      {todo.text}
+    </li>
+  )
+  ```
 
-    ```jsx  
-    const todoItems = todos.map((todo) =>
-      <li key={todo.id}>
-        {todo.text}
-      </li>
-    )
-    ```
+  当列表中没有唯一的ID作为 key，可以使用 index 作为最终的方案，但是有一定的风险。
 
-    When you don't have stable IDs for rendered items, you may use the item *index* as a *key* as a last resort:
+  ```jsx  
+  const todoItems = todos.map((todo, index) =>
+    <li key={index}>
+      {todo.text}
+    </li>
+  )
+  ```
 
-    ```jsx  
-    const todoItems = todos.map((todo, index) =>
-      <li key={index}>
-        {todo.text}
-      </li>
-    )
-    ```
+  **提示:**
 
-    **Note:**
+  1. 不推荐在动态列表中使用 index 作为 key，可能会影响组件的渲染性能
+  2. 如果 item 被单独抽取出来作为一个组件，应该将key加在这个组件上而不是里面的 li 标签上
+  3. 如果不加 key，会有 console 提示
 
-    1. Using *indexes* for *keys* is **not recommended** if the order of items may change. This can negatively impact performance and may cause issues with component state.
-    2. If you extract list item as separate component then apply *keys* on list component instead of `li` tag.
-    3. There will be a warning message in the console if the `key` prop is not present on list items.
-
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 19. ### refs是啥?
 
-    The *ref* is used to return a reference to the element. They *should be avoided* in most cases, however, they can be useful when you need a direct access to the DOM element or an instance of a component.
+  *ref* 用来获取元素实例。有时要获取DOM元素或者组件实例还是很有用的
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 20. ### 咋创建refs?
 
-    There are two approaches
-    1. This is a recently added approach. *Refs* are created using `React.createRef()` method and attached to React elements via the `ref` attribute. In order to use *refs* throughout the component, just assign the *ref* to the instance property within constructor.
-    ```jsx  
-    class MyComponent extends React.Component {
+  有两种方法
+  1. 通过 `React.createRef()` 创建实例，并将该实例挂载到元素的 `ref` 属性上。要在整个组件中使用，则在组件的构造函数创建即可
+  ```jsx  
+  class MyComponent extends React.Component {
+    constructor(props) {
+      super(props)
+      this.myRef = React.createRef()
+    }
+    render() {
+      return <div ref={this.myRef} />
+    }
+  }
+  ```
+  2. 也可以通过 ref 回调函数来创建
+  ```jsx  
+  class SearchBar extends Component {
       constructor(props) {
-        super(props)
-        this.myRef = React.createRef()
+        super(props);
+        this.txtSearch = null;
+        this.state = { term: '' };
+        this.setInputSearchRef = e => {
+            this.txtSearch = e;
+        }
+      }
+      onInputChange(event) {
+        this.setState({ term: this.txtSearch.value });
       }
       render() {
-        return <div ref={this.myRef} />
+        return (
+            <input
+              value={this.state.term}
+              onChange={this.onInputChange.bind(this)}
+              ref={this.setInputSearchRef} />
+        );
       }
-    }
-    ```
-    2. You can also use ref callbacks approach regardless of React version. For example, the search bar component's input element accessed as follows,
-    ```jsx  
-    class SearchBar extends Component {
-       constructor(props) {
-          super(props);
-          this.txtSearch = null;
-          this.state = { term: '' };
-          this.setInputSearchRef = e => {
-             this.txtSearch = e;
-          }
-       }
-       onInputChange(event) {
-          this.setState({ term: this.txtSearch.value });
-       }
-       render() {
-          return (
-             <input
-                value={this.state.term}
-                onChange={this.onInputChange.bind(this)}
-                ref={this.setInputSearchRef} />
-          );
-       }
-    }
-    ```
+  }
+  ```
 
-    You can also use *refs* in function components using **closures**.
-    **Note**: You can also use inline ref callbacks even though it is not a recommended approach
+  当然将箭头函数的回调放在元素上能达到同样的效果
+  **提示**: 官方不推荐创建字符串类型的 ref，可能会导致一些问题
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 21. ### forwardRefs又是啥?
 
-    *Ref forwarding* is a feature that lets some components take a *ref* they receive, and pass it further down to a child.
+  *Ref forwarding* 可以将创建的 ref 传递到子组件，然后可以在父组件获取该 ref 绑定的元素
 
-    ```jsx  
-    const ButtonElement = React.forwardRef((props, ref) => (
-      <button ref={ref} className="CustomButton">
-        {props.children}
-      </button>
-    ));
+  ```jsx  
+  const ButtonElement = React.forwardRef((props, ref) => (
+    <button ref={ref} className="CustomButton">
+      {props.children}
+    </button>
+  ));
 
-    // Create ref to the DOM button:
-    const ref = React.createRef();
-    <ButtonElement ref={ref}>{'Forward Ref'}</ButtonElement>
+  // Create ref to the DOM button:
+  const ref = React.createRef();
+  <ButtonElement ref={ref}>{'Forward Ref'}</ButtonElement>
     ```
 
     **[⬆ 回顶部](#React清单)**
 
 22. ### CallbackRefs和findDOMNode咋选择?
 
-    It is preferred to use *callback refs* over `findDOMNode()` API. Because `findDOMNode()` prevents certain improvements in React in the future.
+    `findDOMNode()` 获取的是真实的DOM，而 ref 既可以获取真实 DOM，也可以
 
-    The **legacy** approach of using `findDOMNode`:
+    `findDOMNode` 方式:
 
     ```javascript
     class MyComponent extends Component {
@@ -680,7 +672,7 @@ categories: 前端
     }
     ```
 
-    The recommended approach is:
+    推荐的 ref 方式:
 
     ```javascript
     class MyComponent extends Component {
@@ -698,50 +690,50 @@ categories: 前端
 
 23. ### 为什么不建议创建String类型的refs?
 
-    If you worked with React before, you might be familiar with an older API where the `ref` attribute is a string, like `ref={'textInput'}`, and the DOM node is accessed as `this.refs.textInput`. We advise against it because *string refs have below issues*, and are considered legacy. String refs were **removed in React v16**.
+  React 中还有一个创建 ref 的方式如 `ref={'textInput'}`，通过 `this.refs.textInput` 可访问该元素。但是不建议通过这种方式创建 ref，它有下面几个问题。并且 React16 也将废弃这种方式。
 
-    1. They *force React to keep track of currently executing component*. This is problematic because it makes react module stateful, and thus causes weird errors when react module is duplicated in the bundle.
-    2. They are *not composable* — if a library puts a ref on the passed child, the user can't put another ref on it. Callback refs are perfectly composable.
-    3. They *don't work with static analysis* like Flow. Flow can't guess the magic that framework does to make the string ref appear on `this.refs`, as well as its type (which could be different). Callback refs are friendlier to static analysis.
-    4. It doesn't work as most people would expect with the "render callback" pattern (e.g. <DataGrid renderRow={this.renderRow} />)
-       ```jsx  
-       class MyComponent extends Component {
-         renderRow = (index) => {
-           // This won't work. Ref will get attached to DataTable rather than MyComponent:
-           return <input ref={'input-' + index} />;
+  1. They *force React to keep track of currently executing component*. This is problematic because it makes react module stateful, and thus causes weird errors when react module is duplicated in the bundle.
+  2. They are *not composable* — if a library puts a ref on the passed child, the user can't put another ref on it. Callback refs are perfectly composable.
+  3. They *don't work with static analysis* like Flow. Flow can't guess the magic that framework does to make the string ref appear on `this.refs`, as well as its type (which could be different). Callback refs are friendlier to static analysis.
+  4. It doesn't work as most people would expect with the "render callback" pattern (e.g. <DataGrid renderRow={this.renderRow} />)
+      ```jsx  
+      class MyComponent extends Component {
+        renderRow = (index) => {
+          // This won't work. Ref will get attached to DataTable rather than MyComponent:
+          return <input ref={'input-' + index} />;
 
-           // This would work though! Callback refs are awesome.
-           return <input ref={input => this['input-' + index] = input} />;
-         }
+          // This would work though! Callback refs are awesome.
+          return <input ref={input => this['input-' + index] = input} />;
+        }
 
-         render() {
-           return <DataTable data={this.props.data} renderRow={this.renderRow} />
-         }
-       }
-       ```
+        render() {
+          return <DataTable data={this.props.data} renderRow={this.renderRow} />
+        }
+      }
+      ```
 
-       **[⬆ 回顶部](#React清单)**
+      **[⬆ 回顶部](#React清单)**
 
 24. ### 简单介绍下虚拟DOM?
 
-    The *Virtual DOM* (VDOM) is an in-memory representation of *Real DOM*. The representation of a UI is kept in memory and synced with the "real" DOM. It's a step that happens between the render function being called and the displaying of elements on the screen. This entire process is called *reconciliation*.
+  *虚拟DOM* (VDOM)是*真实DOM*的一种表达方式，并且会和真实的DOM同步更新。虚拟DOM的运行机制是发生在 render 函数被调用和页面视觉发生更新之间，这个过程叫做 *reconciliation* 即调和阶段。
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 25. ### 虚拟DOM的原理是啥?
 
-    The *Virtual DOM* works in three simple steps.
+  *虚拟DOM* 的运行流程分为三步
 
-    1. Whenever any underlying data changes, the entire UI is re-rendered in Virtual DOM representation.
-        ![](vdom1.png)
+  1. 当下面的任何数据发生变化时，对应的虚拟DOM会同步变化
+      ![](vdom1.png)
 
-    2. Then the difference between the previous DOM representation and the new one is calculated.
-        ![](vdom2.png)
+  2. 接着便是 diff，对之前的虚拟DOM和最新的虚拟DOM做对比
+      ![](vdom2.png)
 
-    3. Once the calculations are done, the real DOM will be updated with only the things that have actually changed.
-        ![](vdom3.png)
+  3. diff 完成后，只更新真实DOM中真正发生变化的部分
+      ![](vdom3.png)
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 26. ### ShadowDOM和VirtualDOM有啥区别?
 
@@ -751,66 +743,66 @@ categories: 前端
 
 27. ### 讲讲ReactFiber?
 
-    Fiber is the new *reconciliation* engine or reimplementation of core algorithm in React v16. The goal of React Fiber is to increase its suitability for areas like animation, layout, gestures, ability to pause, abort, or reuse work and assign priority to different types of updates; and new concurrency primitives.
+  Fiber 是 React16 中一种的新的调和机制。它的设计目的是为了解决的场景包括页面动画、布局、手势、中止及暂停能力，这些在 React16 之前可能会造成页面卡顿，并且会给这些任务分配优先级，以优化这些场景的页面体验。
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 28. ### ReactFiber的设计理念是啥?
 
-    The goal of *React Fiber* is to increase its suitability for areas like animation, layout, and gestures. Its headline feature is **incremental rendering**: the ability to split rendering work into chunks and spread it out over multiple frames.
+  *React Fiber*的设计目的是为了解决场景包括页面动画、布局、手势的卡顿现象。它的核心思想是分片渲染，即将渲染任务分成一系列小的任务，并分配到多个帧中去执行，以充分利用空闲帧，减少卡顿。
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 29. ### 啥是可控组件?
 
-    A component that controls the input elements within the forms on subsequent user input is called **Controlled Component**, i.e, every state mutation will have an associated handler function.
+  可控组件中的数据和组件的 state 挂钩，便于处理和获取
 
-    For example, to write all the names in uppercase letters, we use handleChange as below,
+  比如下面栗子在input的输入回调中处理输入的数据，存入state中
 
-    ```javascript
-    handleChange(event) {
-      this.setState({value: event.target.value.toUpperCase()})
-    }
-    ```
+  ```javascript
+  handleChange(event) {
+    this.setState({value: event.target.value.toUpperCase()})
+  }
+  ```
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 30. ### 啥是不可控组件?
 
-    The **Uncontrolled Components** are the ones that store their own state internally, and you query the DOM using a ref to find its current value when you need it. This is a bit more like traditional HTML.
+  不可控组件则需要操作原生DOM才可获取元素的数据，通过会绑定ref获取原生DOM。
 
-    In the below UserProfile component, the `name` input is accessed using ref.
+  下面的栗子中, 获取input中的值是通过ref来获取，和可控组件通过state方式不同
 
-    ```jsx  
-    class UserProfile extends React.Component {
-      constructor(props) {
-        super(props)
-        this.handleSubmit = this.handleSubmit.bind(this)
-        this.input = React.createRef()
-      }
-
-      handleSubmit(event) {
-        alert('A name was submitted: ' + this.input.current.value)
-        event.preventDefault()
-      }
-
-      render() {
-        return (
-          <form onSubmit={this.handleSubmit}>
-            <label>
-              {'Name:'}
-              <input type="text" ref={this.input} />
-            </label>
-            <input type="submit" value="Submit" />
-          </form>
-        );
-      }
+  ```jsx  
+  class UserProfile extends React.Component {
+    constructor(props) {
+      super(props)
+      this.handleSubmit = this.handleSubmit.bind(this)
+      this.input = React.createRef()
     }
-    ```
 
-    In most cases, it's recommend to use controlled components to implement forms.
+    handleSubmit(event) {
+      alert('A name was submitted: ' + this.input.current.value)
+      event.preventDefault()
+    }
 
-    **[⬆ 回顶部](#React清单)**
+    render() {
+      return (
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            {'Name:'}
+            <input type="text" ref={this.input} />
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
+      );
+    }
+  }
+  ```
+
+  大多数情况下，建议通过可控组件来获取表单类的数据
+
+  **[⬆ 回顶部](#React清单)**
 
 31. ### createElement与cloneElement有啥区别?
 
