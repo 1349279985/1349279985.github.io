@@ -56,16 +56,16 @@ categories: 前端
 |35 | [HOC是啥?](#HOC是啥) |
 |36 | [在HOC组件中咋创建props代理?](#在HOC组件中咋创建props代理) |
 |37 | [讲讲React中的context?](#讲讲React中的context) |
-|38 | [React中的children的prop是啥?](#React中的children的prop是啥) |
+|38 | [React中children的prop是啥?](#React中children的prop是啥) |
 |39 | [React中怎么注释代码?](#React中怎么注释代码) |
 |40 | [在构造函数中使用super函数有啥作用?](#在构造函数中使用super函数有啥作用) |
 |41 | [讲讲reconciliation?](#讲讲reconciliation) |
 |42 | [setState中咋使用动态的key?](#setState中咋使用动态的key) |
 |43 | [函数被作为props传递给组件有啥常见问题?](#函数被作为props传递给组件有啥常见问题) |
-|44 | [React的lazy引入组件支持修改组件名吗?](#React的lazy引入组件支持修改组件名吗) |
+|44 | [React的lazy支持引入多个组件中一个吗?](#React的lazy支持引入多个组件中一个吗) |
 |45 | [为啥React使用className而不是class属性?](#为啥React使用className而不是class属性) |
 |46 | [讲讲fragments?](#讲讲fragments) |
-|47 | [为啥fragments比通过div包裹要好?](#为啥fragments比通过div包裹要好) |
+|47 | [为啥fragments比div包裹要好?](#为啥fragments比div包裹要好) |
 |48 | [React中的Portals是啥?](#React中的Portals是啥) |
 |49 | [啥是无状态组件?](#啥是无状态组件) |
 |50 | [啥是状态型组件?](#啥是状态型组件) |
@@ -806,236 +806,253 @@ categories: 前端
 
 31. ### createElement与cloneElement有啥区别?
 
-    JSX elements will be transpiled to `React.createElement()` functions to create React elements which are going to be used for the object representation of UI. Whereas `cloneElement` is used to clone an element and pass it new props.
+  JSX elements will be transpiled to `React.createElement()` functions to create React elements which are going to be used for the object representation of UI. Whereas `cloneElement` is used to clone an element and pass it new props.
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 32. ### React中state中的数据共享是啥?
 
-    When several components need to share the same changing data then it is recommended to *lift the shared state up* to their closest common ancestor. That means if two child components share the same data from its parent, then move the state to parent instead of maintaining local state in both of the child components.
+  当几个组件需要共享同一个数据的时候，推荐的做法是将该数据提升到它们共同的父级，而不是将该数据保存在各自组件中。
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 33. ### 讲讲组件的生命周期?
 
-    There are four different phases of component lifecycle.
+  有四种不同的阶段。
 
-    1. **Initialization:** In this phase component prepares setting up the initial state and default props.
+  1. **Initialization:** 这个阶段中，组件开始创建初始的 state 及 默认的 props。
 
-    2. **Mounting:** The component is ready to mount in the browser DOM. This phase covers `componentWillMount()` and `componentDidMount()` lifecycle methods.
+  2. **Mounting:** 组件即将挂载到真实的DOM上。这个阶段包括 `componentWillMount()` 和 `componentDidMount()` 生命周期方法。
 
-    3. **Updating:** In this phase, the component get updated in two ways, sending the new props and updating the state. This phase covers `shouldComponentUpdate()`, `componentWillUpdate()` and `componentDidUpdate()` lifecycle methods.
+  3. **Updating:** 这个阶段，组件有两种更新方式包括传递新的props或者改变state。该阶段包括 `shouldComponentUpdate()`, `componentWillUpdate()` 和 `componentDidUpdate()` 生命周期方法。
 
-    4. **Unmounting:** In this last phase, the component is not needed and get unmounted from the browser DOM. This phase includes `componentWillUnmount()` lifecycle method.
-        ![](phases.png)
+  4. **Unmounting:** 这个是组件从 DOM 中销毁时触发的阶段， 包括 `componentWillUnmount()` 生命周期函数。
+      ![](phases.png)
 
-    **[⬆ 回顶部](#React清单)**
-    <!-- TODO: new lifecycle methods in React v16 -->
+  **[⬆ 回顶部](#React清单)**
+  <!-- TODO: new lifecycle methods in React v16 -->
 
 34. ### React有哪些生命周期钩子?
 
-    - **componentWillMount:** Executed before rendering and is used for App level configuration in your root component.
-    - **componentDidMount:** Executed after first rendering and here all AJAX requests, DOM or state updates, and set up event listeners should occur.
-    - **componentWillReceiveProps:** Executed when particular prop updates to trigger state transitions.
-    - **shouldComponentUpdate:** Determines if the component will be updated or not. By default it returns true. If you are sure that the component doesn't need to render after state or props are updated, you can return false value. It is a great place to improve performance as it allows you to prevent a re-render if component receives new prop.
-    - **componentWillUpdate:** Executed before re-rendering the component when there are props & state changes confirmed by `shouldComponentUpdate()` which returns true.
-    - **componentDidUpdate:** Mostly it is used to update the DOM in response to prop or state changes.
-    - **componentWillUnmount:** It will be used to cancel any outgoing network requests, or remove all event listeners associated with the component.
+  后期补充 React16 钩子
 
-    <!-- TODO: new lifecycle methods in React v16 -->
-    **[⬆ 回顶部](#React清单)**
+  - **componentWillMount:** 在 render 之前触发，仅触发一次。常用于组件级别的配置工作。React16中废弃了该方法。
+  - **componentDidMount:** 在 第一次 render 之后执行，常用于 AJAX 请求、DOM 或者 state 更新以及事件的监听。
+  - **componentWillReceiveProps:** 在 props 发生变化之前触发，常用于将 props 转化为 state。
+  - **shouldComponentUpdate:** 决定了组件是否更新。默认返回true触发更新。如果确定某些 state 或者 props 的改变不需要触发重新渲染，则可以返回false来阻止更新。常用于组件的渲染性能提升。
+  - **componentWillUpdate:** 当组件重新渲染时，并且在 `shouldComponentUpdate()` 返回 true 之后触发。
+  - **componentDidUpdate:** 当组件更新之后触发，即在更新 render 之后将真实的 DOM 渲染到页面上。
+  - **componentWillUnmount:** 当组件即将销毁时触发。常用于网络请求或者移除当前组件所有的事件监听。
+
+  <!-- TODO: new lifecycle methods in React v16 -->
+  **[⬆ 回顶部](#React清单)**
 
 35. ### HOC是啥?
 
-    A *higher-order component* (*HOC*) is a function that takes a component and returns a new component. Basically, it's a pattern that is derived from React's compositional nature.
+  高阶组件是一个函数，接受一个组件作为入参，通过处理后返回一个新的组件。
 
-    We call them **pure components** because they can accept any dynamically provided child component but they won't modify or copy any behavior from their input components.
+  通常也叫做纯粹型组件。因为它接受任何组件但并不会修改或者复制该组件的任何行为。
 
-    ```javascript
-    const EnhancedComponent = higherOrderComponent(WrappedComponent)
-    ```
+  ```javascript
+  const EnhancedComponent = higherOrderComponent(WrappedComponent)
+  ```
 
-    HOC can be used for many use cases:
+  HOC 常用于以下几个方面
 
-    1. Code reuse, logic and bootstrap abstraction.
-    2. Render hijacking.
-    3. State abstraction and manipulation.
-    4. Props manipulation.
+  1. Code reuse, logic and bootstrap abstraction.
+  2. Render hijacking.
+  3. State abstraction and manipulation.
+  4. Props manipulation.
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 36. ### 在HOC组件中咋创建props代理?
 
-    You can add/edit props passed to the component using *props proxy* pattern like this:
+  使用 props 代理模式可以添加或者修改输入组件的 props
 
-    ```jsx  
-    function HOC(WrappedComponent) {
-      return class Test extends Component {
-        render() {
-          const newProps = {
-            title: 'New Header',
-            footer: false,
-            showFeatureX: false,
-            showFeatureY: true
-          }
-
-          return <WrappedComponent {...this.props} {...newProps} />
+  ```jsx  
+  function HOC(WrappedComponent) {
+    return class Test extends Component {
+      render() {
+        const newProps = {
+          title: 'New Header',
+          footer: false,
+          showFeatureX: false,
+          showFeatureY: true
         }
+
+        return <WrappedComponent {...this.props} {...newProps} />
       }
     }
-    ```
+  }
+  ```
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 37. ### 讲讲React中的context?
 
-    *Context* provides a way to pass data through the component tree without having to pass props down manually at every level. For example, authenticated user, locale preference, UI theme need to be accessed in the application by many components.
+  Context 提供了一种自上而下跨多层级传递数据的方式，而不是 props 形式一层一层传递。适用于数据需要多个组件访问的场景如用户权限、UI主题等。
 
-    ```javascript
-    const {Provider, Consumer} = React.createContext(defaultValue)
-    ```
+  ```javascript
+  const {Provider, Consumer} = React.createContext(defaultValue)
+  ```
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
-38. ### React中的children的prop是啥?
+38. ### React中children的prop是啥?
 
-    *Children* is a prop (`this.prop.children`) that allow you to pass components as data to other components, just like any other prop you use. Component tree put between component's opening and closing tag will be passed to that component as `children` prop.
+  *Children* 是 prop 上的一个属性 (`this.prop.children`)，用来将组件作为数据传递给其他组件，和 props 的性质一样。组件的起始和闭合标签之间的部分就是 *Children*，在组件中可以通过 `this.prop.children` 访问到。
 
-    There are a number of methods available in the React API to work with this prop. These include `React.Children.map`, `React.Children.forEach`, `React.Children.count`, `React.Children.only`, `React.Children.toArray`.
-    A simple usage of children prop looks as below,
+  这种类型的 prop 有很多相关 API 包括 `React.Children.map`, `React.Children.forEach`, `React.Children.count`, `React.Children.only`, `React.Children.toArray`。
+  下面是一个简单的栗子
 
-    ```jsx  
-    const MyDiv = React.createClass({
-      render: function() {
-        return <div>{this.props.children}</div>
-      }
-    })
+  ```jsx  
+  const MyDiv = React.createClass({
+    render: function() {
+      return <div>{this.props.children}</div>
+    }
+  })
 
-    ReactDOM.render(
-      <MyDiv>
-        <span>{'Hello'}</span>
-        <span>{'World'}</span>
-      </MyDiv>,
-      node
-    )
-    ```
+  ReactDOM.render(
+    <MyDiv>
+      <span>{'Hello'}</span>
+      <span>{'World'}</span>
+    </MyDiv>,
+    node
+  )
+  ```
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 39. ### React中怎么注释代码?
 
-    The comments in React/JSX are similar to JavaScript Multiline comments but are wrapped in curly braces.
+  JSX 中的注释类似于 JavaScript 的多行注释，然后再用大括号包裹起来即可
 
-    **Single-line comments:**
+  **Single-line comments:**
 
-    ```jsx  
-    <div>
-      {/* Single-line comments(In vanilla JavaScript, the single-line comments are represented by double slash(//)) */}
-      {`Welcome ${user}, let's play React`}
-    </div>
-    ```
+  ```jsx  
+  <div>
+    {/* Single-line comments(In vanilla JavaScript, the single-line comments are represented by double slash(//)) */}
+    {`Welcome ${user}, let's play React`}
+  </div>
+  ```
 
-    **Multi-line comments:**
+  **Multi-line comments:**
 
-    ```jsx  
-    <div>
-      {/* Multi-line comments for more than
-       one line */}
-      {`Welcome ${user}, let's play React`}
-    </div>
-    ```
+  ```jsx  
+  <div>
+    {/* Multi-line comments for more than
+      one line */}
+    {`Welcome ${user}, let's play React`}
+  </div>
+  ```
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 40. ### 在构造函数中使用super(props)有啥作用?
 
-    A child class constructor cannot make use of `this` reference until `super()` method has been called. The same applies for ES6 sub-classes as well. The main reason of passing props parameter to `super()` call is to access `this.props` in your child constructors.
+  在子组件构造函数中调用了 `super()` 之后才可访问到 this。传递 props 给 `super()` 是为了在组件构造函数中能访问到 `this.props` 
 
-    **Passing props:**
+  **传 props:**
 
-    ```javascript
-    class MyComponent extends React.Component {
-      constructor(props) {
-        super(props)
+  ```javascript
+  class MyComponent extends React.Component {
+    constructor(props) {
+      super(props)
 
-        console.log(this.props) // prints { name: 'John', age: 42 }
-      }
+      console.log(this.props) // prints { name: 'John', age: 42 }
     }
-    ```
+  }
+  ```
 
-    **Not passing props:**
+  **不传 props:**
 
-    ```javascript
-    class MyComponent extends React.Component {
-      constructor(props) {
-        super()
+  ```javascript
+  class MyComponent extends React.Component {
+    constructor(props) {
+      super()
 
-        console.log(this.props) // prints undefined
+      console.log(this.props) // prints undefined
 
-        // but props parameter is still available
-        console.log(props) // prints { name: 'John', age: 42 }
-      }
-
-      render() {
-        // no difference outside constructor
-        console.log(this.props) // prints { name: 'John', age: 42 }
-      }
+      // but props parameter is still available
+      console.log(props) // prints { name: 'John', age: 42 }
     }
-    ```
 
-    The above code snippets reveals that `this.props` is different only within the constructor. It would be the same outside the constructor.
+    render() {
+      // no difference outside constructor
+      console.log(this.props) // prints { name: 'John', age: 42 }
+    }
+  }
+  ```
+  上面的栗子说明，在构造函数中 `super()` 不传 props，也能在组件构造函数外访问到 `this.props`
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 41. ### 讲讲reconciliation?
 
-    When a component's props or state change, React decides whether an actual DOM update is necessary by comparing the newly returned element with the previously rendered one. When they are not equal, React will update the DOM. This process is called *reconciliation*.
+  当组件的 props 或者 state 变化的时候，React 通过对比 render 之后新的组件元素和变化前的组件元素来决定真实DOM元素是否需要更新，当元素变化前后不一致时则会触发DOM的更新，这个过程叫*调和*。
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 42. ### setState中咋使用动态的key?
 
-    If you are using ES6 or the Babel transpiler to transform your JSX code then you can accomplish this with *computed property names*.
+  ```javascript
+  handleInputChange(event) {
+    this.setState({ [event.target.id]: event.target.value })
+  }
+  ```
 
-    ```javascript
-    handleInputChange(event) {
-      this.setState({ [event.target.id]: event.target.value })
-    }
-    ```
-
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 43. ### 函数被作为props传递给组件有啥常见问题?
 
-    You need to make sure that function is not being called while passing the function as a parameter.
+  传递给组件时不能是函数的调用状态。
 
-    ```jsx  
-    render() {
-      // Wrong: handleClick is called instead of passed as a reference!
-      return <button onClick={this.handleClick()}>{'Click Me'}</button>
-    }
-    ```
+  ```jsx  
+  render() {
+    // Wrong: handleClick is called instead of passed as a reference!
+    return <button onClick={this.handleClick()}>{'Click Me'}</button>
+  }
+  ```
 
-    Instead, pass the function itself without parenthesis:
+  而应该是这样
 
-    ```jsx  
-    render() {
-      // Correct: handleClick is passed as a reference!
-      return <button onClick={this.handleClick}>{'Click Me'}</button>
-    }
-    ```
+  ```jsx  
+  render() {
+    // Correct: handleClick is passed as a reference!
+    return <button onClick={this.handleClick}>{'Click Me'}</button>
+  }
+  ```
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
-44. ### React的lazy引入组件支持修改组件名吗?
+44. ### React的lazy支持引入多个组件中一个吗?
 
-    It is necessary because components are not DOM elements, they are constructors. Also, in JSX lowercase tag names are referring to HTML elements, not components.
+  不支持。目前 React.lazy 只支持引入默认的一个组件。如果想要引入多个组件中的一个，则可以通过一个文件作为中间过度。据一个栗子。
 
-    **[⬆ 回顶部](#React清单)**
+  ```jsx  
+  // MoreComponents.js
+  export const SomeComponent = /* ... */;
+  export const UnusedComponent = /* ... */;
+  ```
+  再在 MoreComponents.js 中引入需要的那个组件
+
+  ```jsx  
+  // IntermediateComponent.js
+  export { SomeComponent as default } from "./MoreComponents.js";
+  ```
+  最后再通过 lazy 引入该组件
+
+  ```jsx  
+  import React, { lazy } from 'react';
+  const SomeComponent = lazy(() => import("./IntermediateComponent.js"));
+  ```
+
+  **[⬆ 回顶部](#React清单)**
 
 45. ### 为啥React使用className而不是class属性?
 
-    `class` is a keyword in JavaSript, and JSX is an extension of JavaScript. That's the principal reason why React uses `className` instead of `class`. Pass a string as the `className` prop.
+    `class` 是 JavaSript 中的保留关键字， 而 JSX 又是 JavaSript 的一种扩展，需要遵循这个规则，因此不能使用 class 属性。
 
     ```jsx  
     render() {
@@ -1047,39 +1064,42 @@ categories: 前端
 
 46. ### 讲讲fragments?
 
-    It's common pattern in React which is used for a component to return multiple elements. *Fragments* let you group a list of children without adding extra nodes to the DOM.
+  React 中的组件常常需要返回一组元素，这种情况下使用 *Fragments* 包裹这组元素，不需要添加额外的标签。
 
-    ```jsx  
-    render() {
-      return (
-        <React.Fragment>
-          <ChildA />
-          <ChildB />
-          <ChildC />
-        </React.Fragment>
-      )
-    }
-    ```
+  ```jsx  
+  render() {
+    return (
+      <React.Fragment>
+        <ChildA />
+        <ChildB />
+        <ChildC />
+      </React.Fragment>
+    )
+  }
+  ```
 
-    There is also a *shorter syntax*, but it's not supported in many tools:
+  也有简写语法， 但是兼容心不是很好
 
-    ```jsx  
-    render() {
-      return (
-        <>
-          <ChildA />
-          <ChildB />
-          <ChildC />
-        </>
-      )
-    }
-    ```
+  ```jsx  
+  render() {
+    return (
+      <>
+        <ChildA />
+        <ChildB />
+        <ChildC />
+      </>
+    )
+  }
+  ```
 
-47. ### 为啥fragments比通过div包裹要好?
+  其实 *Fragments* 不一定要包裹多个元素，包裹一个也是同样的道理。
 
-  1. Fragments are a bit faster and use less memory by not creating an extra DOM node. This only has a real benefit on very large and deep trees.
-  2. Some CSS mechanisms like *Flexbox* and *CSS Grid* have a special parent-child relationships, and adding divs in the middle makes it hard to keep the desired layout.
-  3. The DOM Inspector is less cluttered.
+  **[⬆ 回顶部](#React清单)**
+
+47. ### 为啥fragments比div包裹要好?
+
+  1. Fragments 不需要创建额外的DOM元素，也就不需要内存，所以创建更快。只在规模大的组件中会有真正的影响。
+  2. 某些CSS布局模式如 *Flexbox* 和 *CSS Grid* 需要元素间有特定的父子关系，而用 div 包裹会破坏这种关系。
 
   **[⬆ 回顶部](#React清单)**
 
@@ -1097,28 +1117,29 @@ categories: 前端
 
 49. ### 啥是无状态组件?
 
-    If the behaviour is independent of its state then it can be a stateless component. You can use either a function or a class for creating stateless components. But unless you need to use a lifecycle hook in your components, you should go for function components. There are a lot of benefits if you decide to use function components here; they are easy to write, understand, and test, a little faster, and you can avoid the `this` keyword altogether.
+  如果组件内不需要维护状态，则就是无状态组件即没有state的组件。可以是函数组件也可以是类组件。除非需要在组件中使用生命周期函数，则建议使用函数组件，不仅容易编写，也容易理解，并且容易测试，相比类组件也会更快一点，同时不需要绑定 this。
 
-    **[⬆ 回顶部](#React清单)**
+  **[⬆ 回顶部](#React清单)**
 
 50. ### 啥是状态型组件?
 
-    If the behaviour of a component is dependent on the *state* of the component then it can be termed as stateful component. These *stateful components* are always *class components* and have a state that gets initialized in the `constructor`.
+  如果组件的行为依赖于状态，则就是状态型组件即有state的组件。通常这些状态型组件是类组件，并且有一个初始化 state 的构造函数。
 
-    ```javascript
-    class App extends Component {
-      constructor(props) {
-        super(props)
-        this.state = { count: 0 }
-      }
-
-      render() {
-        // ...
-      }
+  ```javascript
+  class App extends Component {
+    constructor(props) {
+      super(props)
+      this.state = { count: 0 }
     }
-    ```
 
-    **[⬆ 回顶部](#React清单)**
+    render() {
+      // ...
+    }
+  }
+  ```
+  而 React16 中有了 Hooks 后，也能在函数组件中创建状态型组件。
+
+  **[⬆ 回顶部](#React清单)**
 
 51. ### React中咋检查props变量类型?
 
