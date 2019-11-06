@@ -118,7 +118,7 @@
 <meta property="og:image" content="https://1349279985.github.io/实战写一个实际项目中的PostCss插件/2.png">
 <meta property="og:image" content="https://1349279985.github.io/实战写一个实际项目中的PostCss插件/3.png">
 <meta property="og:image" content="https://1349279985.github.io/实战写一个实际项目中的PostCss插件/4.png">
-<meta property="og:updated_time" content="2019-11-06T17:30:41.346Z">
+<meta property="og:updated_time" content="2019-11-06T17:34:50.519Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="实战写一个实际项目中的PostCss插件">
 <meta name="twitter:description" content="PostCss 是个好工具，基于它转换的 AST 可以做很多有趣的东西，这篇文章从一个实际的需求出发，教大家写一个可应用于 webapck 打包过程中 PostCss 插件，提供一种自动化处理 css 样式的思路。">
@@ -430,7 +430,7 @@
 
 <h2 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h2><p>在后台前端应用的开发中，经常会用到各类 <strong>UI</strong> 组件库，假如项目中用到了知名的 <a href="https://ant.design/docs/react/customize-theme-cn" target="_blank" rel="noopener"><strong>antd</strong></a>，但是需要对应用的各个基础组件做一次换肤，而 <strong>antd</strong> 只有定制化的几种色号可选，这次要做的是将基础组件的色号都换成美团黄，所以 <strong>antd</strong> 没法满足需求。当然我们可以在样式表中手动改写 <strong>antd</strong> 的样式以达到目标，但是这并不方便。我们沿着自动化的思路想，可以在打包过程中对所有样式做统一处理并做一层转换，而样式的解析转换刚好是 <strong>loader</strong> 的工作，在此实现这一思路会非常合适。</p>
 <p><img src="1.png" alt></p>
-<h2 id="开发思路"><a href="#开发思路" class="headerlink" title="开发思路"></a>开发思路</h2><p>在项目中经常会用到 <strong>PostCss</strong> 做一些插件化的事情包括 <strong>AutoPrefixer</strong> 等，<strong>PostCss</strong> 会将 <strong>css</strong> 样式转为 <strong>AST</strong> 树方便处理，基于此可以对 <strong>AST</strong> 上的节点信息做一些处理以贴合本次的需求。如下是一个 <strong>PostCss</strong> 转换 <strong>css</strong> 的一个示例。</p>
+<h2 id="开发思路"><a href="#开发思路" class="headerlink" title="开发思路"></a>开发思路</h2><p>在项目中经常会用到 <strong>PostCss</strong> 做一些插件化的事情包括 <strong>AutoPrefixer</strong> 等，<strong>PostCss</strong> 会将 <strong>css</strong> 样式转为 <strong>AST</strong> 树方便处理，基于此可以对 <strong>AST</strong> 上的节点信息做一些处理以贴合本次的需求。如下是一个 <strong>PostCss</strong> 转换 <strong>css</strong> 的一个示例。来源于 <a href="https://astexplorer.net/" target="_blank" rel="noopener"><strong>astexplorer</strong></a></p>
 <p><img src="2.png" alt></p>
 <p>转换后的结构就像包含了很多层级树一样，第一层是 <strong>root</strong> 节点，每个 <strong>css</strong> 文件就相当于一个 <strong>root</strong> 节点，每个 <strong>root</strong> 节点包含的是子节点集合即 <strong>type</strong> 为 <strong>rule</strong> 的节点，对应于 <strong>css</strong> 中的样式块，每个样式块即 <strong>type</strong> 为 <strong>decl</strong> 包含书写的 <strong>css</strong> 键值对集合，<strong>prop</strong> 对应于健，而 <strong>value</strong> 就是值了。可以想到，只要遍历获取这些值再转换目标值为需要的值即可。</p>
 <h2 id="程序设计"><a href="#程序设计" class="headerlink" title="程序设计"></a>程序设计</h2><p>既然是做成插件化，则需考虑通用性，可从需求中提取通用性信息包括目标色值即美团黄和文件路径，可作为插件的入参。</p>
