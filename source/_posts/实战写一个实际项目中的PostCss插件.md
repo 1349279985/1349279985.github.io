@@ -26,7 +26,7 @@ __PostCss__ 是个好工具，基于它转换的 __AST__ 可以做很多有趣�
 
 ## 开发思路
 
-在项目中经常会用到 __PostCss__ 做一些插件化的事情包括 __AutoPrefixer__ 等，__PostCss__ 会将 __css__ 样式转为 __AST__ 树方便处理，基于此可以对 __AST__ 上的节点信息做一些处理以贴合本次的需求。如下是一个 __PostCss__ 转换 __css__ 的一个示例。
+在项目中经常会用到 __PostCss__ 做一些插件化的事情包括 __AutoPrefixer__ 等，__PostCss__ 会将 __css__ 样式转为 __AST__ 树方便处理，基于此可以对 __AST__ 上的节点信息做一些处理以贴合本次的需求。如下是一个 __PostCss__ 转换 __css__ 的一个示例。来源于 [__astexplorer__](https://astexplorer.net/)
 
 ![](2.png)
 
