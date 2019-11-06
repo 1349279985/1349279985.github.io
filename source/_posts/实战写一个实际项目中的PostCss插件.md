@@ -156,6 +156,9 @@ const transformColorPlugin = postcss.plugin('transform-color', opts => {
 
 module.exports = transformColorPlugin;
 ```
+实际的效果如下
+
+![](4.png)
 
 ## 总结
 
