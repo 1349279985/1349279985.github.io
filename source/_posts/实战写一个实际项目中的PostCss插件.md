@@ -136,7 +136,7 @@ postcss([postcssPluginParseMargin(config)]).process(cssStyle).then(function(res)
 // postcss-transform-color.js
 const postcss = require('postcss');
 
-const alterColorPlugin = postcss.plugin('transform-color', opts => {
+const transformColorPlugin = postcss.plugin('transform-color', opts => {
   opts = opts || {};
   const { colorMap, resourcePath } = opts;
   return (root, result) => {
@@ -154,7 +154,7 @@ const alterColorPlugin = postcss.plugin('transform-color', opts => {
   };
 });
 
-module.exports = alterColorPlugin;
+module.exports = transformColorPlugin;
 ```
 
 ## 总结
