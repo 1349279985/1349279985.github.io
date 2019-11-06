@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="TJIhzYMIPFaz9Sm7X-m89u5LjpBTUSHWfScXHB520hY">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=5.1.4">
+
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Webpack,插件,postcss,loader,plugin">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="PostCss 是个好工具，基于它转换的 AST 可以做很多有趣的东西，这篇文章从一个实际的需求出发，教大家写一个可应用于 webapck 打包过程中 PostCss 插件，提供一种自动化处理 css 样式的思路。">
+<meta name="keywords" content="Webpack,插件,postcss,loader,plugin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实战写一个实际项目中的PostCss插件">
+<meta property="og:url" content="https://1349279985.github.io/实战写一个实际项目中的PostCss插件/index.html">
+<meta property="og:site_name" content="MoMo&#39;s Blog">
+<meta property="og:description" content="PostCss 是个好工具，基于它转换的 AST 可以做很多有趣的东西，这篇文章从一个实际的需求出发，教大家写一个可应用于 webapck 打包过程中 PostCss 插件，提供一种自动化处理 css 样式的思路。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://1349279985.github.io/实战写一个实际项目中的PostCss插件/0.png">
+<meta property="og:image" content="https://1349279985.github.io/实战写一个实际项目中的PostCss插件/1.png">
+<meta property="og:image" content="https://1349279985.github.io/实战写一个实际项目中的PostCss插件/2.png">
+<meta property="og:image" content="https://1349279985.github.io/实战写一个实际项目中的PostCss插件/3.png">
+<meta property="og:updated_time" content="2019-11-06T17:04:31.380Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="实战写一个实际项目中的PostCss插件">
+<meta name="twitter:description" content="PostCss 是个好工具，基于它转换的 AST 可以做很多有趣的东西，这篇文章从一个实际的需求出发，教大家写一个可应用于 webapck 打包过程中 PostCss 插件，提供一种自动化处理 css 样式的思路。">
+<meta name="twitter:image" content="https://1349279985.github.io/实战写一个实际项目中的PostCss插件/0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QTLXGA4GZK',
+      apiKey: '671ec8c1f374f6940bbed7898c1202e3',
+      indexName: 'prod_BLOG',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://1349279985.github.io/实战写一个实际项目中的PostCss插件/">
+
+
+
+
+
+  <title>实战写一个实际项目中的PostCss插件 | MoMo's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MoMo's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Life is Beautiful</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://1349279985.github.io/实战写一个实际项目中的PostCss插件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MoMo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MoMo's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">实战写一个实际项目中的PostCss插件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-06T14:39:07+08:00">
+                2019-11-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/实战写一个实际项目中的PostCss插件/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/实战写一个实际项目中的PostCss插件/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/实战写一个实际项目中的PostCss插件/" class="leancloud_visitors" data-flag-title="实战写一个实际项目中的PostCss插件">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>PostCss</strong> 是个好工具，基于它转换的 <strong>AST</strong> 可以做很多有趣的东西，这篇文章从一个实际的需求出发，教大家写一个可应用于 <strong>webapck</strong> 打包过程中 <strong>PostCss</strong> 插件，提供一种自动化处理 <strong>css</strong> 样式的思路。</p>
+<div style="max-width:70%;margin:auto"><img src="/实战写一个实际项目中的PostCss插件/0.png"></div>
+
+<a id="more"></a>
+
+<h2 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h2><p>在后台前端应用的开发中，经常会用到各类 <strong>UI</strong> 组件库，假如项目中用到了知名的 <a href="https://ant.design/docs/react/customize-theme-cn" target="_blank" rel="noopener"><strong>antd</strong></a>，但是需要对应用的各个基础组件做一次换肤，而 <strong>antd</strong> 只有定制化的几种色号可选，这次要做的是将基础组件的色号都换成美团黄，所以 <strong>antd</strong> 没法满足需求。当然我们可以在样式表中手动改写 <strong>antd</strong> 的样式以达到目标，但是这并不方便。我们沿着自动化的思路想，可以在打包过程中对所有样式做统一处理并做一层转换，而样式的解析转换刚好是 <strong>loader</strong> 的工作，在此实现这一思路会非常合适。</p>
+<p><img src="1.png" alt></p>
+<h2 id="开发思路"><a href="#开发思路" class="headerlink" title="开发思路"></a>开发思路</h2><p>在项目中经常会用到 <strong>PostCss</strong> 做一些插件化的事情包括 <strong>AutoPrefixer</strong> 等，<strong>PostCss</strong> 会将 <strong>css</strong> 样式转为 <strong>AST</strong> 树方便处理，基于此可以对 <strong>AST</strong> 上的节点信息做一些处理以贴合本次的需求。如下是一个 <strong>PostCss</strong> 转换 <strong>css</strong> 的一个示例。</p>
+<p><img src="2.png" alt></p>
+<p>转换后的结构就像包含了很多层级树一样，第一层是 <strong>root</strong> 节点，每个 <strong>css</strong> 文件就相当于一个 <strong>root</strong> 节点，每个 <strong>root</strong> 节点包含的是子节点集合即 <strong>type</strong> 为 <strong>rule</strong> 的节点，对应于 <strong>css</strong> 中的样式块，每个样式块即 <strong>type</strong> 为 <strong>decl</strong> 包含书写的 <strong>css</strong> 键值对集合，<strong>prop</strong> 对应于健，而 <strong>value</strong> 就是值了。可以想到，只要遍历获取这些值再转换目标值为需要的值即可。</p>
+<h2 id="程序设计"><a href="#程序设计" class="headerlink" title="程序设计"></a>程序设计</h2><p>既然是做成插件化，则需考虑通用性，可从需求中提取通用性信息包括目标色值即美团黄和文件路径，可作为插件的入参。</p>
+<p><strong>PostCss</strong> 提供了很多 <a href="https://api.postcss.org/postcss.html" target="_blank" rel="noopener"><strong>API</strong></a> 方便操作转换后 <strong>AST</strong> 树，此次分析后只用到如下遍历相关 <strong>API</strong> 即可</p>
+<ul>
+<li><a href="https://api.postcss.org/AtRule.html#walk" target="_blank" rel="noopener"><strong>walk</strong></a>: 遍历所有节点信息</li>
+<li><a href="https://api.postcss.org/AtRule.html#walkAtRules" target="_blank" rel="noopener"><strong>walkAtRules</strong></a>: 遍历所有 <strong>atrule</strong> 类型节点</li>
+<li><a href="https://api.postcss.org/AtRule.html#walkRules" target="_blank" rel="noopener"><strong>walkRules</strong></a>: 遍历所有 <strong>rule</strong> 类型节点</li>
+<li><a href="https://api.postcss.org/AtRule.html#walkComments" target="_blank" rel="noopener"><strong>walkComments</strong></a>: 遍历所有 <strong>comment</strong> 类型节点</li>
+<li><a href="https://api.postcss.org/AtRule.html#walkDecls" target="_blank" rel="noopener"><strong>walkDecls</strong></a>: 遍历所有 <strong>decl</strong> 类型节点</li>
+</ul>
+<p><strong>PostCss</strong> 的作用只适用 <strong>css</strong> 样式文件，如果是预编译类型样式如 <strong>less</strong>，则需要先转换为 <strong>css</strong> 后再做处理，在配置 <strong>loader</strong> 时注意下先后顺序即可。插件的核心逻辑是获取到 <strong>decl</strong> 节点中的 <strong>value</strong> 并进行替换。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> postcss = <span class="built_in">require</span>(<span class="string">'postcss'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> postcssPluginParseMargin = postcss.plugin(<span class="string">'transform-color'</span>, opts =&gt; &#123;</span><br><span class="line">  opts = opts || &#123;&#125;;</span><br><span class="line">  <span class="keyword">const</span> &#123; colorMap &#125; = opts;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">root</span> =&gt;</span> &#123;</span><br><span class="line">    root.walkRules(<span class="function"><span class="params">rule</span> =&gt;</span> &#123;</span><br><span class="line">      rule.walkDecls(<span class="function"><span class="keyword">function</span> (<span class="params">decl, i</span>) </span>&#123;</span><br><span class="line">        colorMap.forEach(<span class="function">(<span class="params">&#123; source, target &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">if</span> (decl.value.indexOf(source) !== <span class="number">-1</span>) &#123;</span><br><span class="line">            decl.value = decl.value.replace(source, target);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> cssStyle = <span class="string">`</span></span><br><span class="line"><span class="string">	.test &#123;</span></span><br><span class="line"><span class="string">    font-size: 13px;</span></span><br><span class="line"><span class="string">    color: #1890ff;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">	.test a &#123;</span></span><br><span class="line"><span class="string">    font-size: 14px;</span></span><br><span class="line"><span class="string">    background-color: #1890ff;</span></span><br><span class="line"><span class="string">    color: #1890ff</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">	.test b &#123;</span></span><br><span class="line"><span class="string">    font-size: 15px;</span></span><br><span class="line"><span class="string">	&#125;</span></span><br><span class="line"><span class="string">`</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> config = &#123;</span><br><span class="line">  colorMap: [</span><br><span class="line">    &#123; <span class="attr">source</span>: <span class="string">'#1890ff'</span>, <span class="attr">target</span>: <span class="string">'#ffbd00'</span> &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">postcss([postcssPluginParseMargin(config)]).process(cssStyle).then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(res.cssStyle);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment">.test &#123;</span></span><br><span class="line"><span class="comment">  font-size: 13px;</span></span><br><span class="line"><span class="comment">  color: #ffbd00;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">.test a &#123;</span></span><br><span class="line"><span class="comment">  font-size: 14px;</span></span><br><span class="line"><span class="comment">  background-color: #ffbd00;</span></span><br><span class="line"><span class="comment">  color: #ffbd00</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">.test b &#123;</span></span><br><span class="line"><span class="comment">  font-size: 15px;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p>以上通过模拟 <strong>cssStyle</strong> 模拟了 <strong>root</strong>，将 <strong>css</strong> 文件 <strong>cssStyle</strong> 作为源文件输入，首先通过 <strong>PostCss</strong> 转译为如下 <strong>AST</strong> 并深度遍历，先遍历 <strong>rule</strong> 节点再遍历 <strong>decl</strong> 节点，最后匹配 <strong>value</strong> 是否符合 <strong>config</strong> 中的 <strong>source</strong>，是则替换为美团黄。</p>
+<p><img src="3.png" alt></p>
+<h2 id="引入插件"><a href="#引入插件" class="headerlink" title="引入插件"></a>引入插件</h2><p>而如果在 <strong>webpack</strong> 中使用自定义的插件，则需要在 <strong>loaders</strong> 进行对应的配置，如下在 <strong>webapck</strong> 的 <strong>loaders</strong> 中，在 <strong>postcss</strong> 的 <strong>loader</strong> 中进行自定义插件的配置，并且将文件资源的路径传入检测路径是否匹配目标路径。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  loader: <span class="built_in">require</span>.resolve(<span class="string">'postcss-loader'</span>),</span><br><span class="line">  options: &#123;</span><br><span class="line">    ident: <span class="string">'postcss'</span>,</span><br><span class="line">    plugins: <span class="function">(<span class="params">loader</span>) =&gt;</span> [</span><br><span class="line">      <span class="built_in">require</span>(<span class="string">'./postcss-transform-color'</span>)(&#123;</span><br><span class="line">        colorMap: [</span><br><span class="line">          &#123; <span class="attr">source</span>: <span class="string">'#1890ff'</span>, <span class="attr">target</span>: <span class="string">'#ffbd00'</span> &#125;,</span><br><span class="line">        ],</span><br><span class="line">        resourcePath: loader.resourcePath,</span><br><span class="line">      &#125;),</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再对自定义插件做一些改写如下，即完成插件的引入，其中 <strong>root</strong> 代表每一个正在处理的 <strong>css</strong> 文件转化后的 <strong>AST</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// postcss-transform-color.js</span></span><br><span class="line"><span class="keyword">const</span> postcss = <span class="built_in">require</span>(<span class="string">'postcss'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> alterColorPlugin = postcss.plugin(<span class="string">'transform-color'</span>, opts =&gt; &#123;</span><br><span class="line">  opts = opts || &#123;&#125;;</span><br><span class="line">  <span class="keyword">const</span> &#123; colorMap, resourcePath &#125; = opts;</span><br><span class="line">  <span class="keyword">return</span> <span class="function">(<span class="params">root, result</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="regexp">/node_modules\/antd/</span>.test(resourcePath)) &#123;</span><br><span class="line">      root.walkRules(<span class="function"><span class="params">rule</span> =&gt;</span> &#123;</span><br><span class="line">        rule.walkDecls(<span class="function"><span class="keyword">function</span> (<span class="params">decl, i</span>) </span>&#123;</span><br><span class="line">          colorMap.forEach(<span class="function">(<span class="params">&#123; source, target &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (decl.value.indexOf(source) !== <span class="number">-1</span>) &#123;</span><br><span class="line">              decl.value = decl.value.replace(source, target);</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = alterColorPlugin;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上针对特定的需求写了一个简单的 <strong>PostCss</strong> 插件，该插件并不是非常的通用，可能是针对某些项目很适用，但插件大体的写法思路还是有迹可循的。</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>你的鼓励我会用来换杯奶茶～😁</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="MoMo 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    MoMo
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://1349279985.github.io/实战写一个实际项目中的PostCss插件/" title="实战写一个实际项目中的PostCss插件">https://1349279985.github.io/实战写一个实际项目中的PostCss插件/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Webpack/" rel="tag"># Webpack</a>
+          
+        </div>
+      
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/优化React-memo渲染判别机制及实战/" rel="next" title="优化React.memo渲染判别机制及实战">
+                <i class="fa fa-chevron-left"></i> 优化React.memo渲染判别机制及实战
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="MoMo">
+            
+              <p class="site-author-name" itemprop="name">MoMo</p>
+              <p class="site-description motion-element" itemprop="description">记录Jason和MoMo的工作和生活</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/1349279985" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:momo1349279985@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求背景"><span class="nav-number">1.</span> <span class="nav-text">需求背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发思路"><span class="nav-number">2.</span> <span class="nav-text">开发思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序设计"><span class="nav-number">3.</span> <span class="nav-text">程序设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引入插件"><span class="nav-number">4.</span> <span class="nav-text">引入插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MoMo</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">36.7k</span>
+  
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  <style type="text/css">
+    div.info{
+        display: none;
+    }
+  </style>
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'eSAyObWzrkUP2DSIvGsFxLsF-gzGzoHsz',
+        appKey: 'GtKQGcrxyp8pJVpmeSaK50xN',
+        placeholder: '请在此输入你的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("eSAyObWzrkUP2DSIvGsFxLsF-gzGzoHsz", "GtKQGcrxyp8pJVpmeSaK50xN");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":345,"hOffset":80,"vOffset":0},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
