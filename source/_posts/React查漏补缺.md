@@ -8,7 +8,7 @@ tags:
 categories: 前端
 ---
 
-为了熟悉或者回顾 __React__ 及其周边的相关知识，想必这份来自 __[Github](https://github.com/sudheerj/reactjs-interview-questions/blob/master/README.md)__ 的 __React__ 自问自答面试清单会很适合你，后期我会持续对这份清单做翻译，以减轻阅读难度
+为了熟悉或者回顾 __React__ 及其周边的相关知识，想必这份来自 __[Github](https://github.com/sudheerj/reactjs-interview-questions/blob/master/README.md)__ 的 __React__ 自问自答清单会很适合你，后期我会持续对这份清单做翻译，以减轻阅读难度
 
 <div style="width:60%;margin:auto">{% asset_img 0.png %}</div>
 
