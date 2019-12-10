@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="TJIhzYMIPFaz9Sm7X-m89u5LjpBTUSHWfScXHB520hY">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=5.1.4">
+
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Wellcome">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="React Hooks 已发布几个月时间，在过去的几个月里笔者将其全面应用到团队的大型项目中，期间收获了不少。 Hooks 相比 Class Component 有多方面的优势，笔者将介绍 Hooks 的各方面并针对性结合实际业务场景讲解，带你上 Hooks 的车。">
+<meta name="keywords" content="vue,javascript,前端,react,性能优化,webpack,生活,微信小程序,Vuex,MoMo,momo,blog,餐饮">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么要上Hooks的车">
+<meta property="og:url" content="https://1349279985.github.io/为什么要上Hooks的车/index.html">
+<meta property="og:site_name" content="MoMo&#39;s Blog">
+<meta property="og:description" content="React Hooks 已发布几个月时间，在过去的几个月里笔者将其全面应用到团队的大型项目中，期间收获了不少。 Hooks 相比 Class Component 有多方面的优势，笔者将介绍 Hooks 的各方面并针对性结合实际业务场景讲解，带你上 Hooks 的车。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://1349279985.github.io/为什么要上Hooks的车/0.png">
+<meta property="og:image" content="https://1349279985.github.io/为什么要上Hooks的车/1.png">
+<meta property="og:image" content="https://1349279985.github.io/为什么要上Hooks的车/2.png">
+<meta property="og:image" content="https://1349279985.github.io/为什么要上Hooks的车/3.png">
+<meta property="og:image" content="https://1349279985.github.io/为什么要上Hooks的车/4.png">
+<meta property="og:image" content="https://1349279985.github.io/为什么要上Hooks的车/5.png">
+<meta property="og:updated_time" content="2019-12-10T17:32:43.156Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么要上Hooks的车">
+<meta name="twitter:description" content="React Hooks 已发布几个月时间，在过去的几个月里笔者将其全面应用到团队的大型项目中，期间收获了不少。 Hooks 相比 Class Component 有多方面的优势，笔者将介绍 Hooks 的各方面并针对性结合实际业务场景讲解，带你上 Hooks 的车。">
+<meta name="twitter:image" content="https://1349279985.github.io/为什么要上Hooks的车/0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QTLXGA4GZK',
+      apiKey: '671ec8c1f374f6940bbed7898c1202e3',
+      indexName: 'prod_BLOG',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://1349279985.github.io/为什么要上Hooks的车/">
+
+
+
+
+
+  <title>为什么要上Hooks的车 | MoMo's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MoMo's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Life is Beautiful</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://1349279985.github.io/为什么要上Hooks的车/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MoMo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MoMo's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">为什么要上Hooks的车</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-10T23:38:47+08:00">
+                2019-12-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/为什么要上Hooks的车/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/为什么要上Hooks的车/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/为什么要上Hooks的车/" class="leancloud_visitors" data-flag-title="为什么要上Hooks的车">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>React Hooks</strong> 已发布几个月时间，在过去的几个月里笔者将其全面应用到团队的大型项目中，期间收获了不少。 <strong>Hooks</strong> 相比 <strong>Class Component</strong> 有多方面的优势，笔者将介绍 <strong>Hooks</strong> 的各方面并针对性结合实际业务场景讲解，带你上 <strong>Hooks</strong> 的车。</p>
+<div style="width:100%;margin:auto"><img src="/为什么要上Hooks的车/0.png"></div>
+
+<a id="more"></a>
+
+<h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p><strong>React Hooks</strong>  在 <strong>React</strong> 的 <strong><a href="https://github.com/facebook/react/blob/master/CHANGELOG.md#1680-february-6-2019" target="_blank" rel="noopener">16.8.0 (February 6, 2019)</a></strong> 版本中引进，并给 <strong>React</strong> 本身带来了新的血液，发布前期它的关注度很高，大家关注它是否会替换 <strong>React</strong> 的 <strong>Class Component</strong>，因为它看起来非常的简约，将一切函数化，这仿佛带我们走进了一个纯真的年代，一切看起来是那么的简单。<strong><a href="https://reactjs.org/docs/hooks-intro.html#gradual-adoption-strategy" target="_blank" rel="noopener">React 团队</a></strong> 并不推荐在不熟悉它的前提下就接入到项目中，而是需要先了解它的特性以及编写或转化成本，使用场景在现在看来大部分都能覆盖，<strong>React</strong> 团队后期会更新 <strong>Hooks</strong> 以覆盖 <strong>Class Component</strong> 的所有场景。推荐新的项目采用 <strong>Hooks</strong>，因为 <strong>Hooks</strong> 相比 <strong>Class Component</strong> 有多方面的优势，同时 <strong>Hooks</strong> 也会越来越完善。</p>
+<h2 id="为什么我要使用Hooks"><a href="#为什么我要使用Hooks" class="headerlink" title="为什么我要使用Hooks"></a>为什么我要使用Hooks</h2><p><strong>React</strong> 团队在介绍 <strong>Hooks</strong> 时通过一句话暗示着多年来 <strong>Component</strong> 面临的问题</p>
+<blockquote>
+<p>Hooks solve a wide variety of seemingly unconnected problems in React that we’ve encountered over five years of writing and maintaining tens of thousands of components.</p>
+</blockquote>
+<p>通过上面的口吻能看出，官方团队很看好 <strong>Hooks</strong> 的到来，不仅如此，从 <strong>React</strong> 附近的产业链也能看出，<strong>Redux</strong> 在 <strong>React Redux v7.1.0</strong> 版本中表达了对 <strong>Hooks</strong> 的欢呼和支持，并提供 <strong>Redux Hooks</strong> 摆脱过去 <strong>connect</strong> 那一套，因为那一套只属于 <strong>Class Component</strong>，新的 <a href="https://react-redux.js.org/next/api/hooks" target="_blank" rel="noopener">Hooks API</a> 特性将会和 <strong>React Hooks</strong> 保持一致的体验。</p>
+<div style="width:100%;margin:auto"><img src="/为什么要上Hooks的车/1.png"></div>
+
+<p>触发我使用 <strong>Hooks</strong> 最重要的导火线是官方团队分析 <strong>Hooks</strong> 相比 <strong>Class Component</strong> 的<a href="https://reactjs.org/docs/hooks-intro.html#motivation" target="_blank" rel="noopener">多方位优势</a>。</p>
+<h3 id="逻辑复用性"><a href="#逻辑复用性" class="headerlink" title="逻辑复用性"></a><a href="https://reactjs.org/docs/hooks-intro.html#its-hard-to-reuse-stateful-logic-between-components" target="_blank" rel="noopener">逻辑复用性</a></h3><p><strong>Class Component</strong> 中如果想复用组件中的逻辑，一般采取的方式有 <strong><a href="https://reactjs.org/docs/higher-order-components.html" target="_blank" rel="noopener">HOC</a></strong> 和 <strong><a href="https://reactjs.org/docs/render-props.html" target="_blank" rel="noopener">Render Props</a></strong>，而 <strong>HOC</strong> 封装思想是对组件做统一处理如 <strong>connect</strong>，这种方式依然需依赖于组件并试图改变组件的处理逻辑，同时想在一个组件应用多个独立的逻辑复用，<strong>HOC</strong> 难以处理；<strong>Render Props</strong> 具有和 <strong>HOC</strong> 类似的容器特性，多个独立的逻辑复用可能会出现嵌套地狱，让代码的维护性大大折扣。而 <strong>Hooks</strong> 呢，对于解决逻辑复用性问题，它的方式很巧妙也很灵活，请尽情拥抱 <strong><a href="https://reactjs.org/docs/hooks-custom.html" target="_blank" rel="noopener">Custom Hooks</a></strong>，会很香。</p>
+<h3 id="组件可读性"><a href="#组件可读性" class="headerlink" title="组件可读性"></a><a href="https://reactjs.org/docs/hooks-intro.html#complex-components-become-hard-to-understand" target="_blank" rel="noopener">组件可读性</a></h3><p><strong>Class Component</strong> 中，有很多的生命周期需要在意，<strong>React16</strong> 中包括但不限于 <strong>componentDidMount</strong>、<strong>componentDidUpdate</strong> 还有名字很长的 <strong>getDerivedStateFromProps</strong>，一方面会使 <strong>React</strong> 业务的编写成本很高，另一方面每次写完组件时，生命周期流程图都需要在脑海里运行一遍以确保无误。对于编写及理解组件层面，<strong>Hooks</strong> 给出了它的方式，请尽量拥抱 <strong><a href="https://reactjs.org/docs/hooks-state.html" target="_blank" rel="noopener">useState</a></strong> 和 <strong><a href="https://reactjs.org/docs/hooks-effect.html" target="_blank" rel="noopener">useEffect</a></strong>，<strong>Hooks</strong> 用独特的设计帮你缓解生命周期流程图的阴影。</p>
+<p><strong>Class Component</strong> 中，通常业务组件会在不同生命周期维护着相同状态数据的变更，有时这会是一种浪费比如事件监听的绑定和取消，有时这不好管理因为有些状态是可以拆分成多个独立的，但又必须写在一个生命周期中。对于这几点，<strong>Hooks</strong> 中 <strong>useEffect</strong> 的做法是聚合生命周期以共享状态，同时可编写多个同样的 <strong>Hook</strong> 以实现状态独立管理。除此之外， <a href="https://reactjs.org/docs/hooks-reference.html" target="_blank" rel="noopener">Hooks</a> 还有其他优秀的 <strong>Hook</strong> 关注组件的性能层面，有些也是 <strong>Class Component</strong> 目前无法比拟的，如 <strong><a href="https://reactjs.org/docs/hooks-reference.html#usememo" target="_blank" rel="noopener">useMemo</a></strong> 关注大量计算逻辑的优化，<strong><a href="https://reactjs.org/docs/hooks-reference.html#usecallback" target="_blank" rel="noopener">useCallback</a></strong> 关注父子组件事件回调的优化，<strong><a href="https://reactjs.org/docs/hooks-reference.html#usereducer" target="_blank" rel="noopener">useReducer</a></strong> 减轻 <strong>useState</strong> 的压力，<strong><a href="https://reactjs.org/docs/hooks-reference.html#usecontext" target="_blank" rel="noopener">useContext</a></strong> 关注组件间的数据共享，<strong><a href="https://reactjs.org/docs/hooks-reference.html#useref" target="_blank" rel="noopener">useRef</a></strong> 关注缓存方式的优化。</p>
+<h3 id="编写复杂性"><a href="#编写复杂性" class="headerlink" title="编写复杂性"></a><a href="https://reactjs.org/docs/hooks-intro.html#classes-confuse-both-people-and-machines" target="_blank" rel="noopener">编写复杂性</a></h3><p><strong>Class Component</strong> 中，组件和 <strong>this</strong> 是离不开的包括事件绑定类 <strong>this</strong> 还有状态更新类 <strong>this</strong>。对于事件绑定类 <strong>this</strong>，有多种绑定的方式，一方面可以选择构造函数中绑定，虽然能防止重复绑定的问题发生但增加了手动 <strong>bind</strong> 工作量，这看起来是比较多余的；另一方面可以选择箭头函数间接绑定，但在元素上绑定会带来重复绑定问题并致使子组件重复渲染。对于这一点，<strong>Hooks</strong> 采用的方案则是不使用 <strong>this</strong>，<strong>this</strong> 的意义是指向组件实例并访问实例属性和方法，<strong>Hooks</strong> 依托于 <strong>Function Component</strong> 并采用闭包的形式管理 <strong>Hook</strong> 中的变量， 能达到和 <strong>Class Component</strong> 同样的效果，使用 <strong>Hooks</strong> 反而少了份 <strong>this</strong> 的担心。</p>
+<h2 id="上Hooks车前的思考"><a href="#上Hooks车前的思考" class="headerlink" title="上Hooks车前的思考"></a>上Hooks车前的思考</h2><p><strong>Hooks</strong> 的这些特性着实让人动心，但果真要开始用 <strong>Hooks</strong> 时就有点下不去手，一方面因为对 <strong>Class Component</strong> 的写法很熟悉很亲切，现在马上要接触新的写法会感到不适应；另一方面对于 <strong>Hooks</strong> 没有很了解，怕没有预想的那么好而且怕踩坑。</p>
+<p>其实这些担心是多余的，官方团队对 <strong>Hooks</strong> 的引入做了解释并推荐在新项目中使用，可看出 <strong>Hooks</strong> 能解决现有 <strong>Class Component</strong> 的大部分场景而且 <strong>Hooks</strong> 让人眼前一亮的特性值得技术人去深究并运用实践。</p>
+<p>有了这些心里支撑，下面就是按照哪种路线学习 <strong>Hooks</strong>，通过一段时间的使用体验，笔者推荐先了解 <strong>Hooks</strong> 的设计原理并在实际的业务场景中应用 <strong>Hooks</strong>，对于具体的需求首先考虑 <strong>Hooks</strong> 方式，熟悉了 <strong>Hooks</strong> 的特性加上使用体验后再考虑要不要转化之前项目中的 <strong>Class Component</strong>。</p>
+<p>对于 <strong>Hooks</strong> 原理这点，推荐<a href="https://github.com/brickspert/blog/issues/26" target="_blank" rel="noopener">中文这篇</a>或者<a href="https://medium.com/@ryardley/react-hooks-not-magic-just-arrays-cd4f1857236e" target="_blank" rel="noopener">英文这篇</a>简洁易懂的原理解析能满足不同人群的喜好。对 <strong>Hooks</strong> 的原理有了了解后，就能惊叹于 <strong>Hooks</strong> 巧妙的设计，知道 <strong>React Hooks</strong> 其实和生命周期没太大关系，<strong>Hooks</strong> 有自己的一套机制，在组件的创建和消亡期间通过闭包维护各个 <strong>Hook</strong> 的状态数据。</p>
+<h2 id="点餐项目Hooks实践"><a href="#点餐项目Hooks实践" class="headerlink" title="点餐项目Hooks实践"></a>点餐项目Hooks实践</h2><p>针对 <strong>Hooks</strong> 的使用，上面有提到不建议上手就是将过去的 <strong>Class Component</strong> 转为 <strong>Hooks</strong> 形式，因为得考虑组件逻辑复杂度，成本可能会有点大，建议采用递进的方式进入它的世界。</p>
+<p>笔者将 <strong>Hooks</strong> 在点餐项目的实践过程分为三步，第一步从业务角度出发通过几种通用的场景完成常见 <strong>Hooks</strong> 的接入。第二步从 <strong>Hooks</strong> 组件本身出发通过额外的 <strong>Hooks</strong> 或者自定义 <strong>Hooks</strong> 优化 <strong>Hooks</strong> 组件。第三步将 <strong>Class Component</strong> 的生命周期和 <strong>Hooks</strong> 匹配并制定转化的规则最后完成重构。</p>
+<h3 id="业务需求引入Hooks"><a href="#业务需求引入Hooks" class="headerlink" title="业务需求引入Hooks"></a>业务需求引入Hooks</h3><p>笔者将组件业务场景总结为以下通用的4种，理论上可覆盖大部分场景，并针对不同的场景推荐对应的 <strong>Hooks</strong> 搭配方案。当然方案也并不唯一，需结合具体的需求。</p>
+<ul>
+<li>需维护简单的同步状态（<strong>useState</strong>）</li>
+<li>需维护复杂的同步状态（<strong>useReducer</strong>）</li>
+<li>需维护简单的异步状态（<strong>useState</strong> &amp; <strong>useEffect</strong>）</li>
+<li>需维护复杂的异步状态（<strong>useReducer</strong> &amp; <strong>useEffect</strong>）</li>
+</ul>
+<p>定义简单和复杂的方式其实比较简单，核心是按照组件状态数据的复杂度，暂且按照组件内需要维护的状态数据数量大于 N（N = 2）时则为复杂，小于等于 N 时则为简单，可以有自己的一个判断，这里简单的定义是便于给出对应的解决方案。</p>
+<p>定义同步和异步的判断依据是组件内需要维护的状态数据的来源，来源于异步的方式获取如接口类数据则叫异步状态，否则是同步状态。</p>
+<p>当然如果组件需维护的状态数据既有同步也有异步的，这种场景比较复杂，可结合自身的需要选择结合以上四种中其中的多种进行搭配；如果不需要维护任何状态数据，组件则是无状态组件。</p>
+<h3 id="简单的同步状态（useState）"><a href="#简单的同步状态（useState）" class="headerlink" title="简单的同步状态（useState）"></a>简单的同步状态（useState）</h3><p><strong>场景：需要做一个券列表，提供两个 tab 切换不同类型的券，包括可用券和不可用券。如下视觉：</strong></p>
+<div style="width:30%;margin:auto"><img src="/为什么要上Hooks的车/2.png"></div>
+
+<p><strong>分析：如果整体页面是一个组件，需要维护的状态则是 tab 所处的位置这一个同步状态，当然还需要券的数据，这个并不需要维护，它虽然来源于接口，但是只需直接渲染即可。</strong></p>
+<p><strong>页面结构：将需要维护的状态通过 Hooks 来管理，简单的同步状态直接用 useState 即可。</strong></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; useState &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @param initialState 切换tab状态的Hook</span></span><br><span class="line"><span class="comment"> * @returns &#123;*&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> useToggleTab = <span class="function">(<span class="params">initialState</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> [showEnableCoupon, setToggleTab] = useState(initialState);</span><br><span class="line">  <span class="keyword">const</span> toggleChangeTab = <span class="function"><span class="params">()</span> =&gt;</span> setToggleTab(!showEnableCoupon);</span><br><span class="line">  <span class="keyword">return</span> [showEnableCoupon, toggleChangeTab];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> UserCouponComponent = <span class="function">(<span class="params">&#123; userCouponList &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// tab 所在的位置</span></span><br><span class="line">  <span class="keyword">const</span> [showEnableCoupon, toggleChangeTab] = useToggleTab(<span class="literal">true</span>);</span><br><span class="line">  <span class="comment">// 计算总的可用优惠券数量</span></span><br><span class="line">  <span class="keyword">const</span> totalAvailableCouponCount = getTotalAvailableCouponCount(userCouponList);</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div className=<span class="string">"coupons-container"</span>&gt;</span><br><span class="line">      &#123;<span class="comment">/* 顶部导航 */</span>&#125;</span><br><span class="line">      &lt;div className=<span class="string">"title-tabs"</span>&gt;</span><br><span class="line">        &lt;span className=&#123;<span class="string">`tab <span class="subst">$&#123;showEnableCoupon ? <span class="string">'active'</span> : <span class="string">''</span>&#125;</span>`</span>&#125; onClick=&#123;toggleChangeTab&#125;&gt;</span><br><span class="line">          &lt;span className=<span class="string">"num"</span>&gt;&#123;totalAvailableCouponCount&#125;&lt;<span class="regexp">/span&gt;张可用优惠券</span></span><br><span class="line"><span class="regexp">        &lt;/</span>span&gt;</span><br><span class="line">        &lt;span className=&#123;<span class="string">`tab <span class="subst">$&#123;!showEnableCoupon ? <span class="string">'active'</span> : <span class="string">''</span>&#125;</span>`</span>&#125; onClick=&#123;toggleChangeTab&#125;&gt;不可用优惠券&lt;<span class="regexp">/span&gt;</span></span><br><span class="line"><span class="regexp">      &lt;/</span>div&gt;</span><br><span class="line">      &#123;<span class="comment">/* 券列表数据 */</span>&#125;</span><br><span class="line">      &lt;CouponList</span><br><span class="line">        type=&#123;COUPON_CLICK_TYPE.CAN_SELECT&#125;</span><br><span class="line">        couponList=&#123;userCouponList&#125;</span><br><span class="line">        couponEnabledStatus=&#123;showEnableCoupon ? COUPON_APPLY_STATUS.CAN_USE : COUPON_APPLY_STATUS.CAN_NOT_USE&#125;</span><br><span class="line">        updatePromotion=&#123;coupon =&gt; updatePromotion(coupon, userCouponList)&#125;</span><br><span class="line">      /&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  );</span></span><br><span class="line"><span class="regexp">&#125;;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里用到了一个自定义 <strong>Hook</strong> <strong>useToggleTab</strong>，不过目前看来它只属于这个组件并不需要抽取出去，<strong>showEnableCoupon</strong> 是初始化的状态，<strong>toggleChangeTab</strong> 是对 <strong>showEnableCoupon</strong> 进行处理的自定义逻辑，这里只做了取反操作，可以根据自身的需要编写。如果采用 <strong>Class Component</strong> 实现，<strong>this</strong> 的绑定是少不了的，并且 <strong>Hooks</strong> 方式看起来会很简洁。</p>
+<h3 id="复杂的同步状态（useReducer）"><a href="#复杂的同步状态（useReducer）" class="headerlink" title="复杂的同步状态（useReducer）"></a>复杂的同步状态（useReducer）</h3><p>当组件中需要维护多个同步状态时，用多个 <strong>useState</strong> 来管理这些状态不免显得有些臃肿，可转化为一个 <strong>Hook useReducer</strong> 统一管理。</p>
+<p><strong>场景：需要做一个订单菜品的展示列表，默认只显示两个菜品，点击展开全部则展开全部菜品，并且点击较复杂菜品可弹框查看菜品详情。如下视觉：</strong></p>
+<div style="width:90%;margin:auto"><img src="/为什么要上Hooks的车/3.png"></div>
+
+<p><strong>分析：整体菜品列表可当作一个组件处理，组件需维护3个同步状态包括是否展示全部、是否展示菜品详情弹框及弹框菜品信息。</strong></p>
+<p><strong>页面结构：useReducer 的管理方式同 Redux，包括 state、action、reducer 还有 dispatch，组件大体框架如下。</strong></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// state</span></span><br><span class="line"><span class="keyword">const</span> initialState = Immutable.Map(&#123;</span><br><span class="line">  needShowDishExtraInfoPanel: <span class="literal">false</span>, <span class="comment">// 是否展示菜品详情弹框</span></span><br><span class="line">  selectedDish: Immutable.Map(&#123;&#125;), <span class="comment">// 弹框中的菜品信息</span></span><br><span class="line">  needShowAllItems: <span class="literal">false</span>, <span class="comment">// 是否展示全部</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// reducer</span></span><br><span class="line"><span class="keyword">const</span> reducer = <span class="function">(<span class="params">state, action</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'UPDATE_PANEL_GIFT_INFO'</span>: <span class="comment">// 更新弹框中的赠品信息</span></span><br><span class="line">      <span class="keyword">return</span> state.merge(&#123; <span class="attr">selectedDish</span>: action.payload &#125;);</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'TOGGLE_SHOW_DISH_PANEL'</span>: <span class="comment">// 变更菜品详情弹框展示状态</span></span><br><span class="line">      <span class="keyword">return</span> state.merge(&#123; <span class="attr">showDishPanel</span>: action.payload &#125;);</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'TOGGLE_SHOW_ALL_DISHS'</span>: <span class="comment">// 变更展示全部状态</span></span><br><span class="line">      <span class="keyword">return</span> state.merge(&#123; <span class="attr">showAllItems</span>: action.payload &#125;);</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 默认展示的菜品数量</span></span><br><span class="line"><span class="keyword">const</span> DEFAULT_SHOW_COUNT = <span class="number">2</span>;</span><br><span class="line"><span class="comment">// 变更菜品信息弹框状态及弹框中菜品信息</span></span><br><span class="line"><span class="keyword">const</span> handleDetailClick = <span class="function">(<span class="params">dish, dispatch</span>) =&gt;</span> &#123;</span><br><span class="line">	dispatch(&#123; <span class="attr">type</span>: <span class="string">'TOGGLE_SHOW_DISH_PANEL'</span>, <span class="attr">payload</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">  dispatch(&#123; <span class="attr">type</span>: <span class="string">'UPDATE_PANEL_GIFT_INFO'</span>, <span class="attr">payload</span>: dish &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> DishListComponent = <span class="function">(<span class="params">&#123; dishList &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// reducer 数据初始化</span></span><br><span class="line">  <span class="keyword">const</span> [state, dispatch] = useReducer(reducer, initialState);</span><br><span class="line">	<span class="comment">// 获取是否展示全部的状态</span></span><br><span class="line">  <span class="keyword">const</span> showAllItems = state.get(<span class="string">'showAllItems'</span>);</span><br><span class="line">	<span class="comment">// 获取是否展示菜品详情弹框的状态</span></span><br><span class="line">  <span class="keyword">const</span> showDishPanel = state.get(<span class="string">'showDishPanel'</span>);</span><br><span class="line">	<span class="comment">// 获取弹框中的菜品详情</span></span><br><span class="line">  <span class="keyword">const</span> selectedDish = state.get(<span class="string">'selectedDish'</span>);</span><br><span class="line">  <span class="keyword">if</span> (!dishList.size) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">const</span> dishListInfo = showAllItems ?  dishList : dishList.slice(<span class="number">0</span>, DEFAULT_SHOW_COUNT);</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div className=<span class="string">"dish-list-container"</span>&gt;</span><br><span class="line">      &#123;<span class="comment">/* 菜品列表 */</span>&#125;</span><br><span class="line">      &#123; dishListInfo.map(<span class="function"><span class="params">dish</span> =&gt;</span> &lt;DishItem dish=&#123;dish&#125; handleDetailClick=&#123;(dishInfo) =&gt; handleDetailClick(dishInfo, dispatch)&#125; /&gt;)&#125;</span><br><span class="line">      &#123;/* 是否展示全部 */&#125;</span><br><span class="line">      &#123; !showAllItems &amp;&amp; &lt;div className="tip-show-more" onClick=&#123;() =&gt; dispatch(&#123; type: 'TOGGLE_SHOW_ALL_DISHS', payload: true &#125;)&#125;&gt;展开全部&lt;/div&gt; &#125;</span><br><span class="line">      &#123;/* 菜品详情弹框 */&#125;</span><br><span class="line">      &#123; showDishPanel &amp;&amp; &lt;ExtraInfoPanel onClose=&#123;() =&gt; dispatch(&#123; type: 'TOGGLE_SHOW_DISH_PANEL', payload: false &#125;)&#125; dish=&#123;selectedDish&#125; /&gt;&#125;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>handleDetailClick</strong> 中通过 <strong>dispatch</strong> 可改变弹框状态及弹框的内容。<strong>useReducer</strong> 的管理方式非常可控，而如果采用 <strong>Class Component</strong> 方式，组件全局可获取状态及随意变更状态，将带来较差的维护性及较高的复杂度。</p>
+<h3 id="简单的异步状态（useState-amp-useEffect）"><a href="#简单的异步状态（useState-amp-useEffect）" class="headerlink" title="简单的异步状态（useState &amp; useEffect）"></a>简单的异步状态（useState &amp; useEffect）</h3><p>异步的状态在 <strong>Hooks</strong> 里并不能像同步状态那样只使用 <strong>useState</strong> 来解决，当然如果这个异步状态不需要在组件内维护，那就跟券列表例子中的券数据一样，直接渲染即可，如果券数据需要维护呢，那就不能直接渲染了。为什么？看过原理解析应该能了解，<strong>useState</strong> 初始化后，被初始化的状态就有个数据，这个数据会被缓存，之后组件的重新渲染是优先取缓存的数据，而异步状态的特性就是这个状态至少会变更两次，第一次是初始化的时候，可能为空，第二次是真正的数据比如接口返回。</p>
+<p><strong>所以一方面需要缓存这个异步状态，另一方面需要在异步状态变更的时候能触发缓存的状态更新。</strong></p>
+<p>当然异步状态的缓存依然使用 <strong>useState</strong>，而更新异步状态这个时候就轮到 <strong>useEffect</strong> 上场了，因为它能在组件渲染时控制一段逻辑是否会触发，判别机制是异步的状态有没有发生变化</p>
+<p><strong>场景：需要做一个菜品打包盒的选择页面，选择需要打包的菜品后，计算打包盒数量并判断是否全选，点击确认外带触发打包盒的收费计算。如下视觉：</strong></p>
+<div style="width:60%;margin:auto"><img src="/为什么要上Hooks的车/4.png"></div>
+
+<p><strong>分析：整个页面组件中，可以看到只有一个异步状态菜品列表需要维护，是否全选及外带数量都可以通过菜品列表计算得出。</strong></p>
+<p><strong>页面结构：通过 useState 来管理异步状态，并通过 useEffect 在菜品列表数据变化时通过 setDishInfos 更新这个异步状态。</strong></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> PackageSelector = <span class="function">(<span class="params">&#123; dishList &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 外带菜品数据初始化</span></span><br><span class="line">  <span class="keyword">const</span> [dishInfos, setDishInfos] = useState(dishList);</span><br><span class="line">  <span class="comment">// 更新外带菜品数据到 state</span></span><br><span class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> setDishInfos(dishList), [dishList]);</span><br><span class="line">  <span class="comment">// 计算是否已全选</span></span><br><span class="line">  <span class="keyword">const</span> allSelected = judgeIsAllSelect(dishInfos);</span><br><span class="line">  <span class="comment">// 计算外带的菜品数量</span></span><br><span class="line">  <span class="keyword">const</span> takeAwayCount = calcuTakeAwayCount(dishInfos);</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div id=<span class="string">"package-list-container"</span>&gt;</span><br><span class="line">      &#123;<span class="comment">/* 顶部导航 */</span>&#125;</span><br><span class="line">      &lt;div className=<span class="string">"select-header"</span>&gt;</span><br><span class="line">        &lt;div className=<span class="string">"header-left"</span>&gt;选择商品&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">        &lt;div className=&#123;`header-right$&#123;allSelected ? ' active' : ''&#125;`&#125; onClick=&#123;() =&gt; handleToggleSelect(setDishInfos, dishInfos)&#125;&gt;</span></span><br><span class="line"><span class="regexp">          &#123;state.get('allSelected') ? '取消全选' : '全选'&#125;</span></span><br><span class="line"><span class="regexp">        &lt;/</span>div&gt;</span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">      &#123;/</span>* 外带菜品列表 *<span class="regexp">/&#125;</span></span><br><span class="line"><span class="regexp">      &#123; !!dishInfos.size &amp;&amp; &lt;DishList dishInfos=&#123;dishInfos&#125; handleSingleSelect=&#123;(dish) =&gt; handleSingleSelect(dispatch, state, dish)&#125;&gt; &#125;</span></span><br><span class="line"><span class="regexp">      &#123;/</span>* 底部导航 *<span class="regexp">/&#125;</span></span><br><span class="line"><span class="regexp">      &lt;div className="bottom-nav-container"&gt;</span></span><br><span class="line"><span class="regexp">        &lt;div className="btn btn-back" onClick=&#123;pageGoBack&#125;&gt;返回&lt;/</span>div&gt;</span><br><span class="line">        &lt;div className=<span class="string">"btn btn-confirm"</span> onClick=&#123;confirmTakeAway&#125;&gt;&#123;<span class="string">`确定外带 (<span class="subst">$&#123;takeAwayCount&#125;</span>份)`</span>&#125;&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">      &lt;/</span>div&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  );</span></span><br><span class="line"><span class="regexp">&#125;;</span></span><br></pre></td></tr></table></figure>
+
+<p>对比管理同步的状态数据，只增加了一个 <strong>useEffect</strong> 更新组件内的状态，非常的轻便，如果使用 <strong>Class Component</strong> 实现，需在组件中维护异步状态需通过生命周期钩子 <strong>componnetWillReceiveProps</strong> 或者 <strong>getDerivedStateFromProps</strong> ，复杂度将大大提升。</p>
+<h3 id="复杂的异步状态（useReducer-amp-useEffect）"><a href="#复杂的异步状态（useReducer-amp-useEffect）" class="headerlink" title="复杂的异步状态（useReducer &amp; useEffect）"></a>复杂的异步状态（useReducer &amp; useEffect）</h3><p>菜品列表例子中提到了 <strong>useReducer</strong>，如果本地需维护多个状态数据并且包括异步状态，推荐使用 <strong>useReducer</strong> 来管理状态数据，并结合 <strong>useEffect</strong> 触发异步状态的更新逻辑。</p>
+<p><strong>场景：需要做一个赠品选择页面，选择完赠品后点确定触发试算逻辑，点加号时如果赠品有加料和做法（如甜度）则展示SPU弹框选择加料等属性，点去查看展示所选赠品弹框，如下视觉：</strong></p>
+<div style="width:60%;margin:auto"><img src="/为什么要上Hooks的车/5.png"></div>
+
+<p><strong>分析：整个页面组件中，有多个状态需要在组件内维护包括赠品数据列表（来源接口）、是否展示SPU弹框、SPU弹框赠品信息和是否展示所选赠品弹框共 4 个状态，其中来源接口的赠品列表数据为异步状态，其他为同步状态。</strong></p>
+<p><strong>页面结构：通过 useReducer 来管理这4个状态，并通过 useEffect 在 props 的异步状态（赠品数据）变更时更新组件的异步状态。</strong></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// state</span></span><br><span class="line"><span class="keyword">const</span> initialState = Immutable.Map(&#123;</span><br><span class="line">  needShowMultiPanel: <span class="literal">false</span>, <span class="comment">// 是否展示SPU选择弹框</span></span><br><span class="line">  selectedSpuDish: Immutable.Map(&#123;&#125;), <span class="comment">// SPU弹框内容展示所需的赠品信息</span></span><br><span class="line">  dishGiftInfos: Immutable.Map(&#123;&#125;), <span class="comment">// 原始的赠品信息</span></span><br><span class="line">  showGiftList: <span class="literal">false</span>, <span class="comment">// 是否展示所选赠品信息弹框</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// reducer</span></span><br><span class="line"><span class="keyword">const</span> reducer = <span class="function">(<span class="params">state, action</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'UPDATE_GIFT_INFO'</span>: <span class="comment">// 更新原始的赠品信息</span></span><br><span class="line">      <span class="keyword">return</span> state.merge(&#123; <span class="attr">dishGiftInfos</span>: action.payload &#125;);</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'TOGGLE_SHOW_DISH_SELECT_PANEL'</span>: <span class="comment">// 变更SPU选择弹框展示状态</span></span><br><span class="line">      <span class="keyword">return</span> state.merge(&#123; <span class="attr">needShowMultiPanel</span>: action.payload &#125;);</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'TOGGLE_SHOW_GIFT_SELECT_PANEL'</span>: <span class="comment">// 变更赠品信息弹框展示状态</span></span><br><span class="line">      <span class="keyword">return</span> state.merge(&#123; <span class="attr">showGiftList</span>: action.payload &#125;);</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'UPDATE_PANEL_SPU_DISH'</span>: <span class="comment">// 变更SPU弹框赠品信息</span></span><br><span class="line">      <span class="keyword">return</span> state.merge(&#123; <span class="attr">selectedSpuDish</span>: action.selectedSpuDish &#125;);</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> DishGiftComponent = <span class="function">(<span class="params">&#123; dishGiftInfos &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// reducer 数据初始化</span></span><br><span class="line">  <span class="keyword">const</span> [state, dispatch] = useReducer(reducer, initialState);</span><br><span class="line">  <span class="comment">// 更新赠品列表数据到 reducer</span></span><br><span class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> updateDishGiftInfos(dispatch, dishGiftInfos), [dishGiftInfos]);</span><br><span class="line">  <span class="comment">// 从 reducer 中获取最新的赠品列表数据</span></span><br><span class="line">  <span class="keyword">const</span> dishGiftList = state.get(<span class="string">'dishGiftInfos'</span>);</span><br><span class="line">  <span class="comment">// 获取已选的赠品数据</span></span><br><span class="line">  <span class="keyword">const</span> dishGiftGroups = getDishGiftSkuGroups(discountGroups);</span><br><span class="line">  <span class="comment">// 计算已选的赠品数量</span></span><br><span class="line">  <span class="keyword">const</span> giftNum = getSelectedGift(discountGroups);</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div className=<span class="string">"dish-buy-container"</span>&gt;</span><br><span class="line">      &#123;<span class="comment">/* 赠品列表 */</span>&#125;</span><br><span class="line">      &lt;GiftGroupsComponent dishGiftGroups=&#123;dishGiftGroups&#125; addToCart=&#123;dish =&gt; handleMinusDish(dispatch, dish, giftInfos)&#125; minusDish=&#123;(<span class="function"><span class="params">dish</span> =&gt;</span> addToCart(dispatch, dish, giftInfos)&#125; /&gt;</span><br><span class="line">      &#123;<span class="comment">/* 赠品信息展示弹框 */</span>&#125;</span><br><span class="line">      &#123;state.get(<span class="string">'showGiftList'</span>) &amp;&amp; &lt;GiftDishList dishGiftList=&#123;dishGiftList&#125; /&gt;&#125;</span><br><span class="line">      &#123;/* SPU赠品信息展示弹框 */&#125;</span><br><span class="line">      &#123;state.get('needShowMultiPanel') &amp;&amp; &lt;MultiPanel spuDish=&#123;state.get('selectedSpuDish')&#125; addToCart=&#123;dish =&gt; handleAddDish(dispatch, dish, giftInfos)&#125; /&gt; &#125;</span><br><span class="line">      &#123;/* 底部导航 */&#125;</span><br><span class="line">      &#123;!!dishGiftGroups.size &amp;&amp; &lt;GiftFootComponent giftNum=&#123;giftNum&#125; &gt;&#125;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>对于这种比较复杂的组件状态管理，对比 <strong>Class Component</strong> 的实现方式，<strong>Hooks Reducer</strong> 贴近 <strong>Redux Reducer</strong> 的管理策略会清晰很多，<strong>reducer</strong> <strong>state</strong> 的更新遵循纯函数且没有副作用；而 <strong>Class Component</strong> 的方式很容易造成非常混乱的局面，维护性将大大折扣。</p>
+<h2 id="Hooks组件优化"><a href="#Hooks组件优化" class="headerlink" title="Hooks组件优化"></a>Hooks组件优化</h2><p>这一节介绍和性能层面相关的其他 <strong>Hooks</strong> 以及可复用的自定义 <strong>Hooks</strong>，这是 <strong>Class Component</strong> 占劣势的几方面。最后给出几条 <strong>Hooks</strong> 编写的建议。</p>
+<h3 id="其他Hooks"><a href="#其他Hooks" class="headerlink" title="其他Hooks"></a>其他Hooks</h3><h4 id="useMemo"><a href="#useMemo" class="headerlink" title="useMemo"></a>useMemo</h4><p>上一节介绍的 <strong>Hooks</strong> 围绕的是业务实现层面，除此之外还有其他的 <strong>Hooks</strong> 值得关注。其中 <strong>useMemo</strong> 关注计算逻辑的重复计算优化，如券列表例子中计算 <strong>totalAvailableCouponCount</strong>，如果组件再次渲染时，券数据并没有变化，<strong>getTotalAvailableCouponCount</strong> 依然会被计算一次，而如果券数据的量很大，会带来比较大的计算开销，<strong>Hooks</strong> 中的 <strong>useMemo</strong> 可以优化这一点，和 <strong>useEffect</strong> 的判别机制类似，当券数据没有变化时，则 <strong>totalAvailableCouponCount</strong> 用缓存的值。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> totalAvailableCouponCount = useMemo(<span class="function"><span class="params">()</span> =&gt;</span> getTotalAvailableCouponCount(userCouponList), [userCouponList]);</span><br></pre></td></tr></table></figure>
+
+<h4 id="useCallback"><a href="#useCallback" class="headerlink" title="useCallback"></a>useCallback</h4><p><strong>useCallback</strong> 和 <strong>useMemo</strong> 用法看起来很相像，但 <strong>useCallback</strong> 的设计是考虑到子组件的重复渲染问题，针对的场景是父组件传递行列式的事件 <strong>props</strong>，券列表例子中 <strong>updatePromotion</strong> 是可用券选中后触发的逻辑，行列式绑定带来的问题是，每一次父组件渲染时，这个事件 <strong>props</strong> 的引用值会发生变化，导致子组件发生重复渲染，即使影响子组件渲染的数据没发生变化，这是一种渲染浪费。<strong>useCallback</strong> 可以优化这类场景，和 <strong>useEffect</strong> 及 <strong>useMemo</strong> 的判别机制类似。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> updatePromotionCall = useCallback(<span class="function"><span class="params">coupon</span> =&gt;</span> updatePromotion(coupon, userCouponList), [userCouponList]);</span><br><span class="line"></span><br><span class="line">&lt;CouponList</span><br><span class="line">  type=&#123;COUPON_CLICK_TYPE.CAN_SELECT&#125;</span><br><span class="line">  couponList=&#123;userCouponList&#125;</span><br><span class="line">  couponEnabledStatus=&#123;showEnableCoupon ? COUPON_APPLY_STATUS.CAN_USE : COUPON_APPLY_STATUS.CAN_NOT_USE&#125;</span><br><span class="line">  updatePromotion=&#123;updatePromotionCall&#125;</span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="useRef-amp-useContext"><a href="#useRef-amp-useContext" class="headerlink" title="useRef &amp; useContext"></a>useRef &amp; useContext</h4><p><strong>useRef</strong> 及 <strong>useContext</strong> 和 <strong>Class Component</strong> 中的 <strong>ref</strong> 及 <strong>context</strong> 类似，<strong>useRef</strong> 可给 <strong>Hooks</strong> 组件中的元素添加唯一标识及缓存数据，<strong>useContext</strong> 可在 <strong>Hooks</strong> 组件实现多组件数据共享如可将 <strong>dispatch</strong> 在组件顶层通过 <strong>useContext</strong> 封装，则其后代组件中都可使用 <strong>dispatch</strong> 而不用通过 <strong>props</strong> 层层传递。</p>
+<h3 id="自定义Hooks"><a href="#自定义Hooks" class="headerlink" title="自定义Hooks"></a>自定义Hooks</h3><p>自定义 <strong>Hooks</strong> 给 <strong>React Hooks</strong> 带来了很多可能性，<strong>Class Component</strong> 想实现组件内多重的状态逻辑复用很困难，而自定义 <strong>Hooks</strong> 很巧妙的设计能在组件中来去自如。</p>
+<p>多个 <strong>Hooks</strong> 组件用到的状态逻辑都可提取出来作为公共 <strong>Hooks</strong>，<strong>React</strong> 提供的原始 <strong>Hooks</strong> 如 <strong>useState</strong>、<strong>useEffect</strong> 等其实也是公用 <strong>Hooks</strong>。</p>
+<p>业务中经常会用到的逻辑如 <strong>事件监听、定时器，表单、接口、权限</strong> 等都可作为复用型状态逻辑，可提取出来作为公共的 <strong>Hooks</strong>。</p>
+<p>在点餐项目中目前使用最多的就是事件监听和定时器，分别来看看它们怎么封装到 <strong>Hooks</strong> 中。</p>
+<p><strong>场景：需要给页面A的回退打点</strong></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 页面A回退事件绑定及销毁</span></span><br><span class="line">useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">window</span>.addEventListener(<span class="string">'popstate'</span>, popHandler);</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">window</span>.removeEventListener(popHandler);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>加需求：需要监听UI模块B的滚动事件并给该模块打点</strong></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 页面A回退事件绑定及销毁</span></span><br><span class="line">useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">window</span>.addEventListener(<span class="string">'popstate'</span>, popHandler);</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">window</span>.removeEventListener(popHandler);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 页面A的UI模块B滚动事件绑定及销毁</span></span><br><span class="line"><span class="keyword">const</span> elementRef = useRef();</span><br><span class="line">useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> elementB = elementRef.current;</span><br><span class="line">  elementB.addEventListener(<span class="string">'scroll'</span>, scrollHandler);</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">window</span>.removeEventListener(scrollHandler);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>如果其他页面也有这种绑定及销毁监听事件的逻辑，绑定的元素、事件类型等可能不同，但都是事件监听逻辑。是不是可以对事件监听逻辑封装，根据绑定元素、事件类型等参数生成自定义 <strong>Hook</strong>。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 事件绑定 Hook</span></span><br><span class="line"><span class="comment"> * @param eventName 事件名如click</span></span><br><span class="line"><span class="comment"> * @param handler 事件处理回调</span></span><br><span class="line"><span class="comment"> * @param useCapture 事件是否在捕获阶段执行，默认为 false</span></span><br><span class="line"><span class="comment"> * @param element 绑定事件的元素，默认为 window</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">useEventListener</span>(<span class="params">eventName, handler, useCapture, element = window</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> savedHandler = useRef();</span><br><span class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> savedHandler.current = handler, [handler]);</span><br><span class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> eventListener = <span class="function"><span class="params">event</span> =&gt;</span> savedHandler.current(event);</span><br><span class="line">    <span class="comment">// 绑定事件</span></span><br><span class="line">    element.addEventListener(eventName, eventListener, useCapture);</span><br><span class="line">    <span class="comment">// 销毁事件</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> element.removeEventListener(eventName, eventListener, useCapture);</span><br><span class="line">  &#125;, [eventName, element, useCapture]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过自定义的事件 <strong>Hooks</strong> 实现场景如下。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 页面A回退事件绑定及销毁</span></span><br><span class="line">useEventListener(<span class="string">'popstate'</span>, popHandler);</span><br><span class="line"><span class="comment">// 页面A的UI模块B滚动事件绑定及销毁</span></span><br><span class="line">useEventListener(elementB, <span class="string">'scroll'</span>, scrollHandler);</span><br></pre></td></tr></table></figure>
+
+<p>类似的自定义定时器 <strong>Hook</strong> 如下</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> DEFAULT_INTERVAL_DELAY = <span class="number">1000</span>;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 定时器 Hook</span></span><br><span class="line"><span class="comment"> * @param callback 定时回调</span></span><br><span class="line"><span class="comment"> * @param delay 延时，默认1s</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">useInterval</span>(<span class="params">callback, delay = DEFAULT_INTERVAL_DELAY</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> savedCallback = useRef();</span><br><span class="line"></span><br><span class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> savedCallback.current = callback);</span><br><span class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> tick = <span class="function"><span class="params">()</span> =&gt;</span> savedCallback.current();</span><br><span class="line">    <span class="comment">// 监听定时器</span></span><br><span class="line">    <span class="keyword">const</span> id = setInterval(tick, delay);</span><br><span class="line">    <span class="comment">// 取消监听定时器</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> clearInterval(id);</span><br><span class="line">  &#125;, [delay]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用自定义定时器 <strong>Hook</strong></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定时循环处理一段逻辑</span></span><br><span class="line">useInterval(intervalHandler, <span class="number">2000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>多个自定义 <strong>Hooks</strong> 自由搭配</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定时循环处理一段逻辑</span></span><br><span class="line">useInterval(intervalHandler, <span class="number">2000</span>);</span><br><span class="line"><span class="comment">// 页面A回退事件绑定及销毁</span></span><br><span class="line">useEventListener(<span class="string">'popstate'</span>, popHandler);</span><br><span class="line"><span class="comment">// 页面A的UI模块B滚动事件绑定及销毁</span></span><br><span class="line">useEventListener(elementB, <span class="string">'scroll'</span>, scrollHandler);</span><br></pre></td></tr></table></figure>
+
+<p>自定义 <strong>Hooks</strong> 的封装，一方面代码量会减少很多；一方面不需关心 <strong>Hooks</strong> 内部的处理逻辑，能大大减轻工作量；另一方面 <strong>Hooks</strong> 之间相互独立，互不影响，也更具灵活性。</p>
+<h3 id="Hooks编写建议"><a href="#Hooks编写建议" class="headerlink" title="Hooks编写建议"></a>Hooks编写建议</h3><p>以上一方面总结了不同业务场景下 <strong>Hooks</strong> 接入的推荐方案，一方面针对 <strong>Hooks</strong> 组件的特定场景给出了侧重组件性能优化的 <strong>Hooks</strong> 选择；另一方面介绍了相比 <strong>Class Component</strong> 来说，状态逻辑复用更佳方案即自定义 <strong>Hooks</strong>。至此，<strong>Hooks</strong> 的相关内容已基本覆盖，这一节针对 <strong>Hooks</strong> 的编写给出几条笔者觉得实用的建议。</p>
+<ul>
+<li>不建议在同一个 <strong>Hook</strong> 中处理太多的状态逻辑，建议将复杂的状态拆分为多个 <strong>Hooks</strong> 分别管理，一方面状态可读性更佳，逻辑更清晰；另一方面维护性更佳，便于后期抽离公共 <strong>Hooks</strong></li>
+<li>所有的 <strong>Hooks</strong> 申明需放在组件顶部，在第一个 <strong>Hook</strong> 和最后一个 <strong>Hook</strong> 之间不建议使用判断或者循环逻辑，因为这会打乱 <strong>Hooks</strong> 内部的索引机制，带来无法预料的问题</li>
+</ul>
+<h2 id="Class-Component转Hooks-Component"><a href="#Class-Component转Hooks-Component" class="headerlink" title="Class Component转Hooks Component"></a>Class Component转Hooks Component</h2><p>对 <strong>Hooks</strong> 内容有了熟悉的理解后，如果项目里的 <strong>Class Component</strong> 的逻辑混乱或者可读性很差，不妨使用 <strong>Hooks</strong> 重构下，效果会更好。</p>
+<p>其实如果了解 <strong>Class Component</strong> 中的生命周期，再加上 <strong>Hooks</strong> 的经验累积，重构并不复杂</p>
+<p>先来看看 <strong>React16</strong> 目前推荐的<a href="https://zh-hans.reactjs.org/docs/react-component.html#the-component-lifecycle" target="_blank" rel="noopener">生命周期</a></p>
+<ul>
+<li><strong>componentDidMount</strong> 组件第一次渲染后触发</li>
+<li><strong>componentDidUpdate</strong> 组件第N（N&gt;1）次渲染后触发</li>
+<li><strong>getDerivedStateFromProps</strong> 组件每次渲染前触发</li>
+<li><strong>componentUnmount</strong> 组件销毁前触发</li>
+<li><strong>getSnapShotBeforeUpdate</strong> 组件第N（N&gt;1）次渲染前触发</li>
+<li><strong>getDerivedStateFromError</strong> 子组件抛出异常后触发</li>
+<li><strong>componentDidCatch</strong> 子组件抛出异常后触发，未来版本将不推荐</li>
+</ul>
+<p>总览后，<strong>getSnapShotBeforeUpdate</strong> 在现有业务中很少用到，并且目前 <strong>Hooks</strong> 还不支持 <a href="https://zh-hans.reactjs.org/docs/react-component.html#error-boundaries" target="_blank" rel="noopener">Error Boundaries</a> 即子组件发生错误时没法使用 <strong>React16</strong> 的降级方案，除此之外采用 <strong>Hooks</strong> 来模拟其他生命周期还是没问题的，即核心是基于 <strong>useEffect</strong></p>
+<ul>
+<li><strong>componentDidMount</strong> 只是第一次调用。相当于 <strong>useEffect</strong> 的第二个参数传空数组</li>
+<li><strong>componentDidUpdate</strong> 常配合 <strong>componentDidMount</strong> 使用。<strong>useEffect</strong> 的第二个参数传递二次渲染后的逻辑中依赖的数据</li>
+<li><strong>getDerivedStateFromProps</strong> 通常将异步 <strong>props</strong> 缓存到 <strong>state</strong> 中。配合状态存储 <strong>Hooks</strong>（useState 或 useReducer）和 状态更新 <strong>Hooks</strong> （useEffect）管理数据</li>
+<li><strong>componentUnmount</strong> 组件销毁的执行。在 <strong>useEffect</strong> 中返回箭头函数执行销毁前逻辑</li>
+</ul>
+<p>基于以上核心规则重构，基本能满足常见的业务场景。</p>
+<h2 id="下Hooks车后的回想"><a href="#下Hooks车后的回想" class="headerlink" title="下Hooks车后的回想"></a>下Hooks车后的回想</h2><p><strong>Hooks</strong> 相比过去的 <strong>Class Component</strong> 确实有很多优势，一方面代码更加简约并且全局代码风格一致即函数化；一方面切除事件 <strong>this</strong> 绑定让代码可读性更佳，让代码更加清晰；一方面去除生命周期，收敛组件的状态逻辑，管理更加可控，并且大大减轻组件复杂度；另一方面将状态复用发挥到极致，极具灵活性同时保持独立性。</p>
+<p>以下是对这次 <strong>Hooks</strong> 引入到点餐后的效果总结，包括代码可读性、逻辑复用性、组件可控性、场景覆盖度、组件性能值 5个方面。</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left">Hooks Component</th>
+<th align="left">Class Component</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">代码可读性</td>
+<td align="left">更好。通过 <strong>Hooks</strong> 管理组件复杂的状态，并且 <strong>Hooks</strong> 可拆分管理，让不同的状态彼此解耦且理解更清晰</td>
+<td align="left">较差。通过组件全局的 <strong>state</strong> 管理庞大的组件状态，状态的初始化来源于构造函数及 <strong>props</strong> 致使逻辑较难理解，并且生命周期繁多，易造成较差的代码观感。</td>
+</tr>
+<tr>
+<td align="left">逻辑复用性</td>
+<td align="left">更好。通过自定义 <strong>Hooks</strong> 可将多个组件的公共状态逻辑抽离，实现真正的逻辑复用。</td>
+<td align="left">较差。通过 <strong>HOC</strong> 或者 <strong>Render Props</strong> 复用状态逻辑，可能会改变组件逻辑或造成多层嵌套，组件无法完全脱离外层容器。</td>
+</tr>
+<tr>
+<td align="left">组件可控性</td>
+<td align="left">更好。通过不同的 <strong>Hooks</strong> 选型可满足不同的使用场景，<strong>useState</strong> 或者 <strong>useReducer</strong> 状态管理方案搭配自定义状态更新逻辑让组件更加可控。</td>
+<td align="left">较差。只有一种 <strong>state</strong> 更新方案即 <strong>setState</strong>，并且组件各状态之间无法解耦，<strong>state</strong> 全局可获取易带来不可控的逻辑变更。</td>
+</tr>
+<tr>
+<td align="left">场景覆盖度</td>
+<td align="left">较差。目前业务覆盖度已基本覆盖，能满足大部分业务需求，但对于 <strong>getSnapShotBeforeUpdate</strong> 以及错误边界支持度不好。</td>
+<td align="left">更好。比 <strong>Hooks Component</strong> 的场景覆盖更广，有组件错误边界的降级方案。</td>
+</tr>
+<tr>
+<td align="left">组件性能值</td>
+<td align="left">更好。组件的性能方案选型更丰富，如 <strong>React.memo</strong>、<strong>useMemo</strong> 及 <strong>useCallBack</strong>。</td>
+<td align="left">较差。组件的性能方案选型较少，目前有 <strong>shouldComponentUpdate</strong> 和 <strong>PureComponent</strong>。</td>
+</tr>
+</tbody></table>
+<p>综合考量，<strong>Hooks</strong> 相比 <strong>Class Component</strong> 的优势很大，并且也将会越来越完善，建议在新项目中使用起来。</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>你的鼓励我会用来换杯奶茶～😁</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="MoMo 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    MoMo
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://1349279985.github.io/为什么要上Hooks的车/" title="为什么要上Hooks的车">https://1349279985.github.io/为什么要上Hooks的车/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+    <footer class="post-footer">
+      
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/微信小程序版经典俄罗斯方块/" rel="next" title="微信小程序版经典俄罗斯方块">
+                <i class="fa fa-chevron-left"></i> 微信小程序版经典俄罗斯方块
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="MoMo">
+            
+              <p class="site-author-name" itemprop="name">MoMo</p>
+              <p class="site-description motion-element" itemprop="description">记录Jason和MoMo的工作和生活</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/1349279985" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:momo1349279985@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前情提要"><span class="nav-number">1.</span> <span class="nav-text">前情提要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么我要使用Hooks"><span class="nav-number">2.</span> <span class="nav-text">为什么我要使用Hooks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑复用性"><span class="nav-number">2.1.</span> <span class="nav-text">逻辑复用性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组件可读性"><span class="nav-number">2.2.</span> <span class="nav-text">组件可读性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写复杂性"><span class="nav-number">2.3.</span> <span class="nav-text">编写复杂性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#上Hooks车前的思考"><span class="nav-number">3.</span> <span class="nav-text">上Hooks车前的思考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#点餐项目Hooks实践"><span class="nav-number">4.</span> <span class="nav-text">点餐项目Hooks实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#业务需求引入Hooks"><span class="nav-number">4.1.</span> <span class="nav-text">业务需求引入Hooks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的同步状态（useState）"><span class="nav-number">4.2.</span> <span class="nav-text">简单的同步状态（useState）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复杂的同步状态（useReducer）"><span class="nav-number">4.3.</span> <span class="nav-text">复杂的同步状态（useReducer）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的异步状态（useState-amp-useEffect）"><span class="nav-number">4.4.</span> <span class="nav-text">简单的异步状态（useState &amp; useEffect）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复杂的异步状态（useReducer-amp-useEffect）"><span class="nav-number">4.5.</span> <span class="nav-text">复杂的异步状态（useReducer &amp; useEffect）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hooks组件优化"><span class="nav-number">5.</span> <span class="nav-text">Hooks组件优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#其他Hooks"><span class="nav-number">5.1.</span> <span class="nav-text">其他Hooks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#useMemo"><span class="nav-number">5.1.1.</span> <span class="nav-text">useMemo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#useCallback"><span class="nav-number">5.1.2.</span> <span class="nav-text">useCallback</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#useRef-amp-useContext"><span class="nav-number">5.1.3.</span> <span class="nav-text">useRef &amp; useContext</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义Hooks"><span class="nav-number">5.2.</span> <span class="nav-text">自定义Hooks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hooks编写建议"><span class="nav-number">5.3.</span> <span class="nav-text">Hooks编写建议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Class-Component转Hooks-Component"><span class="nav-number">6.</span> <span class="nav-text">Class Component转Hooks Component</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下Hooks车后的回想"><span class="nav-number">7.</span> <span class="nav-text">下Hooks车后的回想</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MoMo</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">44.8k</span>
+  
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  <style type="text/css">
+    div.info{
+        display: none;
+    }
+  </style>
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'eSAyObWzrkUP2DSIvGsFxLsF-gzGzoHsz',
+        appKey: 'GtKQGcrxyp8pJVpmeSaK50xN',
+        placeholder: '请在此输入你的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("eSAyObWzrkUP2DSIvGsFxLsF-gzGzoHsz", "GtKQGcrxyp8pJVpmeSaK50xN");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":345,"hOffset":80,"vOffset":0},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
