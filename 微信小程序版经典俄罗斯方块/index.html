@@ -94,7 +94,7 @@
 
 
 
-  <meta name="keywords" content="微信小程序,计算属性">
+  <meta name="keywords" content="微信小程序,React,Redux,Hooks">
 
 
 
@@ -105,28 +105,21 @@
 
 
 
-<meta name="description" content="最近在原生微信小程序的开发中，会经常碰到一个场景是，一个变量由其他多个变量计算得来，而目前 原生微信小程序API 并没有 Vue 中计算属性 Computed 这类写法，变量的联动计算比较繁琐。故此研究下这种特性并将其引入。">
-<meta name="keywords" content="微信小程序,计算属性">
+<meta name="description" content="最近在 github 上看到了儿时玩过的掌机俄罗斯方块游戏通过纯前端实现，很有意思，并且有 Vue版 和 React版，查了下并没有小程序版，于是乎，心血来潮做了这款小程序版本。">
+<meta name="keywords" content="微信小程序,React,Redux,Hooks">
 <meta property="og:type" content="article">
-<meta property="og:title" content="原生微信小程序引入计算属性">
-<meta property="og:url" content="https://1349279985.github.io/原生微信小程序引入计算属性/index.html">
+<meta property="og:title" content="微信小程序版经典俄罗斯方块">
+<meta property="og:url" content="https://1349279985.github.io/微信小程序版经典俄罗斯方块/index.html">
 <meta property="og:site_name" content="MoMo&#39;s Blog">
-<meta property="og:description" content="最近在原生微信小程序的开发中，会经常碰到一个场景是，一个变量由其他多个变量计算得来，而目前 原生微信小程序API 并没有 Vue 中计算属性 Computed 这类写法，变量的联动计算比较繁琐。故此研究下这种特性并将其引入。">
+<meta property="og:description" content="最近在 github 上看到了儿时玩过的掌机俄罗斯方块游戏通过纯前端实现，很有意思，并且有 Vue版 和 React版，查了下并没有小程序版，于是乎，心血来潮做了这款小程序版本。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://1349279985.github.io/原生微信小程序引入计算属性/0.png">
-<meta property="og:image" content="https://1349279985.github.io/原生微信小程序引入计算属性/1.png">
-<meta property="og:image" content="https://1349279985.github.io/原生微信小程序引入计算属性/2.png">
-<meta property="og:image" content="https://1349279985.github.io/原生微信小程序引入计算属性/3.png">
-<meta property="og:image" content="https://1349279985.github.io/原生微信小程序引入计算属性/4.png">
-<meta property="og:image" content="https://1349279985.github.io/原生微信小程序引入计算属性/5.png">
-<meta property="og:image" content="https://1349279985.github.io/原生微信小程序引入计算属性/6.png">
-<meta property="og:image" content="https://1349279985.github.io/原生微信小程序引入计算属性/7.png">
-<meta property="og:image" content="https://1349279985.github.io/原生微信小程序引入计算属性/8.png">
-<meta property="og:updated_time" content="2019-10-12T12:32:02.701Z">
+<meta property="og:image" content="https://1349279985.github.io/微信小程序版经典俄罗斯方块/0.png">
+<meta property="og:image" content="https://p0.meituan.net/travelcube/f2307e1979221e994e519a29a63ff52e2380401.gif">
+<meta property="og:updated_time" content="2019-11-24T17:43:51.975Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="原生微信小程序引入计算属性">
-<meta name="twitter:description" content="最近在原生微信小程序的开发中，会经常碰到一个场景是，一个变量由其他多个变量计算得来，而目前 原生微信小程序API 并没有 Vue 中计算属性 Computed 这类写法，变量的联动计算比较繁琐。故此研究下这种特性并将其引入。">
-<meta name="twitter:image" content="https://1349279985.github.io/原生微信小程序引入计算属性/0.png">
+<meta name="twitter:title" content="微信小程序版经典俄罗斯方块">
+<meta name="twitter:description" content="最近在 github 上看到了儿时玩过的掌机俄罗斯方块游戏通过纯前端实现，很有意思，并且有 Vue版 和 React版，查了下并没有小程序版，于是乎，心血来潮做了这款小程序版本。">
+<meta name="twitter:image" content="https://1349279985.github.io/微信小程序版经典俄罗斯方块/0.png">
 
 
 
@@ -156,13 +149,13 @@
 
 
 
-  <link rel="canonical" href="https://1349279985.github.io/原生微信小程序引入计算属性/">
+  <link rel="canonical" href="https://1349279985.github.io/微信小程序版经典俄罗斯方块/">
 
 
 
 
 
-  <title>原生微信小程序引入计算属性 | MoMo's Blog</title>
+  <title>微信小程序版经典俄罗斯方块 | MoMo's Blog</title>
   
 
 
@@ -317,7 +310,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://1349279985.github.io/原生微信小程序引入计算属性/">
+    <link itemprop="mainEntityOfPage" href="https://1349279985.github.io/微信小程序版经典俄罗斯方块/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MoMo">
@@ -334,7 +327,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">原生微信小程序引入计算属性</h1>
+          <h1 class="post-title" itemprop="name headline">微信小程序版经典俄罗斯方块</h1>
         
 
         <div class="post-meta">
@@ -346,8 +339,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-12T14:20:21+08:00">
-                2018-09-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-25T01:15:04+08:00">
+                2019-11-25
               </time>
             
 
@@ -387,8 +380,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/原生微信小程序引入计算属性/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/原生微信小程序引入计算属性/" itemprop="commentCount"></span>
+                <a href="/微信小程序版经典俄罗斯方块/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/微信小程序版经典俄罗斯方块/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -396,7 +389,7 @@
 
           
           
-             <span id="/原生微信小程序引入计算属性/" class="leancloud_visitors" data-flag-title="原生微信小程序引入计算属性">
+             <span id="/微信小程序版经典俄罗斯方块/" class="leancloud_visitors" data-flag-title="微信小程序版经典俄罗斯方块">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -427,31 +420,33 @@
       
 
       
-        <p>最近在原生微信小程序的开发中，会经常碰到一个场景是，一个变量由其他多个变量计算得来，而目前 <strong>原生微信小程序API</strong> 并没有 <strong>Vue</strong> 中计算属性 <strong>Computed</strong> 这类写法，变量的联动计算比较繁琐。故此研究下这种特性并将其引入。</p>
-<div style="max-width:70%;margin:auto"><img src="/原生微信小程序引入计算属性/0.png"></div>
+        <p>最近在 <strong>github</strong> 上看到了儿时玩过的掌机俄罗斯方块游戏通过纯前端实现，很有意思，并且有 <a href="https://github.com/Binaryify/vue-tetris" target="_blank" rel="noopener">Vue版</a> 和 <a href="https://github.com/chvin/react-tetris" target="_blank" rel="noopener">React版</a>，查了下并没有小程序版，于是乎，心血来潮做了这款<a href="https://github.com/1349279985/wx-tetris" target="_blank" rel="noopener">小程序版本</a>。</p>
+<div style="width:40%;margin:auto"><img src="/微信小程序版经典俄罗斯方块/0.png"></div>
 
 <a id="more"></a>
 
-<p>下面是一个简单的场景，下单时的总价由券包数量和价格计算所得。</p>
-<p><img src="1.png" alt></p>
-<p>微信小程序中，由于这样的场景并没有涉及到类似购物车的复杂计算，本地存储的方案必要性就不大了，常规操作可以是这样。</p>
-<p><img src="2.png" alt></p>
-<p>可以看到，每次改变 <strong>num</strong> 和 <strong>price</strong> 变量的值，都会在各自的事件处理中重新计算 <strong>total</strong>，并 <strong>setData</strong> 更新最新值。试想，和总价计算相关的变量如果是多个，但又不像购物车那样超级大的计算量，比如 <strong>5</strong> 个，如果咱还是采取这个方案，当每个与总价相关的变量发生了变化，再重新手动获取相关的其他变量值并计算新的总价。这样的计算方式看起来冗余度是不是就显得有些重了。</p>
-<p>想想是这么一回事儿。那怎么可以缓解这手动计算带来的痛楚呢？其实，我们完全可以借鉴其他好的框架思想，比如 <strong>Vue</strong> 中的计算属性，让需要依赖多个变量的参数和这些变量进行绑定，当这些变量中任何一个发生了变化，会自动触发更新，免去手动的痛楚。</p>
-<h2 id="引入计算属性"><a href="#引入计算属性" class="headerlink" title="引入计算属性"></a>引入计算属性</h2><p>计算属性的重要作用是能在变量变化时自动更新依赖这些变量的属性，所以引入计算属性的关键有两点， <strong>一是能实时监听变量的变化；一个是能在变量变化时自动触发更新操作</strong>。监听变量可以通过 <strong>Object.defineProperty</strong> 中的 get 和 set 函数来感知；自动触发相应依赖属性的更新可以通过订阅发布模式做到。</p>
-<div style="max-width:70%;margin:auto"><img src="/原生微信小程序引入计算属性/3.png"></div>
+<h2 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h2><p>经典俄罗斯方块已经有了 <a href="https://github.com/Binaryify/vue-tetris" target="_blank" rel="noopener">Vue版</a> 和 <a href="https://github.com/chvin/react-tetris" target="_blank" rel="noopener">React版</a>，如今微信小程序很火爆，查了查并没有微信小程序版本，所以临时起意做一个小程序版本，保留原汁原味的经典味道。项目之初在 类Vue 的 <a href="https://github.com/Meituan-Dianping/mpvue" target="_blank" rel="noopener">mpvue</a> 和 类React 的 <a href="https://github.com/NervJS/taro" target="_blank" rel="noopener">Taro</a> 之间抉择；对比了两者，mpvue 最近基本没维护了，而 Taro 紧跟 着 React 的更新，有着和 <code>React16</code> 基本一致的特性，再加上团队的技术栈收敛，新项目都采用 React，同时个人也是偏好 React，嘿嘿，所以最终就选用了 Taro 来做。</p>
+<p>贴出<a href="https://github.com/1349279985/wx-tetris" target="_blank" rel="noopener">项目地址</a>，欢迎 <code>Star</code> 及一起交流学习～</p>
+<h2 id="针对-React-版的优化"><a href="#针对-React-版的优化" class="headerlink" title="针对 React 版的优化"></a>针对 React 版的优化</h2><p>其实游戏的介绍在 <a href="https://github.com/chvin/react-tetris" target="_blank" rel="noopener">React版</a> 已经有了详尽的介绍，这里就不再赘述啦～，想提到的几点就是</p>
+<ol>
+<li>小程序宿主环境和 Web 不大一样，所以就没有 <code>window</code> 或者 <code>document</code> 这类元素啦，代码中我将相关的代码做了改写，同时原逻辑中兼容 PC 端的内容我也做了删减；</li>
+<li>原项目中使用了 <code>shouldComponentUpdate</code> 做组件优化，每个组件都写了一遍 <code>shouldComponentUpdate</code> 的判别逻辑，我觉着还是可以统一化的，于是乎封装统一的父类组件并重写其中的 <code>shouldComponentUpdate</code> 逻辑，在 <code>compoment/common/BaseClassComponent</code> 中，读者完全可以将该段逻辑用在自己的项目，实现组件的防重复渲染；</li>
+<li>React16 分别在 <code>2018/10</code> 和 <code>2019/02</code> 发布了 <code>React.memo</code> 以及 <code>Hooks</code> 特性，这对于函数组件来说无疑是重大的特性，使其支持组件 state 以及生命周期钩子，并且能优化函数组件，因此我将该特性引入并对项目的UI层做了重写，看起来代码会更加简约，如果想学习最新的 React 这些特性在项目中的应用，不妨拷贝下来本地运行下；其次，针对 memo 这一点，我也将其做了统一封装放在了 <code>compoment/common/BaseFunctionComponent</code> 中，同样适用于你的 React 项目；</li>
+<li>数据持久化这一点，依然和原项目保持一致，使用 <code>Immutable</code>，这应该是 React + Redux 时的最佳方案了吧。</li>
+</ol>
+<h2 id="项目启动"><a href="#项目启动" class="headerlink" title="项目启动"></a>项目启动</h2><p>项目采用 Taro 中的 React + Redux 版</p>
+<h3 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install or yarn install</span><br></pre></td></tr></table></figure>
 
-<h2 id="写一个简单的计算属性组件"><a href="#写一个简单的计算属性组件" class="headerlink" title="写一个简单的计算属性组件"></a>写一个简单的计算属性组件</h2><p>像类似 Vue 一样引入 <strong>computed</strong>，在 <strong>onload</strong> 中调用 <strong>computed</strong>，绑定计算属性如图中的 <strong>totalPrice</strong></p>
-<p><img src="4.png" alt></p>
-<h3 id="建立一个雏形"><a href="#建立一个雏形" class="headerlink" title="建立一个雏形"></a>建立一个雏形</h3><p>先初始化一个 <strong>computed</strong> 函数，遍历计算属性并且通过 <strong>call</strong> 绑定组件的 <strong>this</strong> 以获取各计算属性的初始值，再通过 <strong>setData</strong> 同步到组件 <strong>data</strong></p>
-<p><img src="5.png" alt></p>
-<h3 id="变量绑定响应式"><a href="#变量绑定响应式" class="headerlink" title="变量绑定响应式"></a>变量绑定响应式</h3><p>这个时候，<strong>data</strong> 中就有了计算属性。但是当这些和计算属性关联的变量变化时，怎么触发计算属性的自动更新，下一步要做的就是先能监听到和计算属性相关变量的变化。可以通过 <strong>Object.defineProperty</strong> 对这些变量进行绑定。需要对 <strong>computed</strong> 做一些改变。</p>
-<p><img src="6.png" alt></p>
-<h3 id="设计订阅-发布模式"><a href="#设计订阅-发布模式" class="headerlink" title="设计订阅/发布模式"></a>设计订阅/发布模式</h3><p>通过 <strong>defineReactive</strong> 给 <strong>data</strong> 每个字段绑定响应式，然后就能在变量变化的时候自动触发更新相关计算属性的操作。可以将计算属性的执行函数放在一个订阅容器中，每当变量变化时便会触发 <strong>set</strong> 函数，这时可在函数中发布通知给这个订阅容器执行更新操作。</p>
-<p><img src="7.png" alt></p>
-<p>其中 <strong>subsContainer</strong> 就是订阅容器，存放需要执行的更新计算属性的操作，当有数据变化时，会通过 <strong>setTimeout</strong> 延后执行，因为延后执行后才能拿到变量最新的数据</p>
-<p><img src="8.png" alt></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上就是一个简单的计算属性引入微信小程序的过程，对于数据量不大（小于5个）的场景已经够用，如果数据量比较大，建议设计计算模型来统一处理</p>
+<h3 id="项目运行"><a href="#项目运行" class="headerlink" title="项目运行"></a>项目运行</h3><p>在 <code>project.config.json</code> 中配置自己的 <code>appid</code>，并在微信开发者工具导入项目</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 开发环境</span></span><br><span class="line">dev:weapp</span><br><span class="line"></span><br><span class="line"><span class="comment">// 生产环境</span></span><br><span class="line">build:weapp</span><br></pre></td></tr></table></figure>
+
+<p>于是乎就有了效果</p>
+<h2 id="项目效果"><a href="#项目效果" class="headerlink" title="项目效果"></a>项目效果</h2><p><img src="https://p0.meituan.net/travelcube/f2307e1979221e994e519a29a63ff52e2380401.gif" alt="微信效果图"></p>
+<h2 id="后续待办计划"><a href="#后续待办计划" class="headerlink" title="后续待办计划"></a>后续待办计划</h2><ol>
+<li>由于 在小程序中对于音频的处理并不向 Web 那样精细，小程序中如果向播放音频中的某一段，需要自己实现播放区间的控制，而 Web 可以轻松通过 start 来实现，这一块还需要研究下，如果有童鞋感兴趣，可以提PR秀出你的代码，我会非常期待；</li>
+<li>如今 JS 发展越来越壮大，它的升级版 <code>Typescript</code> 赋予了它静态类型检查等等特性，使得它的维护性更好，所以后期我会加入 Typescript 使得项目可读性更高，也更易维护；</li>
+<li>完整的项目离不开<code>单元测试</code>，为了使得项目更具工程化，后期会引入单元测试对功能模块、UI层做一些测试，这样项目也更具可读性了。</li>
+</ol>
 <hr>
 
       
@@ -496,7 +491,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://1349279985.github.io/原生微信小程序引入计算属性/" title="原生微信小程序引入计算属性">https://1349279985.github.io/原生微信小程序引入计算属性/</a>
+    <a href="https://1349279985.github.io/微信小程序版经典俄罗斯方块/" title="微信小程序版经典俄罗斯方块">https://1349279985.github.io/微信小程序版经典俄罗斯方块/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -512,7 +507,11 @@
           
             <a href="/tags/微信小程序/" rel="tag"># 微信小程序</a>
           
-            <a href="/tags/Vue/" rel="tag"># Vue</a>
+            <a href="/tags/React/" rel="tag"># React</a>
+          
+            <a href="/tags/Redux/" rel="tag"># Redux</a>
+          
+            <a href="/tags/Hooks/" rel="tag"># Hooks</a>
           
         </div>
       
@@ -524,8 +523,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/骑车去苏州白鹭园/" rel="next" title="骑车去苏州白鹭园">
-                <i class="fa fa-chevron-left"></i> 骑车去苏州白鹭园
+              <a href="/实战写一个实际项目中的PostCss插件/" rel="next" title="实战写一个实际项目中的PostCss插件">
+                <i class="fa fa-chevron-left"></i> 实战写一个实际项目中的PostCss插件
               </a>
             
           </div>
@@ -533,10 +532,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/记一次扫码点餐打包优化/" rel="prev" title="记一次扫码点餐打包优化">
-                记一次扫码点餐打包优化 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -689,7 +684,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引入计算属性"><span class="nav-number">1.</span> <span class="nav-text">引入计算属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写一个简单的计算属性组件"><span class="nav-number">2.</span> <span class="nav-text">写一个简单的计算属性组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#建立一个雏形"><span class="nav-number">2.1.</span> <span class="nav-text">建立一个雏形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变量绑定响应式"><span class="nav-number">2.2.</span> <span class="nav-text">变量绑定响应式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设计订阅-发布模式"><span class="nav-number">2.3.</span> <span class="nav-text">设计订阅/发布模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#项目介绍"><span class="nav-number">1.</span> <span class="nav-text">项目介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#针对-React-版的优化"><span class="nav-number">2.</span> <span class="nav-text">针对 React 版的优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目启动"><span class="nav-number">3.</span> <span class="nav-text">项目启动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装依赖包"><span class="nav-number">3.1.</span> <span class="nav-text">安装依赖包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目运行"><span class="nav-number">3.2.</span> <span class="nav-text">项目运行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目效果"><span class="nav-number">4.</span> <span class="nav-text">项目效果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后续待办计划"><span class="nav-number">5.</span> <span class="nav-text">后续待办计划</span></a></li></ol></div>
             
 
           </div>
