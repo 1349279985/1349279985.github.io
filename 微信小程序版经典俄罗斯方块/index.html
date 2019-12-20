@@ -114,8 +114,11 @@
 <meta property="og:description" content="最近在 github 上看到了儿时玩过的掌机俄罗斯方块游戏通过纯前端实现，很有意思，并且有 Vue版 和 React版，查了下并没有小程序版，于是乎，心血来潮做了这款小程序版本。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://1349279985.github.io/微信小程序版经典俄罗斯方块/0.png">
+<meta property="og:image" content="https://p0.meituan.net/travelcube/c22f4828bc60cd464e8edb8907c1b94b133069.png">
+<meta property="og:image" content="https://p0.meituan.net/travelcube/3e4095022f3d0acce8812ff09ccc0ac1134942.png">
+<meta property="og:image" content="https://p0.meituan.net/travelcube/281acae087ad5f72d470df354e4565ee136690.png">
 <meta property="og:image" content="https://p0.meituan.net/travelcube/f2307e1979221e994e519a29a63ff52e2380401.gif">
-<meta property="og:updated_time" content="2019-12-10T15:34:40.710Z">
+<meta property="og:updated_time" content="2019-12-20T08:40:15.396Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微信小程序版经典俄罗斯方块">
 <meta name="twitter:description" content="最近在 github 上看到了儿时玩过的掌机俄罗斯方块游戏通过纯前端实现，很有意思，并且有 Vue版 和 React版，查了下并没有小程序版，于是乎，心血来潮做了这款小程序版本。">
@@ -425,8 +428,9 @@
 
 <a id="more"></a>
 
-<h2 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h2><p>经典俄罗斯方块已经有了 <a href="https://github.com/Binaryify/vue-tetris" target="_blank" rel="noopener">Vue版</a> 和 <a href="https://github.com/chvin/react-tetris" target="_blank" rel="noopener">React版</a>，如今微信小程序很火爆，查了查并没有微信小程序版本，所以临时起意做一个小程序版本，保留原汁原味的经典味道。项目之初在 类Vue 的 <a href="https://github.com/Meituan-Dianping/mpvue" target="_blank" rel="noopener">mpvue</a> 和 类React 的 <a href="https://github.com/NervJS/taro" target="_blank" rel="noopener">Taro</a> 之间抉择；对比了两者，mpvue 最近基本没维护了，而 Taro 紧跟 着 React 的更新，有着和 <code>React16</code> 基本一致的特性，再加上团队的技术栈收敛，新项目都采用 React，同时个人也是偏好 React，嘿嘿，所以最终就选用了 Taro 来做。</p>
+<h2 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h2><p>有一天女盆友在微信的小游戏中玩起了俄罗斯方块，我打开一看，UI及功能都不堪入目，还有满屏幕的广告，很影响用户体验。心想自己扒出一款童年时在掌机上经常玩的俄罗斯方块，一定会让她眼前一亮，嘿嘿。于是乎来到社区搜索一波，可不已经有了 <a href="https://github.com/Binaryify/vue-tetris" target="_blank" rel="noopener">Vue版</a> 和 <a href="https://github.com/chvin/react-tetris" target="_blank" rel="noopener">React版</a>，发给她玩了下说蛮好玩了，她说要是有小程序的就好了，于是乎我找了找并没有微信小程序版本，我想了会儿，要满足她这个小心愿，于是乎临时起意做这个小程序版本，还原童年俄罗斯方块的乐趣，保留原汁原味的经典味道，给你我她都能带来一些欢乐。</p>
 <p>贴出<a href="https://github.com/1349279985/wx-tetris" target="_blank" rel="noopener">项目地址</a>，欢迎 <code>Star</code> 及一起交流学习～</p>
+<h2 id="项目介绍-1"><a href="#项目介绍-1" class="headerlink" title="项目介绍"></a>项目介绍</h2><p>项目之初在 <code>类Vue</code> 的 <a href="https://github.com/Meituan-Dianping/mpvue" target="_blank" rel="noopener">mpvue</a> 和 <code>类React</code> 的 <a href="https://github.com/NervJS/taro" target="_blank" rel="noopener">Taro</a> 之间抉择；对比了两者， <code>mpvue</code> 最近基本没维护，而 <code>Taro</code> 紧跟 着 <code>React</code> 的更新，有着和 <code>React16</code> 基本一致的特性，再加上团队的技术栈收敛，新项目都采用 <code>React</code>，同时个人也是偏好 <code>React</code>，嘿嘿，所以最终就选用了 <code>Taro</code> 来做。</p>
 <h2 id="针对-React-版的优化"><a href="#针对-React-版的优化" class="headerlink" title="针对 React 版的优化"></a>针对 React 版的优化</h2><p>其实游戏的介绍在 <a href="https://github.com/chvin/react-tetris" target="_blank" rel="noopener">React版</a> 已经有了详尽的介绍，这里就不再赘述啦～，想提到的几点就是</p>
 <ol>
 <li>小程序宿主环境和 Web 不大一样，所以就没有 <code>window</code> 或者 <code>document</code> 这类元素啦，代码中我将相关的代码做了改写，同时原逻辑中兼容 PC 端的内容我也做了删减；</li>
@@ -438,10 +442,12 @@
 <h3 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install or yarn install</span><br></pre></td></tr></table></figure>
 
 <h3 id="项目运行"><a href="#项目运行" class="headerlink" title="项目运行"></a>项目运行</h3><p>在 <code>project.config.json</code> 中配置自己的 <code>appid</code>，并在微信开发者工具导入项目</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 开发环境</span></span><br><span class="line">dev:weapp</span><br><span class="line"></span><br><span class="line"><span class="comment">// 生产环境</span></span><br><span class="line">build:weapp</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 开发环境</span></span><br><span class="line">npm run dev:weapp</span><br><span class="line"></span><br><span class="line"><span class="comment">// 生产环境</span></span><br><span class="line">npm run build:weapp</span><br></pre></td></tr></table></figure>
 
-<p>于是乎就有了效果</p>
-<h2 id="项目效果"><a href="#项目效果" class="headerlink" title="项目效果"></a>项目效果</h2><p><img src="https://p0.meituan.net/travelcube/f2307e1979221e994e519a29a63ff52e2380401.gif" alt="微信效果图"></p>
+<h2 id="项目效果"><a href="#项目效果" class="headerlink" title="项目效果"></a>项目效果</h2><h3 id="开局动画"><a href="#开局动画" class="headerlink" title="开局动画"></a>开局动画</h3><p><img src="https://p0.meituan.net/travelcube/c22f4828bc60cd464e8edb8907c1b94b133069.png" alt="开局图"></p>
+<h3 id="游戏中"><a href="#游戏中" class="headerlink" title="游戏中"></a>游戏中</h3><p><img src="https://p0.meituan.net/travelcube/3e4095022f3d0acce8812ff09ccc0ac1134942.png" alt="游戏中图"></p>
+<h3 id="消除行"><a href="#消除行" class="headerlink" title="消除行"></a>消除行</h3><p><img src="https://p0.meituan.net/travelcube/281acae087ad5f72d470df354e4565ee136690.png" alt="游戏中图"></p>
+<h3 id="游戏试玩"><a href="#游戏试玩" class="headerlink" title="游戏试玩"></a>游戏试玩</h3><p><img src="https://p0.meituan.net/travelcube/f2307e1979221e994e519a29a63ff52e2380401.gif" alt="微信效果图"></p>
 <h2 id="后续待办计划"><a href="#后续待办计划" class="headerlink" title="后续待办计划"></a>后续待办计划</h2><ol>
 <li>由于 在小程序中对于音频的处理并不向 Web 那样精细，小程序中如果向播放音频中的某一段，需要自己实现播放区间的控制，而 Web 可以轻松通过 start 来实现，这一块还需要研究下，如果有童鞋感兴趣，可以提PR秀出你的代码，我会非常期待；</li>
 <li>如今 JS 发展越来越壮大，它的升级版 <code>Typescript</code> 赋予了它静态类型检查等等特性，使得它的维护性更好，所以后期我会加入 Typescript 使得项目可读性更高，也更易维护；</li>
@@ -688,7 +694,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#项目介绍"><span class="nav-number">1.</span> <span class="nav-text">项目介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#针对-React-版的优化"><span class="nav-number">2.</span> <span class="nav-text">针对 React 版的优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目启动"><span class="nav-number">3.</span> <span class="nav-text">项目启动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装依赖包"><span class="nav-number">3.1.</span> <span class="nav-text">安装依赖包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目运行"><span class="nav-number">3.2.</span> <span class="nav-text">项目运行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目效果"><span class="nav-number">4.</span> <span class="nav-text">项目效果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后续待办计划"><span class="nav-number">5.</span> <span class="nav-text">后续待办计划</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#项目介绍"><span class="nav-number">1.</span> <span class="nav-text">项目介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目介绍-1"><span class="nav-number">2.</span> <span class="nav-text">项目介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#针对-React-版的优化"><span class="nav-number">3.</span> <span class="nav-text">针对 React 版的优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目启动"><span class="nav-number">4.</span> <span class="nav-text">项目启动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装依赖包"><span class="nav-number">4.1.</span> <span class="nav-text">安装依赖包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目运行"><span class="nav-number">4.2.</span> <span class="nav-text">项目运行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目效果"><span class="nav-number">5.</span> <span class="nav-text">项目效果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开局动画"><span class="nav-number">5.1.</span> <span class="nav-text">开局动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#游戏中"><span class="nav-number">5.2.</span> <span class="nav-text">游戏中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消除行"><span class="nav-number">5.3.</span> <span class="nav-text">消除行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#游戏试玩"><span class="nav-number">5.4.</span> <span class="nav-text">游戏试玩</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后续待办计划"><span class="nav-number">6.</span> <span class="nav-text">后续待办计划</span></a></li></ol></div>
             
 
           </div>
@@ -722,7 +728,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">44.8k</span>
+    <span title="Site words total count">45k</span>
   
 </div>
 
